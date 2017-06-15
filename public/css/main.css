@@ -1,0 +1,27 @@
+.sup-footer{
+    padding-top: 30px;
+    padding-bottom: 30px;
+    background: #202020;
+    color: white;
+}
+.sup-content{
+    padding-top: 50px;
+    padding-bottom: 50px;
+}
+.sally-content .sc-item-img{
+    margin-bottom: 20px;
+}
+.sup-navbar{
+    padding-top: 30px;
+    padding-bottom: 30px;
+    background: white;
+}
+.sup-navbar .navbar-nav>.active>a{
+    background: #3498db;
+    color: white;
+}
+.sup-slider{
+    background: #ffffff;
+    padding-top: 30px;
+    padding-bottom: 30px;
+}
