@@ -114,3 +114,7 @@
 
         </div>  
     </div>
+    
+    <?php
+include __DIR__ . '/../header_footer/footer.php'
+?>

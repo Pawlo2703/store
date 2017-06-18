@@ -19,11 +19,17 @@ class Register extends Controller {
         $params = $this->getParameters();
         $user = new User;
 
+        var_dump($params);
+
         $this->nameLength($params);
 
         $user->setName($params['name']);
         $user->setSurname($params['surname']);
         $user->setEmail($params['email']);
+
+        if (isset($params['newsletter'])) {
+            $user->setNewsletter($params['newsletter']);
+        }
         $user->setPassword(password_hash($params['password'], PASSWORD_DEFAULT, ['cost' => 10]));
 
         if ($user->register() == !NULL) {

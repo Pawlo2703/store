@@ -37,6 +37,20 @@ class User {
      */
     private $password;
 
+    /**
+     *
+     * @var newsletter
+     */
+    private $newsletter;
+
+    public function getNewsletter() {
+        return $this->newsletter;
+    }
+
+    public function setNewsletter($newsletter) {
+        $this->newsletter = $newsletter;
+    }
+
     public function getId() {
         return $this->id;
     }
@@ -86,9 +100,11 @@ class User {
      * Checks if email is existing in DB
      */
     public function register() {
-     //   var_dump($this->name, $this->surname);
         $email = $this->database->getRow('*', 'user', "WHERE email = ?", [$this->email]);
-        if (!$email) {
+        if ((!$email) && (isset($this->newsletter))) {
+            $result = $this->database->insertRow('user', "( `name`, `surname`, `email`, `password`, `newsletter`) VALUES(?,?,?,?,?)", [$this->name, $this->surname, $this->email, $this->password, $this->newsletter]);
+            return $result;
+        } else {
             $result = $this->database->insertRow('user', "( `name`, `surname`, `email`, `password`) VALUES(?,?,?,?)", [$this->name, $this->surname, $this->email, $this->password]);
             return $result;
         }
