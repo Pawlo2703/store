@@ -111,4 +111,34 @@ class User {
         return NULL;
     }
 
+    /**
+     * Searchs for email.
+     * @param string $login
+     * @return id
+     */
+    public function findByEmail($email) {
+        $result = $this->database->getRow('*', 'user', "WHERE email = ?", [$email]);
+        return isset($result['id']) ? $result['id'] : 0;
+    }
+
+    /**
+     * Searchs for an user password by his ID
+     * @param int $id
+     * @return string
+     */
+    public function checkPassword($id) {
+        $result = $this->database->getRow('*', 'user', "WHERE id = ?", [$id]);
+        return isset($result['password']) ? $result['password'] : 0;
+    }
+
+    public function load($id) {
+        $result = $this->database->getRow('*', 'user', "WHERE id = ?", [$id]);
+
+        if (!empty($result)) {
+            $this->id = $result['id'];
+            $this->name = $result['name'];
+            $this->email = $result['email'];
+        }
+    }
+
 }

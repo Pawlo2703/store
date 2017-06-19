@@ -49,7 +49,7 @@
                 </li>
                 <li><a href="#">Kontakt</a></li>
                 <li><a href="rejestracja">Rejestracja</a>
-                <li><a href="#">Zaloguj</a></li></li>
+                <li><a href="login">Zaloguj</a></li></li>
             </ul>
         </div>
     </div>

@@ -19,10 +19,7 @@ class Register extends Controller {
         $params = $this->getParameters();
         $user = new User;
 
-        var_dump($params);
-
         $this->nameLength($params);
-
         $user->setName($params['name']);
         $user->setSurname($params['surname']);
         $user->setEmail($params['email']);
@@ -31,13 +28,12 @@ class Register extends Controller {
             $user->setNewsletter($params['newsletter']);
         }
         $user->setPassword(password_hash($params['password'], PASSWORD_DEFAULT, ['cost' => 10]));
-
         if ($user->register() == !NULL) {
             $this->view('home/register/created');
-            die();
+            exit;
         } else {
             $this->view('home/register/error/email_in_use');
-            die();
+            exit;
         }
     }
 
@@ -46,7 +42,7 @@ class Register extends Controller {
             $this->passwordValidate($params);
         } else {
             $this->view('home/register/error/name_length');
-            die();
+            exit;
         }
     }
 
@@ -56,11 +52,11 @@ class Register extends Controller {
                 $this->emailValidate($params);
             } else {
                 $this->view('home/register/error/password_confirmation');
-                die();
+                exit;
             }
         } else {
             $this->view('home/register/error/password_lenght');
-            die();
+            exit;
         }
     }
 
@@ -69,7 +65,7 @@ class Register extends Controller {
             
         } else {
             $this->view('home/register/error/email_validate');
-            die();
+            exit;
         }
     }
 
