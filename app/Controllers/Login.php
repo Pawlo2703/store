@@ -4,6 +4,8 @@ namespace Shop\Controllers;
 
 use Shop\Core\Controller;
 use Shop\Models\User;
+use Shop\Models\RememberMe;
+use Shop\Core\Cookie;
 
 class Login extends Controller {
 
@@ -16,6 +18,8 @@ class Login extends Controller {
         $this->header();
         $params = $this->getParameters();
         $user = new User;
+        $remember = new RememberMe;
+        $cookie = new Cookie;
 
         if ($userId = $user->findByEmail($params['email'])) {
 
@@ -28,7 +32,6 @@ class Login extends Controller {
             $pw = $params['password'];
             if (password_verify($pw, $userPw)) {
                 $user->load($userId); // dorobic w modelu wczytywanie danych
-                $this->session->set('zmienna', $user->getName());
                 $this->session->set('zmienna2', $user->getId());
             } else {
                 $this->view('home/login/error/password');
@@ -38,6 +41,17 @@ class Login extends Controller {
             $this->view('home/login/error/email');
             exit;
         }
+
+        if (isset($params['remember'])) {
+            $bigKey = $cookie->generateRandomString();
+            var_dump($bigKey);
+            $remember->setBigKey($bigKey);
+            $remember->addCookie($userId);
+            setcookie('email', $bigKey, time() + 60 * 60 * 7);
+            var_dump($_COOKIE['email']);
+        }
+
+
         $this->redirect("home");
     }
 
