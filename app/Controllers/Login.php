@@ -5,7 +5,6 @@ namespace Shop\Controllers;
 use Shop\Core\Controller;
 use Shop\Models\User;
 use Shop\Models\RememberMe;
-use Shop\Core\Cookie;
 
 class Login extends Controller {
 
@@ -19,7 +18,6 @@ class Login extends Controller {
         $params = $this->getParameters();
         $user = new User;
         $remember = new RememberMe;
-        $cookie = new Cookie;
 
         if ($userId = $user->findByEmail($params['email'])) {
 
@@ -43,7 +41,7 @@ class Login extends Controller {
         }
 
         if (isset($params['remember'])) {
-            $bigKey = $cookie->generateRandomString();
+            $bigKey = $remember->generateRandomString();
             var_dump($bigKey);
             $remember->setBigKey($bigKey);
             $remember->addCookie($userId);

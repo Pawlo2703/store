@@ -2,6 +2,8 @@
 
 namespace Shop\Models;
 
+use Shop\libs\Session;
+
 /**
  * Class User
  */
@@ -28,6 +30,7 @@ class RememberMe {
 
     public function __construct() {
         $this->database = \Shop\Core\Database::getInstance();
+        $this->session = new Session;
     }
 
     public function addCookie($id) {
@@ -43,5 +46,22 @@ class RememberMe {
         }
     }
 
-    
+    public function checkCookie() {
+        $result = $this->database->getRow('id', 'remember', "WHERE bigKey = ?", [$this->bigKey]);
+        if (!empty($result)) {
+            $this->id = $result['id'];
+            $this->session->set('zmienna2', $this->id);
+        }
+    }
+
+    function generateRandomString() {
+        $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+        $charactersLength = strlen($characters);
+        $string = '';
+        for ($i = 0; $i < 20; ++$i) {
+            $string .= $characters[rand(0, $charactersLength - 1)];
+        }
+        return $string;
+    }
+
 }

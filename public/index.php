@@ -7,7 +7,7 @@ $session = new \Shop\libs\Session();
 $session->start();
 
 
-$cookie = new \Shop\Core\Cookie();
+$cookie = new \Shop\Controllers\Cookie();
 $cookie->checkCookie();
 
 
