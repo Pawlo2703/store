@@ -13,7 +13,6 @@ class Cookie extends Controller {
         if (isset($_COOKIE['email'])) {
             $remember->setBigKey($_COOKIE['email']);
             $remember->checkCookie();
-            var_dump($_SESSION);
         }
     }
 

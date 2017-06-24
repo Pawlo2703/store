@@ -34,7 +34,7 @@ class Controller {
 
     public function header() {
         if (($this->session->get('zmienna2')) != null) {
-            $this->view('home/header_footer/header');
+            $this->view('home/header_footer/header_logged');
         } else {
             $this->view('home/header_footer/header');
         }

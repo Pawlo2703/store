@@ -46,7 +46,6 @@ class Login extends Controller {
             $remember->setBigKey($bigKey);
             $remember->addCookie($userId);
             setcookie('email', $bigKey, time() + 60 * 60 * 7);
-            var_dump($_COOKIE['email']);
         }
 
 

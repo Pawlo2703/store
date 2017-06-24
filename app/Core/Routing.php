@@ -6,8 +6,8 @@ class Routing {
 
     public function __construct() {
         if (isset($_GET['url'])) {
-            $action = array("home", "rejestracja", "submit", "login", "zalogowano");
-            $controller = array("home/display", "register/display", "register/submit", "login/display", "login/submit");
+            $action = array("home", "rejestracja", "submit", "login", "zalogowano", "logout");
+            $controller = array("home/display", "register/display", "register/submit", "login/display", "login/submit", "logout/submit");
             $url = $_GET['url'];
             $key = array_search($url, $action);
 
