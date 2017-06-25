@@ -25,7 +25,6 @@ class App {
     public function __construct() {
         $url = $this->parseUrl();
         $nameClass = $this->parseNamespace($url);
-
         if ($url != null) {
             if (count($nameClass) == 2) {
                 $this->controller = ucfirst($nameClass[1]);

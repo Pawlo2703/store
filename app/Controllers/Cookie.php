@@ -9,7 +9,7 @@ class Cookie extends Controller {
 
     public function checkCookie() {
         $remember = new RememberMe;
-        
+
         if (isset($_COOKIE['email'])) {
             $remember->setBigKey($_COOKIE['email']);
             $remember->checkCookie();
