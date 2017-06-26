@@ -10,6 +10,15 @@ class CategoryManagement {
     private $id;
     private $category;
     private $name;
+    private $uri;
+
+    public function getUri() {
+        return $this->uri;
+    }
+
+    public function setUri($uri) {
+        $this->uri = $uri;
+    }
 
     public function getName() {
         return $this->name;
@@ -50,6 +59,11 @@ class CategoryManagement {
 
     public function loadCat() {
         $result = $this->database->getRows('name', 'category');
+        return $result;
+    }
+
+    public function loadProduct($category) {
+        $result = $this->database->getRows('name', 'products', "WHERE category = ?", [$category]);
         return $result;
     }
 

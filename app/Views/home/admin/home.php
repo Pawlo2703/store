@@ -13,6 +13,7 @@ include __DIR__ . '/../header_footer/admin_header.php'
                     <thead>
                         <tr>
                             <th>Category</th>
+                            
                         </tr>
                     </thead>
                     <tbody>
@@ -20,7 +21,8 @@ include __DIR__ . '/../header_footer/admin_header.php'
                         foreach ($data['cat']->getName() as $row) {
                             echo '<tr>';
                             foreach ($row as $item) {
-                                echo "<td><a href='{$item}'>{$item}</a></td>";
+
+                                echo "<td><a href='" . $data['cat']->getUri() . "/{$item}'>{$item}</a></td>";
                             }
                             echo '</tr>';
                         }

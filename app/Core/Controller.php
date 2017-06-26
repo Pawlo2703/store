@@ -13,6 +13,13 @@ class Controller {
         $this->session = new \Shop\libs\Session();
     }
 
+    public function getUrlParam() {
+        if (isset($_GET['url'])) {
+           return $url = explode('/', filter_var(rtrim($_GET['url'], '/'), FILTER_SANITIZE_URL));
+            
+        }
+    }
+    
     public function getParam($name) {
         if (isset($_POST[$name])) {
             return $_POST[$name];
@@ -42,7 +49,6 @@ class Controller {
 
     public function view($view, $data = []) {
         require_once '../app/Views/' . $view . '.php';
-        
     }
 
     public function redirect($action) {
