@@ -83,16 +83,20 @@ class ProductManagement {
         }
         return;
     }
- 
+
     public function loadProduct($id) {
-        $result = $this->database->getRows('name, id', 'products', "WHERE category_id = ?", [$id] );
+        $result = $this->database->getRows('name, id', 'products', "WHERE category_id = ?", [$id]);
         return $result;
     }
-    
+
+    public function loadProductView($id) {
+        $result = $this->database->getRows('*', 'products', "WHERE id = ?", [$id]);
+        return $result;
+    }
 
     public function remove($id) {
-            $this->database->deleteRow('products', "WHERE id = ?", [$id]);
-            return;
-        }
-    
+        $this->database->deleteRow('products', "WHERE id = ?", [$id]);
+        return;
+    }
+
 }

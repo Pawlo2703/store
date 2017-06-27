@@ -52,7 +52,7 @@ class CategoryManagement {
         $result = $this->database->getRows('*', 'category');
         return $result;
     }
-    
+
     public function loadCatList() {
         $result = $this->database->getRows('name', 'category');
         return $result;
@@ -65,6 +65,11 @@ class CategoryManagement {
 
     public function getCategoryByName($name) {
         $result = $this->database->getRows('id', 'category', "WHERE name = ?", [$name]);
+        return $result;
+    }
+
+    public function getCategoryById($id) {
+        $result = $this->database->getRows('name', 'category', "WHERE id = ?", [$id]);
         return $result;
     }
 

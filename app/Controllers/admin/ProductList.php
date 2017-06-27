@@ -6,7 +6,7 @@ use Shop\Core\Controller;
 use Shop\Models\Products\CategoryManagement;
 use Shop\Models\Products\ProductManagement;
 
-class Product extends Controller {
+class ProductList extends Controller {
 
     public function display() {
 

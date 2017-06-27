@@ -27,7 +27,7 @@ include __DIR__ . '/../header_footer/admin_header.php'
                             $name1 = $name[$i]['name'];
                             $id1 = $name[$i]['id'];
                             echo '<tr>';
-                            echo "<td><a href='" . "product" . "/$id1'>$name1</a><p align='right'><a href=' http://" . $_SERVER['HTTP_HOST'] . "/usun_produkt" . "/$id1'>remove</a></p></td>";
+                            echo "<td><a href=' http://" . ($_SERVER['HTTP_HOST']) . "/widok_produktu/$id1'>$name1</a><p align='right'><a href=' http://" . $_SERVER['HTTP_HOST'] . "/usun_produkt" . "/$id1'>remove</a></p></td>";
                             echo '</tr>';
                         }
                         ?>
