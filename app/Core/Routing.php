@@ -6,8 +6,8 @@ class Routing {
 
     public function __construct() {       
         
-        $action = array("home", "rejestracja", "submit", "login", "zalogowano", "logout", "dodaj_kat", "zatwierdz_kat", "admin");
-        $controller = array("home/display", "register/display", "register/submit", "login/display", "login/submit", "logout/submit", "admin_category/display", "admin_category/submit", "admin_admin/display");
+        $action = array("home", "rejestracja", "submit", "login", "zalogowano", "logout", "dodaj_kat", "zatwierdz_kat", "category", "product", "dodaj_pro", "zatwierdz_pro", "usun_produkt", "usun_kategorie");
+        $controller = array("home/display", "register/display", "register/submit", "login/display", "login/submit", "logout/submit", "admin_addnew/displayCategory", "admin_category/addCategory", "admin_category/display", "admin_product/display", "admin_addnew/displayProduct", "admin_product/addProduct", "admin_product/remove", "admin_category/remove" );
         if (isset($_GET['url'])) {
             if (strpos($_GET['url'], '/') !== false) {
                 $url = $this->parseUrl();

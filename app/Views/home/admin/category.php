@@ -12,21 +12,26 @@ include __DIR__ . '/../header_footer/admin_header.php'
                 <table  class="table table-bordered table-hover">
                     <thead>
                         <tr>
-                            <th>Category</th>
-                            
+                            <th>Category | 
+                                <?php
+                                echo "<a href=' http://" . ($_SERVER['HTTP_HOST']) . "/" . 'dodaj_kat' . "'>add new</a>";
+                                ?>
+                            </th>
                         </tr>
                     </thead>
                     <tbody>
                         <?php
-                        foreach ($data['cat']->getName() as $row) {
-                            echo '<tr>';
-                            foreach ($row as $item) {
+                        $name = ($data['name']);
 
-                                echo "<td><a href='" . $data['cat']->getUri() . "/{$item}'>{$item}</a></td>";
-                            }
+                        for ($i = 0; $i < sizeof($name); $i++) {
+                            $name1 = $name[$i]['name'];
+                            $id1 = $name[$i]['id'];
+                            echo '<tr>';
+                            echo "<td><a href='" . "product" . "/$id1'>$name1</a><p align='right'><a href=' http://" . $_SERVER['HTTP_HOST'] . "/usun_kategorie" . "/$id1'>remove</a></p></td>";
                             echo '</tr>';
                         }
                         ?>
+
                     </tbody>
                     <tfoot>
                         <tr>

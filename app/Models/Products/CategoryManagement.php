@@ -9,7 +9,6 @@ class CategoryManagement {
 
     private $id;
     private $category;
-    private $name;
     private $uri;
 
     public function getUri() {
@@ -18,14 +17,6 @@ class CategoryManagement {
 
     public function setUri($uri) {
         $this->uri = $uri;
-    }
-
-    public function getName() {
-        return $this->name;
-    }
-
-    public function setName($name) {
-        $this->name = $name;
     }
 
     public function getId() {
@@ -58,13 +49,28 @@ class CategoryManagement {
     }
 
     public function loadCat() {
+        $result = $this->database->getRows('*', 'category');
+        return $result;
+    }
+    
+    public function loadCatList() {
         $result = $this->database->getRows('name', 'category');
         return $result;
     }
 
-    public function loadProduct($category) {
-        $result = $this->database->getRows('name', 'products', "WHERE category = ?", [$category]);
+    public function loadId() {
+        $result = $this->database->getRows('id', 'category');
         return $result;
+    }
+
+    public function getCategoryByName($name) {
+        $result = $this->database->getRows('id', 'category', "WHERE name = ?", [$name]);
+        return $result;
+    }
+
+    public function remove($id) {
+        $this->database->deleteRow('category', "WHERE id = ?", [$id]);
+        return;
     }
 
 }
