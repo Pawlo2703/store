@@ -25,12 +25,16 @@ class App {
     public function __construct() {
         $url = $this->parseUrl();
         $nameClass = $this->parseNamespace($url);
+
+        $size = sizeof($nameClass);
+
+        $this->controller = ucfirst($nameClass[$size - 1]);
+
         if ($url != null) {
-            if (count($nameClass) == 2) {
-                $this->controller = ucfirst($nameClass[1]);
-                $this->namespace = $this->namespace . ucfirst($nameClass[0]) . "\\";
-            } else {
-                $this->controller = ucfirst($url[0]);
+
+            for ($i = 0; $i <= ($size - 2); $i ++) {
+                $result = ucfirst($nameClass[$i]) . "\\";
+                $this->namespace = $this->namespace . $result;
             }
             $this->controller = $this->namespace . $this->controller;
             $this->controller = new $this->controller();
@@ -44,17 +48,14 @@ class App {
         }
     }
 
-    /*
-     * 
-     */
-
     public function parseUrl() {
         if (isset($_GET['url'])) {
             return $url = explode('/', filter_var(rtrim($_GET['url'], '/'), FILTER_SANITIZE_URL));
         }
     }
 
-    public function parseNamespace($url) {
+    public
+            function parseNamespace($url) {
         if (isset($url[0])) {
             return $nameClass = explode('_', filter_var(rtrim($url[0], '_'), FILTER_SANITIZE_URL));
         }
