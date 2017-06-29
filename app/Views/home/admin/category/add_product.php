@@ -19,17 +19,7 @@ include __DIR__ . '/../../header_footer/admin_header.php'
                                     <input type="text" name="country" class="form-control input-sm" placeholder="kraj pochodzenia">
                                     <input type="text" name="quantity" class="form-control input-sm" placeholder="ilość">
                                     <input type="text" name="price" class="form-control input-sm" placeholder="cena">
-                                    <select name="category">
-                                        <?php
-                                        foreach ($data['name'] as $row) {
-                                            echo '<tr>';
-                                            foreach ($row as $item) {
-                                                echo "<option> {$item}</option>";
-                                            }
-                                        }
-                                        ?>
-
-                                    </select></br>
+                                                            </br>
                                 </div>
                             </div>
 

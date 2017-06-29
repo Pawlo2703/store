@@ -14,7 +14,7 @@ include __DIR__ . '/../header_footer/admin_header.php'
                         <tr>
                             <th>Category | 
                                 <?php
-                                echo "<a href=' http://" . ($_SERVER['HTTP_HOST']) . "/" . 'dodaj_pro' . "'>add new</a>";
+                                echo "<a href=' http://" . ($_SERVER['HTTP_HOST']) . "/" . 'dodaj_pro' ."'>add new</a>";
                                 ?>
                             </th>
                         </tr>

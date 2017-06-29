@@ -1,21 +1,21 @@
 <?php
 
-namespace Shop\Controllers\admin;
+namespace Shop\Controllers\admin\product;
 
 use Shop\Core\Controller;
 use Shop\Models\Products\CategoryManagement;
 use Shop\Models\Products\ProductManagement;
+use Shop\libs\Session;
 
 class ProductList extends Controller {
 
     public function display() {
 
         $pro = new ProductManagement;
-
+        
         $url = $this->getUrlParam();
-        $cat_id = $url[2];
-        $name = $pro->loadProduct($cat_id);
-
+        $this->session->set('zmienna3', $url[2]);
+        $name = $pro->loadProduct($url[2]);
         $data = [
             'pro' => $pro,
             'name' => $name
@@ -25,10 +25,11 @@ class ProductList extends Controller {
 
     public function addProduct() {
         $params = $this->getParameters();
+        $category = $this->session->get('zmienna3');
 
         $pro = new ProductManagement;
         $cat = new CategoryManagement;
-        var_dump($params);
+
         $pro->setProduct($params['product']);
         $pro->setType($params['type']);
         $pro->setColor($params['color']);
@@ -36,8 +37,7 @@ class ProductList extends Controller {
         $pro->setQuantity($params['quantity']);
         $pro->setPrice($params['price']);
 
-        $id = $cat->getCategoryByName($params['category']);
-        $pro->setCategory($id[0]['id']);
+        $pro->setCategory($category);
 
         if ($pro->addPro() !== NULL) {
             $this->redirect("category", "display");

@@ -17,9 +17,11 @@ class AddNew extends Controller {
         $cat = new CategoryManagement;
         $url = $this->getUrlParam();
         $name = $cat->loadCatList();
+        
                 $data = [
             'cat' => $cat,
-                        'name' => $name
+                        'name' => $name,
+                        'url' => $url
         ];
         $this->view('home/admin/category/add_product', $data);
     }

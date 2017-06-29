@@ -1,6 +1,6 @@
 <?php
 
-namespace Shop\Controllers\admin;
+namespace Shop\Controllers\admin\category;
 
 use Shop\Core\Controller;
 use Shop\Models\Products\CategoryManagement;

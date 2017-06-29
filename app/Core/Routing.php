@@ -7,12 +7,12 @@ class Routing {
     public function __construct() {       
         
         $action = array("home", "rejestracja", "submit", "login", "zalogowano", "logout", "dodaj_kat", 
-            "zatwierdz_kat", "category", "product", "dodaj_pro", "zatwierdz_pro", "usun_produkt", "usun_kategorie", "widok_produktu", "test");
+            "zatwierdz_kat", "category", "product", "dodaj_pro", "zatwierdz_pro", "usun_produkt", "usun_kategorie", "widok_produktu");
         
         $controller = array("home/display", "register/display", "register/submit", "login/display", 
-            "login/submit", "logout/submit", "admin_addnew/displayCategory", "admin_category/addCategory", 
-            "admin_category/display", "admin_productlist/display", "admin_addnew/displayProduct", "admin_productlist/addProduct",
-            "admin_productlist/remove", "admin_category/remove", "admin_productview/display", "test1_test2_test4/rekt" );
+            "login/submit", "logout/submit", "admin_addnew/displayCategory", "admin_category_category/addCategory", 
+            "admin_category_category/display", "admin_product_productlist/display", "admin_addnew/displayProduct", "admin_product_productlist/addProduct",
+            "admin_product_productlist/remove", "admin_category_category/remove", "admin_product_productview/display");
         
         if (isset($_GET['url'])) {
             if (strpos($_GET['url'], '/') !== false) {
