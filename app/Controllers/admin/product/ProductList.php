@@ -16,9 +16,11 @@ class ProductList extends Controller {
         $url = $this->getUrlParam();
         $this->session->set('zmienna3', $url[2]);
         $name = $pro->loadProduct($url[2]);
+        $jUrl = "<a href=' http://" . ($_SERVER['HTTP_HOST']) . "/" . 'category' . "'>Category</a>";
         $data = [
             'pro' => $pro,
-            'name' => $name
+            'name' => $name,
+            'jUrl' => $jUrl
         ];
         $this->view('home/admin/product', $data);
     }

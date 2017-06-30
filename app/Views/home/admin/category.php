@@ -11,7 +11,7 @@ include __DIR__ . '/../header_footer/admin_header.php'
             <div class="table-responsive">
                 <table  class="table table-bordered table-hover">
                     <thead>
-                        <tr>
+                        <tr> 
                             <th>Category | 
                                 <?php
                                 echo "<a href=' http://" . ($_SERVER['HTTP_HOST']) . "/" . 'dodaj_kat' . "'>add new</a>";

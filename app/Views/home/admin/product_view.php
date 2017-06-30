@@ -11,7 +11,7 @@ include __DIR__ . '/../header_footer/admin_header.php'
             <div class="table-responsive">
                  <table class="table table-striped">
     <thead>
-      <tr>
+      <tr><?php echo $data['jUrl']; ?>
         <th>id</th>
         <th>nazwa</th>
         <th>kategoria</th>

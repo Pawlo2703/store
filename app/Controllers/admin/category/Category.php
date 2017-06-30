@@ -5,6 +5,7 @@ namespace Shop\Controllers\admin\category;
 use Shop\Core\Controller;
 use Shop\Models\Products\CategoryManagement;
 use Shop\Models\Products\ProductManagement;
+use Shop\libs\Session;
 
 class Category extends Controller {
 
@@ -14,6 +15,8 @@ class Category extends Controller {
 
         $name = $cat->loadCat();
         $id = $cat->loadId();
+
+
 
         $data = [
             'cat' => $cat,

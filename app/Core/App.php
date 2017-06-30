@@ -28,10 +28,10 @@ class App {
 
         $size = sizeof($nameClass);
 
-        $this->controller = ucfirst($nameClass[$size - 1]);
+
 
         if ($url != null) {
-
+            $this->controller = ucfirst($nameClass[$size - 1]);
             for ($i = 0; $i <= ($size - 2); $i ++) {
                 $result = ucfirst($nameClass[$i]) . "\\";
                 $this->namespace = $this->namespace . $result;
