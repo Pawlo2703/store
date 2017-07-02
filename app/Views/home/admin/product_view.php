@@ -9,30 +9,50 @@ include __DIR__ . '/../header_footer/admin_header.php'
     <div class="row">
         <div class="col-xs-12">
             <div class="table-responsive">
-                 <table class="table table-striped">
-    <thead>
-      <tr><?php echo $data['jUrl']; ?>
-        <th>id</th>
-        <th>nazwa</th>
-        <th>kategoria</th>
-        <th>kolor</th>
-        <th>kraj pochodzenia</th>
-        <th>ilość</th>
-        <th>cenaa</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><?php echo $data['product'][0]['id']; ?></td>
-        <td><?php echo $data['product'][0]['name']; ?></td>
-        <td><?php echo $data['category'][0]['name']; ?></td>
-        <td><?php echo $data['product'][0]['color']; ?></td>
-        <td><?php echo $data['product'][0]['country']; ?></td>
-        <td><?php echo $data['product'][0]['quantity']; ?></td>
-        <td><?php echo $data['product'][0]['price']; ?></td>
-      </tr>
-         </tbody>
-  </table>
+                <table class="table table-striped">
+                    <thead>
+                        <tr><?php echo $data['jUrl']; ?>
+                            <th>nazwa</th>
+                            <th>typ</th>
+                            <th>kategoria</th>
+                            <th>kolor</th>
+                            <th>kraj pochodzenia</th>
+                            <th>ilość</th>
+                            <th>cena</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><?php echo $data['product'][0]['name']; ?></td>
+                            <td><?php echo $data['product'][0]['type']; ?></td>
+                            <td><?php echo $data['category'][0]['name']; ?></td>
+                            <td><?php echo $data['product'][0]['color']; ?></td>
+                            <td><?php echo $data['product'][0]['country']; ?></td>
+                            <td><?php echo $data['product'][0]['quantity']; ?></td>
+                            <td><?php echo $data['product'][0]['price']; ?></td>
+                        </tr>
+                        <tr> <form method="post" action="http://sup.dev/zmiana_produktu" role="form">
+                        <td><input type="text" name="name" placeholder="zmień nazwę"></td>
+                        <td><input type="text" name="type" placeholder="zmień typ"></td>
+                        <td><select name="category">
+                                <option required style="display:none">Wybierz kategorię</option>
+                                <?php
+                                $cat = $data['catList'];
+                                for ($i = 0; $i < sizeof($cat); $i++) {
+                                    $catName = $cat[$i]['name'];
+                                    echo "<option>$catName</option>";
+                                }
+                                ?>
+
+                            </select></td>
+                        <td><input type="text" name="color" placeholder="zmień kolor"></td>
+                        <td><input type="text" name="country" placeholder="zmień kraj"></td>
+                        <td><input type="text" name="quantity" placeholder="zmień ilość"></td>
+                        <td><input type="text" name="price" placeholder="zmień cenę"></td>
+
+                        </tr>
+                        </tbody>
+                </table><input type="submit" class="btn btn-info btn-block">
             </div><!--end of .table-responsive-->
         </div>
     </div>

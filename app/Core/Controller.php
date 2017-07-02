@@ -38,6 +38,24 @@ class Controller {
         return [];
     }
 
+    public function checkIfAdmin() {
+        if (($this->session->get('admin')) == !NULL) {
+            if ($this->session->get('admin') == 0) {
+                $this->redirect('home');
+            }
+        } else {
+            $this->redirect('home');
+        }
+    }
+
+    public function checkIfUser() {
+        if (($this->session->get('admin')) == !NULL) {
+            
+        } else {
+            $this->redirect('home');
+        }
+    }
+
     public function header() {
         if (($this->session->get('zmienna2')) != null) {
             $this->view('home/header_footer/header_logged');

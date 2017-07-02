@@ -10,7 +10,7 @@ use Shop\libs\Session;
 class ProductList extends Controller {
 
     public function display() {
-
+$this->checkIfAdmin();
         $pro = new ProductManagement;
         
         $url = $this->getUrlParam();
@@ -26,13 +26,14 @@ class ProductList extends Controller {
     }
 
     public function addProduct() {
+        $this->checkIfAdmin();
         $params = $this->getParameters();
         $category = $this->session->get('zmienna3');
 
         $pro = new ProductManagement;
         $cat = new CategoryManagement;
 
-        $pro->setProduct($params['product']);
+        $pro->setName($params['product']);
         $pro->setType($params['type']);
         $pro->setColor($params['color']);
         $pro->setCountry($params['country']);

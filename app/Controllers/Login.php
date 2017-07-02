@@ -30,6 +30,7 @@ class Login extends Controller {
             $pw = $params['password'];
             if (password_verify($pw, $userPw)) {
                 $user->load($userId); // dorobic w modelu wczytywanie danych
+                $this->session->set('admin', $user->getAdmin());
                 $this->session->set('zmienna2', $user->getId());
             } else {
                 $this->view('home/login/error/password');
@@ -42,7 +43,6 @@ class Login extends Controller {
 
         if (isset($params['remember'])) {
             $bigKey = $remember->generateRandomString();
-            var_dump($bigKey);
             $remember->setBigKey($bigKey);
             $remember->addCookie($userId);
             setcookie('email', $bigKey, time() + 60 * 60 * 7);

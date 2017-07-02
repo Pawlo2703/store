@@ -42,6 +42,15 @@ class User {
      * @var newsletter
      */
     private $newsletter;
+    private $admin;
+
+    public function getAdmin() {
+        return $this->admin;
+    }
+
+    public function setAdmin($admin) {
+        $this->admin = $admin;
+    }
 
     public function getNewsletter() {
         return $this->newsletter;
@@ -138,6 +147,7 @@ class User {
             $this->id = $result['id'];
             $this->name = $result['name'];
             $this->email = $result['email'];
+            $this->admin = $result['admin'];
         }
     }
 

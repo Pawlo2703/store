@@ -9,25 +9,22 @@ use Shop\Models\Products\ProductManagement;
 class AddNew extends Controller {
 
     public function displayCategory() {
+        $this->checkIfAdmin();
         $this->view('home/admin/category/add_category');
     }
 
     public function displayProduct() {
-
+        $this->checkIfAdmin();
         $cat = new CategoryManagement;
         $url = $this->getUrlParam();
         $name = $cat->loadCatList();
-        
-                $data = [
+
+        $data = [
             'cat' => $cat,
-                        'name' => $name,
-                        'url' => $url
+            'name' => $name,
+            'url' => $url
         ];
         $this->view('home/admin/category/add_product', $data);
     }
-
- 
-
-
 
 }

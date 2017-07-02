@@ -10,24 +10,27 @@ use Shop\libs\Session;
 class ProductView extends Controller {
 
     public function display() {
-
+        $this->checkIfAdmin();
         $pro = new ProductManagement;
         $cat = new CategoryManagement;
         $url = $this->getUrlParam();
-        $cat_id = $url[2];
-        
-        $prodList= $this->session->get('zmienna3');
-        $jUrl = "<a href=' http://" . ($_SERVER['HTTP_HOST']) . "/" . 'category' . "'>Category</a>-><a href=' http://" . ($_SERVER['HTTP_HOST']) . "/" . 'product/' .$prodList . "'>Product</a>";
-        $product = $pro->loadProductView($cat_id);
-        
+        $pro_id = $url[2];
+        $this->session->set('product_id', $url[2]);
+
+        $catList = $cat->loadCat();
+        $prodList = $this->session->get('zmienna3');
+        $jUrl = "<a href=' http://" . ($_SERVER['HTTP_HOST']) . "/" . 'category' . "'>Category</a>-><a href=' http://" . ($_SERVER['HTTP_HOST']) . "/" . 'product/' . $prodList . "'>Product</a>";
+        $product = $pro->loadProductView($pro_id);
+
         $category = $cat->getCategoryById($product[0]['category_id']);
-                
-              
+
+
         $data = [
             'pro' => $pro,
             'product' => $product,
-                'category' => $category,
-            'jUrl' => $jUrl
+            'category' => $category,
+            'jUrl' => $jUrl,
+            'catList' => $catList
         ];
         $this->view('home/admin/product_view', $data);
     }

@@ -7,13 +7,24 @@ namespace Shop\Models\Products;
  */
 class ProductManagement {
 
-    private $product;
+    private $id;
+    private $name;
     private $type;
     private $color;
     private $country;
     private $quantity;
     private $price;
     private $category;
+
+    public function getId() {
+        return $this->id;
+    }
+
+    public function setId($id) {
+        if ($id == !NULL) {
+            $this->id = $id;
+        }
+    }
 
     public function getType() {
         return $this->type;
@@ -36,31 +47,43 @@ class ProductManagement {
     }
 
     public function setType($type) {
-        $this->type = $type;
+        if ($type == !NULL) {
+            $this->type = $type;
+        }
     }
 
     public function setColor($color) {
-        $this->color = $color;
+        if ($color == !NULL) {
+            $this->color = $color;
+        }
     }
 
     public function setCountry($country) {
-        $this->country = $country;
+        if ($country == !NULL) {
+            $this->country = $country;
+        }
     }
 
     public function setQuantity($quantity) {
-        $this->quantity = $quantity;
+        if ($quantity == !NULL) {
+            $this->quantity = $quantity;
+        }
     }
 
     public function setPrice($price) {
-        $this->price = $price;
+        if ($price == !NULL) {
+            $this->price = $price;
+        }
     }
 
-    public function getProduct() {
-        return $this->product;
+    public function getName() {
+        return $this->Name;
     }
 
-    public function setProduct($product) {
-        $this->product = $product;
+    public function setName($name) {
+        if ($name == !NULL) {
+            $this->name = $name;
+        }
     }
 
     public function getCategory() {
@@ -68,7 +91,9 @@ class ProductManagement {
     }
 
     public function setCategory($category) {
-        $this->category = $category;
+        if ($category > 0) {
+            $this->category = $category;
+        }
     }
 
     public function __construct() {
@@ -76,11 +101,42 @@ class ProductManagement {
     }
 
     public function addPro() {
-        $result = $this->database->getRow('*', 'products', "WHERE name = ?", [$this->product]);
+        $result = $this->database->getRow('*', 'products', "WHERE name = ?", [$this->name]);
         if ((!$result)) {
-            $result = $this->database->insertRow('products', "(`name`,`category_id`,`type`,`color`,`country`,`quantity`,`price`) VALUES(?,?,?,?,?,?,?)", [$this->product, $this->category, $this->type, $this->color, $this->country, $this->quantity, $this->price]);
+            $result = $this->database->insertRow('products', "(`name`,`category_id`,`type`,`color`,`country`,`quantity`,`price`) VALUES(?,?,?,?,?,?,?)", [$this->name, $this->category, $this->type, $this->color, $this->country, $this->quantity, $this->price]);
             return $result;
         }
+
+        return;
+    }
+
+    public function init($data) {
+        $this->setName($data['name']);
+        $this->setType($data['type']);
+        $this->setColor($data['color']);
+        $this->setCountry($data['country']);
+        $this->setQuantity($data['quantity']);
+        $this->setPrice($data['price']);
+    }
+
+    public function updateProduct() {
+        $name = $this->name;
+        $type = $this->type;
+        $category = $this->category;
+        $color = $this->color;
+        $quantity = $this->quantity;
+        $price = $this->price;
+        $country = $this->country;
+        $id = $this->id;
+
+        $this->database->updateRow('products', "name='$name', "
+                . "type='$type', "
+                . "color='$color',"
+                . "quantity='$quantity',"
+                . "price='$price',"
+                . "country='$country',"
+                . "category_id='$category'"
+                . "WHERE id= $id");
         return;
     }
 

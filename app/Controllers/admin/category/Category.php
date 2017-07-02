@@ -10,6 +10,8 @@ use Shop\libs\Session;
 class Category extends Controller {
 
     public function display() {
+      $this->checkIfAdmin();
+        
         $cat = new CategoryManagement;
         $pro = new ProductManagement;
 
@@ -35,6 +37,7 @@ class Category extends Controller {
     }
 
     public function addCategory() {
+        $this->checkIfAdmin();
         $params = $this->getParameters();
         $new = new CategoryManagement;
         $new->setCategory($params['category']);
