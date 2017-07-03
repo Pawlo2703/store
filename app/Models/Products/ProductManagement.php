@@ -141,7 +141,7 @@ class ProductManagement {
     }
 
     public function loadProduct($id) {
-        $result = $this->database->getRows('name, id', 'products', "WHERE category_id = ?", [$id]);
+        $result = $this->database->getRows('name, id, is_available', 'products', "WHERE category_id = ?", [$id]);
         return $result;
     }
 
@@ -153,6 +153,20 @@ class ProductManagement {
     public function remove($id) {
         $this->database->deleteRow('products', "WHERE id = ?", [$id]);
         return;
+    }
+
+    
+    
+    public function isAvailable($id) {
+        $result = $this->database->getRow('is_available', 'products', "WHERE id = ?", [$id]);
+        if (($result['is_available']) == "turned off") {
+            $this->database->updateRow('products', "is_available= 'turned on'"
+                    . "WHERE id= $id");
+        } else {
+            $this->database->updateRow('products', "is_available= 'turned off'"
+                    . "WHERE id= $id");
+            return;
+        }
     }
 
 }

@@ -10,13 +10,18 @@ use Shop\libs\Session;
 class ProductList extends Controller {
 
     public function display() {
-$this->checkIfAdmin();
+        $this->checkIfAdmin();
         $pro = new ProductManagement;
+
         
         $url = $this->getUrlParam();
         $this->session->set('zmienna3', $url[2]);
+   
         $name = $pro->loadProduct($url[2]);
+        $availability = '';
+
         $jUrl = "<a href=' http://" . ($_SERVER['HTTP_HOST']) . "/" . 'category' . "'>Category</a>";
+
         $data = [
             'pro' => $pro,
             'name' => $name,
@@ -29,7 +34,7 @@ $this->checkIfAdmin();
         $this->checkIfAdmin();
         $params = $this->getParameters();
         $category = $this->session->get('zmienna3');
-
+        
         $pro = new ProductManagement;
         $cat = new CategoryManagement;
 
@@ -43,7 +48,7 @@ $this->checkIfAdmin();
         $pro->setCategory($category);
 
         if ($pro->addPro() !== NULL) {
-            $this->redirect("category", "display");
+            $this->redirect("product", "$category");
             exit;
         } else {
             $this->view('home/admin/category/error/product_exists');
@@ -56,7 +61,16 @@ $this->checkIfAdmin();
         $url = $this->getUrlParam();
         $id = $url[2];
         $pro->remove($id);
-        $this->redirect("category", "display");
+        $this->redirect("category");
+    }
+
+    public function isAvailable() {
+        $pro = new ProductManagement;
+        $url = $this->getUrlParam();
+        $pro->isAvailable($url[2]);
+        
+        $id = $this->session->get('zmienna3');
+        $this->redirect("product", "$id");
     }
 
 }

@@ -33,7 +33,7 @@ class Category extends Controller {
         $url = $this->getUrlParam();
         $id = $url[2];
         $cat->remove($id);
-        $this->redirect("category", "display");
+        $this->redirect("category", "");
     }
 
     public function addCategory() {

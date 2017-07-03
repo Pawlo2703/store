@@ -68,10 +68,12 @@ class Controller {
         require_once '../app/Views/' . $view . '.php';
     }
 
-    public function redirect($action) {
-
-        $location = '../' . $action;
-
+    public function redirect($action, $params) {
+        if ($params == NULL) {
+            $location = '../' . $action;
+        } else {
+            $location = '../' . $action . '/' . $params;
+        }
         header("Location: " . $location);
         exit;
     }
