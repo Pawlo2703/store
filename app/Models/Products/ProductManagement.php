@@ -155,8 +155,6 @@ class ProductManagement {
         return;
     }
 
-    
-    
     public function isAvailable($id) {
         $result = $this->database->getRow('is_available', 'products', "WHERE id = ?", [$id]);
         if (($result['is_available']) == "turned off") {

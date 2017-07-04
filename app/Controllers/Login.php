@@ -29,9 +29,9 @@ class Login extends Controller {
             $userPw = $user->checkPassword($userId);
             $pw = $params['password'];
             if (password_verify($pw, $userPw)) {
-                $user->load($userId); // dorobic w modelu wczytywanie danych
+                $user->load($userId);
                 $this->session->set('admin', $user->getAdmin());
-                $this->session->set('zmienna2', $user->getId());
+                $this->session->set('user_id', $user->getId());
             } else {
                 $this->view('home/login/error/password');
                 exit;
@@ -49,7 +49,7 @@ class Login extends Controller {
         }
 
 
-        $this->redirect("home");
+        $this->redirect('home', '');
     }
 
 }

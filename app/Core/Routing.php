@@ -12,7 +12,7 @@ class Routing {
             "login/submit", "logout/submit", "admin_addnew/displayCategory", "admin_category_category/addCategory",
             "admin_category_category/display", "admin_product_productlist/display", "admin_addnew/displayProduct", "admin_product_productlist/addProduct",
             "admin_product_productlist/remove", "admin_category_category/remove", "admin_product_productview/display", "admin_product_productupdate/update", "admin_product_productlist/isavailable");
-
+var_dump($_SESSION);
         if (isset($_GET['url'])) {
             if (strpos($_GET['url'], '/') !== false) {
                 $url = $this->parseUrl();

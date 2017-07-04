@@ -42,7 +42,7 @@ class Category extends Controller {
         $new = new CategoryManagement;
         $new->setCategory($params['category']);
         if ($new->addCat() !== NULL) {
-            $this->redirect("category", "display");
+            $this->redirect("category", "");
             exit;
         } else {
             $this->view('home/admin/category/error/category_exists');

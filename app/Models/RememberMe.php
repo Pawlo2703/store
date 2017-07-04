@@ -50,7 +50,7 @@ class RememberMe {
         $result = $this->database->getRow('id', 'remember', "WHERE bigKey = ?", [$this->bigKey]);
         if (!empty($result)) {
             $this->id = $result['id'];
-            $this->session->set('zmienna2', $this->id);
+            $this->session->set('user_id', $this->id);
         }
     }
 

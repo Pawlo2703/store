@@ -18,7 +18,7 @@ class ProductView extends Controller {
         $this->session->set('product_id', $url[2]);
 
         $catList = $cat->loadCat();
-        $prodList = $this->session->get('zmienna3');
+        $prodList = $this->session->get('category_id');
         $jUrl = "<a href=' http://" . ($_SERVER['HTTP_HOST']) . "/" . 'category' . "'>Category</a>-><a href=' http://" . ($_SERVER['HTTP_HOST']) . "/" . 'product/' . $prodList . "'>Product</a>";
         $product = $pro->loadProductView($pro_id);
 

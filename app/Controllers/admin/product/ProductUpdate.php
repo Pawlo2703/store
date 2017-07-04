@@ -26,7 +26,7 @@ class ProductUpdate extends Controller {
         $pro->setCategory($category_id[0]['id']);
         $pro->updateProduct();
 
-        $this->redirect("category");
+        $this->redirect("category", '');
     }
 
 }

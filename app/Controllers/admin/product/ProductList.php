@@ -15,7 +15,7 @@ class ProductList extends Controller {
 
         
         $url = $this->getUrlParam();
-        $this->session->set('zmienna3', $url[2]);
+        $this->session->set('category_id', $url[2]);
    
         $name = $pro->loadProduct($url[2]);
         $availability = '';
@@ -33,7 +33,7 @@ class ProductList extends Controller {
     public function addProduct() {
         $this->checkIfAdmin();
         $params = $this->getParameters();
-        $category = $this->session->get('zmienna3');
+        $category = $this->session->get('category_id');
         
         $pro = new ProductManagement;
         $cat = new CategoryManagement;
@@ -69,7 +69,7 @@ class ProductList extends Controller {
         $url = $this->getUrlParam();
         $pro->isAvailable($url[2]);
         
-        $id = $this->session->get('zmienna3');
+        $id = $this->session->get('category_id');
         $this->redirect("product", "$id");
     }
 

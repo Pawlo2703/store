@@ -14,6 +14,6 @@ class Logout extends Controller {
             setcookie('email', '', time());
         }
         $session->destroy();
-        $this->redirect('home');
+        $this->redirect('home', '');
     }
 }

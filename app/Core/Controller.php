@@ -44,7 +44,7 @@ class Controller {
                 $this->redirect('home');
             }
         } else {
-            $this->redirect('home');
+            $this->redirect('home', '');
         }
     }
 
@@ -52,12 +52,12 @@ class Controller {
         if (($this->session->get('admin')) == !NULL) {
             
         } else {
-            $this->redirect('home');
+            $this->redirect('home', '');
         }
     }
 
     public function header() {
-        if (($this->session->get('zmienna2')) != null) {
+        if (($this->session->get('user_id')) != null) {
             $this->view('home/header_footer/header_logged');
         } else {
             $this->view('home/header_footer/header');
