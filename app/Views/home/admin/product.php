@@ -14,7 +14,7 @@ include __DIR__ . '/../header_footer/admin_header.php'
                         <tr><?php echo $data['jUrl']; ?>
                             <th>Category | 
                                 <?php
-                                echo "<a href=' http://" . ($_SERVER['HTTP_HOST']) . "/" . 'dodaj_pro' ."'>add new</a>";
+                                echo "<a href=' http://" . ($_SERVER['HTTP_HOST']) . "/" . 'dodaj_pro' . "'>add new</a>";
                                 ?>
                             </th>
                         </tr>
@@ -22,13 +22,13 @@ include __DIR__ . '/../header_footer/admin_header.php'
                     <tbody>
                         <?php
                         $name = ($data['name']);
-                                               for ($i = 0; $i < sizeof($name); $i++) {
+                        for ($i = 0; $i < sizeof($name); $i++) {
                             $name1 = $name[$i]['name'];
                             $availability = $name[$i]['is_available'];
                             $id1 = $name[$i]['id'];
-                        
+
                             echo '<tr>';
-                            
+
                             echo "<td><a href=' http://" . ($_SERVER['HTTP_HOST']) . "/widok_produktu/$id1'>$name1</a><p align='right'><a href=' http://" . $_SERVER['HTTP_HOST'] . "/dostepnosc_produktu" . "/$id1'>$availability</a></p><p align='right'><a href=' http://" . $_SERVER['HTTP_HOST'] . "/usun_produkt" . "/$id1'>remove</a></p></td>";
                             echo '</tr>';
                         }

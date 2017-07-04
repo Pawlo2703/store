@@ -22,12 +22,13 @@ include __DIR__ . '/../header_footer/admin_header.php'
                     <tbody>
                         <?php
                         $name = ($data['name']);
-
                         for ($i = 0; $i < sizeof($name); $i++) {
                             $name1 = $name[$i]['name'];
+                            $availability = $name[$i]['is_available'];
                             $id1 = $name[$i]['id'];
+
                             echo '<tr>';
-                            echo "<td><a href='" . "product" . "/$id1'>$name1</a><p align='right'><a href=' http://" . $_SERVER['HTTP_HOST'] . "/usun_kategorie" . "/$id1'>remove</a></p></td>";
+                            echo "<td><a href='" . "product" . "/$id1'>$name1</a><p align='right'><a href=' http://" . $_SERVER['HTTP_HOST'] . "/zmiana_nazwy_kategorii" . "/$id1'>zmień nazwę</a></p><p align='right'><a href=' http://" . $_SERVER['HTTP_HOST'] . "/dostepnosc_kategorii" . "/$id1'>$availability</a></p><p align='right'><a href=' http://" . $_SERVER['HTTP_HOST'] . "/usun_kategorie" . "/$id1'>remove</a></p></td>";
                             echo '</tr>';
                         }
                         ?>

@@ -13,12 +13,12 @@ include __DIR__ . '/../../header_footer/admin_header.php'
                         <div class="row">
                             <div class="col-xs-6 col-sm-6 col-md-6">
                                 <div class="form-group">
-                                    <input type="text" name="product" class="form-control input-sm" placeholder="nazwa">
-                                    <input type="text" name="type" class="form-control input-sm" placeholder="typ">
-                                    <input type="text" name="color" class="form-control input-sm" placeholder="kolor">
-                                    <input type="text" name="country" class="form-control input-sm" placeholder="kraj pochodzenia">
-                                    <input type="text" name="quantity" class="form-control input-sm" placeholder="ilość">
-                                    <input type="text" name="price" class="form-control input-sm" placeholder="cena">
+                                    <input required type="text" name="product" class="form-control input-sm" placeholder="nazwa">
+                                    <input required type="text" name="type" class="form-control input-sm" placeholder="typ">
+                                    <input required type="text" name="color" class="form-control input-sm" placeholder="kolor">
+                                    <input required type="text" name="country" class="form-control input-sm" placeholder="kraj pochodzenia">
+                                    <input required type="text" name="quantity" class="form-control input-sm" placeholder="ilość">
+                                    <input required type="text" name="price" class="form-control input-sm" placeholder="cena">
                                                             </br>
                                 </div>
                             </div>

@@ -102,10 +102,16 @@ class ProductManagement {
 
     public function addPro() {
         $result = $this->database->getRow('*', 'products', "WHERE name = ?", [$this->name]);
+        $result2 = $this->database->getRow('amount', 'category', "WHERE id = ?", [$this->category]);
         if ((!$result)) {
+            $id = $this->category;
+            $amount = $result2['amount'] + 1;
+            $this->database->updateRow('category', "amount= '$amount'"
+                    . "WHERE id= $id");
             $result = $this->database->insertRow('products', "(`name`,`category_id`,`type`,`color`,`country`,`quantity`,`price`) VALUES(?,?,?,?,?,?,?)", [$this->name, $this->category, $this->type, $this->color, $this->country, $this->quantity, $this->price]);
             return $result;
         }
+
 
         return;
     }
@@ -141,7 +147,7 @@ class ProductManagement {
     }
 
     public function loadProduct($id) {
-        $result = $this->database->getRows('name, id, is_available', 'products', "WHERE category_id = ?", [$id]);
+        $result = $this->database->getRows('name, id, is_available, price', 'products', "WHERE category_id = ?", [$id]);
         return $result;
     }
 
@@ -150,8 +156,12 @@ class ProductManagement {
         return $result;
     }
 
-    public function remove($id) {
+    public function remove($id, $categoryId) {
         $this->database->deleteRow('products', "WHERE id = ?", [$id]);
+        $result = $this->database->getRow('amount', 'category', "WHERE id = ?", [$categoryId]);
+        $amount = $result['amount'] - 1;
+        $this->database->updateRow('category', "amount= '$amount'"
+                . "WHERE id= $categoryId");
         return;
     }
 
@@ -165,6 +175,11 @@ class ProductManagement {
                     . "WHERE id= $id");
             return;
         }
+    }
+
+    public function loadAllProducts() {
+        $result = $this->database->getRows('name, id, is_available, price, category_id', 'products');
+        return $result;
     }
 
 }

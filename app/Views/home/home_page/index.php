@@ -48,9 +48,15 @@
                         <a href="#" class="list-group-item disabled">
                             Owoce:
                         </a>
-                        <a href="#" class="list-group-item">Jabłka<span class="badge">14</span></a>
-                        <a href="#" class="list-group-item">Gruszki<span class="badge">14</span></a>
-
+                        <?php
+                        $categoryList = $data['categoryList'];
+                        for ($i = 0; $i < sizeof($categoryList); $i++) {
+                            $categoryId = $categoryList[$i]['id'];
+                             $categoryAmount = $categoryList[$i]['amount'];
+                            $categoryName = $categoryList[$i]['name'];
+                            echo "<a href='http://" . ($_SERVER['HTTP_HOST']) . "/" . 'kategoria' . "/$categoryId' class='list-group-item'>$categoryName<span class='badge'>$categoryAmount</span></a>";
+                        }
+                        ?>
                     </div>
                 </ul>
             </div>
@@ -114,7 +120,7 @@
 
         </div>  
     </div>
-    
+
     <?php
-include __DIR__ . '/../header_footer/footer.php'
-?>
+    include __DIR__ . '/../header_footer/footer.php'
+    ?>

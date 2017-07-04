@@ -10,6 +10,15 @@ class CategoryManagement {
     private $id;
     private $category;
     private $uri;
+    private $name;
+
+    public function getName() {
+        return $this->name;
+    }
+
+    public function setName($name) {
+        $this->name = $name;
+    }
 
     public function getUri() {
         return $this->uri;
@@ -76,6 +85,24 @@ class CategoryManagement {
     public function remove($id) {
         $this->database->deleteRow('category', "WHERE id = ?", [$id]);
         return;
+    }
+
+    public function isAvailable($id) {
+        $result = $this->database->getRow('is_available', 'category', "WHERE id = ?", [$id]);
+        if (($result['is_available']) == "turned off") {
+            $this->database->updateRow('category', "is_available= 'turned on'"
+                    . "WHERE id= $id");
+        } else {
+            $this->database->updateRow('category', "is_available= 'turned off'"
+                    . "WHERE id= $id");
+            return;
+        }
+    }
+
+    public function nameChange($id) {
+        $name = $this->name;
+        $this->database->updateRow('category', "name= '$name'"
+                . "WHERE id= $id");
     }
 
 }
