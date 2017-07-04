@@ -24,7 +24,6 @@ class ProductView extends Controller {
 
         $category = $cat->getCategoryById($product[0]['category_id']);
 
-
         $data = [
             'pro' => $pro,
             'product' => $product,

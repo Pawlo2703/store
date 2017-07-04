@@ -54,7 +54,7 @@ class RememberMe {
         }
     }
 
-    function generateRandomString() {
+    public function generateRandomString() {
         $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
         $charactersLength = strlen($characters);
         $string = '';

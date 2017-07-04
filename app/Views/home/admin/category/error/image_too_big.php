@@ -6,7 +6,7 @@ include __DIR__ . '/../../header_footer/admin_header.php'
         <div class="col-xs-12 col-sm-8 col-md-4 col-sm-offset-2 col-md-offset-4">
             <div class="panel panel-default">
                 <div class="panel-heading">
-                    <center>  <h3 class="panel-title">Dodaj nowy produkt</h3> </center>
+                    <center>  <h3 class="panel-title">Plik graficzny jest zbyt duży, spróbuj ponownie.</h3> </center>
                 </div>
                 <div class="panel-body">
                     <form method="post" action="http://sup.dev/zatwierdz_pro" enctype="multipart/form-data" role="form">

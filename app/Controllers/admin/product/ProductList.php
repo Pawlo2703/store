@@ -6,6 +6,7 @@ use Shop\Core\Controller;
 use Shop\Models\Products\CategoryManagement;
 use Shop\Models\Products\ProductManagement;
 use Shop\libs\Session;
+use Shop\Models\RememberMe;
 
 class ProductList extends Controller {
 
@@ -37,7 +38,7 @@ class ProductList extends Controller {
 
         $pro = new ProductManagement;
         $cat = new CategoryManagement;
-
+        $rem = new RememberMe;
         $pro->setName($params['product']);
         $pro->setType($params['type']);
         $pro->setColor($params['color']);
@@ -45,14 +46,20 @@ class ProductList extends Controller {
         $pro->setQuantity($params['quantity']);
         $pro->setPrice($params['price']);
 
-        $pro->setCategory($category);
+        $name = $rem->generateRandomString();
+        if ($pro->uploadImage($name) == true) {
+            $pro->setCategory($category);
 
-        if ($pro->addPro() !== NULL) {
-            $this->redirect("product", "$category");
-            exit;
+            if ($pro->addPro() !== NULL) {
+
+                $this->redirect("product", "$category");
+                exit;
+            } else {
+                $this->view('home/admin/category/error/product_exists');
+                exit;
+            }
         } else {
-            $this->view('home/admin/category/error/product_exists');
-            exit;
+            $this->view('home/admin/category/error/image_too_big');
         }
     }
 

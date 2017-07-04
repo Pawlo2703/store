@@ -35,21 +35,11 @@
                 <a href="#" class="btn btn-success">Koszyk</a>
             </form>
             <ul class="nav navbar-nav navbar-right">
-                <li class="active"><a href="home">Strona główna <span class="sr-only">(current)</span></a></li>
-                <li class="dropdown">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Produkty <span class="caret"></span></a>
-                    <ul class="dropdown-menu">
-                        <li><a href="#">Jabłko <span class="badge">14</span></a></li>
-                        <li><a href="#">Gruszka <span class="badge">14</span></a></li>
-                        <li role="separator" class="divider"></li>
-                        <li><a href="#">Separated link</a></li>
-                        <li role="separator" class="divider"></li>
-                        <li><a href="#">One more separated link</a></li>
-                    </ul>
-                </li>
+                <li class="active"><a href="http://sup.dev/home">Strona główna <span class="sr-only">(current)</span></a></li>
+              
                 <li><a href="#">Kontakt</a></li>
-                <li><a href="rejestracja">Rejestracja</a>
-                <li><a href="login">Zaloguj</a></li></li>
+                <li><a href="http://sup.dev/rejestracja">Rejestracja</a>
+                <li><a href="http://sup.dev/login">Zaloguj</a></li></li>
             </ul>
         </div>
     </div>

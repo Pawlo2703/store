@@ -54,8 +54,7 @@ class App {
         }
     }
 
-    public
-            function parseNamespace($url) {
+    public function parseNamespace($url) {
         if (isset($url[0])) {
             return $nameClass = explode('_', filter_var(rtrim($url[0], '_'), FILTER_SANITIZE_URL));
         }

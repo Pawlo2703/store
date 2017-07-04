@@ -15,6 +15,15 @@ class ProductManagement {
     private $quantity;
     private $price;
     private $category;
+    private $image;
+
+    public function getImage() {
+        return $this->image;
+    }
+
+    public function setImage($image) {
+        $this->image = $image;
+    }
 
     public function getId() {
         return $this->id;
@@ -108,11 +117,9 @@ class ProductManagement {
             $amount = $result2['amount'] + 1;
             $this->database->updateRow('category', "amount= '$amount'"
                     . "WHERE id= $id");
-            $result = $this->database->insertRow('products', "(`name`,`category_id`,`type`,`color`,`country`,`quantity`,`price`) VALUES(?,?,?,?,?,?,?)", [$this->name, $this->category, $this->type, $this->color, $this->country, $this->quantity, $this->price]);
+            $result = $this->database->insertRow('products', "(`name`,`category_id`,`type`,`color`,`country`,`quantity`,`price`, `image`) VALUES(?,?,?,?,?,?,?,?)", [$this->name, $this->category, $this->type, $this->color, $this->country, $this->quantity, $this->price, $this->image]);
             return $result;
         }
-
-
         return;
     }
 
@@ -147,7 +154,7 @@ class ProductManagement {
     }
 
     public function loadProduct($id) {
-        $result = $this->database->getRows('name, id, is_available, price', 'products', "WHERE category_id = ?", [$id]);
+        $result = $this->database->getRows('name, id, is_available, price, image', 'products', "WHERE category_id = ?", [$id]);
         return $result;
     }
 
@@ -180,6 +187,26 @@ class ProductManagement {
     public function loadAllProducts() {
         $result = $this->database->getRows('name, id, is_available, price, category_id', 'products');
         return $result;
+    }
+
+    public function uploadImage($names) {
+        if ($_FILES['image']['name']) {
+            if (!($_FILES['image']['error'])) {
+                $newFileName = strtolower($_FILES['image']['name']);
+                $cut = explode('.', filter_var(rtrim($_FILES['image']['name'], '.'), FILTER_SANITIZE_URL));
+                $i = sizeof($cut) - 1;
+                $type = $cut[$i];
+                if ($_FILES['image']['size'] > (1024000)) {
+                    return 0;
+                } else {
+                    $this->setImage($names . "." . $type);
+                    move_uploaded_file($_FILES['image']['tmp_name'], __DIR__ . '/../../../public/images/' . $names . "." . $type);
+                    return true;
+                }
+            } else {
+                return 0;
+            }
+        }
     }
 
 }

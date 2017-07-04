@@ -32,9 +32,10 @@
                     $productName = $productsList[$i]['name'];
                     $productPrice = $productsList[$i]['price'];
                     $productId = $productsList[$i]['id'];
+                    $productImage = $productsList[$i]['image'];
 
                     echo "<div class='col-md-4'>";
-                    echo "<img src='https://upload.wikimedia.org/wikipedia/commons/d/dd/Jab%C5%82ko_-_owoc.JPG' class='sc-item-img img-responsive' />";
+                    echo "<img src='https://sup.dev/Shop/public/images/$productImage' class='sc-item-img img-responsive' />";
                     echo "<div class='text-center'><a href=''>$productName</a>";
                     echo "<p class='text-center'>$productPrice zł</p>";
                     echo "</div>";
