@@ -100,7 +100,7 @@ class Controller {
             } else {
                 $location = '../../../' . $action . '/' . $params;
             }
-        }
+        } 
         header("Location: " . $location);
         exit;
     }
