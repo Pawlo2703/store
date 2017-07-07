@@ -36,7 +36,7 @@
 
                     echo "<div class='col-md-4'>";
                     echo "<img src='https://sup.dev/Shop/public/images/$productImage' class='sc-item-img img-responsive' />";
-                    echo "<div class='text-center'><a href=''>$productName</a>";
+                    echo "<div class='text-center'><a href='http://" . ($_SERVER['HTTP_HOST']) . "/" . 'produkt' . "/$productId'>$productName</a>";
                     echo "<p class='text-center'>$productPrice zł</p>";
                     echo "</div>";
                     echo "</div>";

@@ -2,6 +2,8 @@
 
 namespace Shop\Core;
 
+use Shop\libs\Session;
+
 class Controller {
 
     /**
@@ -68,14 +70,52 @@ class Controller {
         require_once '../app/Views/' . $view . '.php';
     }
 
+//    public function redirect($action, $params) {
+//        if ($params == NULL) {
+//            $location = $_SERVER['HTTP_HOST'] . '/' . $action;
+//        } else {
+//            $location = $_SERVER['HTTP_HOST'] . '/' . $action . '/' . $params;
+//        }
+//        header("Location: " . $location);
+//        exit;
+//    }
+
     public function redirect($action, $params) {
+        $url = $this->getUrlParam();
+        $count = count($url);
+
         if ($params == NULL) {
-            $location = '../' . $action;
+            if ($count === 1) {
+                $location = '../' . $action;
+            } else if ($count === 2) {
+                $location = '../../' . $action;
+            } else {
+                $location = '../../../' . $action;
+            }
         } else {
-            $location = '../' . $action . '/' . $params;
+            if ($count === 1) {
+                $location = '../' . $action . '/' . $params;
+            } else if ($count === 2) {
+                $location = '../../' . $action . '/' . $params;
+            } else {
+                $location = '../../../' . $action . '/' . $params;
+            }
         }
         header("Location: " . $location);
         exit;
+    }
+
+    public function shoppingCart() {
+        if (($this->session->get('category_id')) !== null) {
+            $cart = $this->session->get('cart');
+            $productId = $this->session->get('product_id');
+            array_push($cart, $productId);
+            $this->session->set('cart', $cart);
+        } else {
+            $cart = array($productId);
+            $productId = $this->session->get('product_id');
+            $this->session->set('cart', $cart);
+        }
     }
 
 }
