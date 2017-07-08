@@ -70,16 +70,6 @@ class Controller {
         require_once '../app/Views/' . $view . '.php';
     }
 
-//    public function redirect($action, $params) {
-//        if ($params == NULL) {
-//            $location = $_SERVER['HTTP_HOST'] . '/' . $action;
-//        } else {
-//            $location = $_SERVER['HTTP_HOST'] . '/' . $action . '/' . $params;
-//        }
-//        header("Location: " . $location);
-//        exit;
-//    }
-
     public function redirect($action, $params) {
         $url = $this->getUrlParam();
         $count = count($url);
@@ -100,20 +90,22 @@ class Controller {
             } else {
                 $location = '../../../' . $action . '/' . $params;
             }
-        } 
+        }
         header("Location: " . $location);
         exit;
     }
 
     public function shoppingCart() {
-        if (($this->session->get('category_id')) !== null) {
+//       $this->session->pull('cart');
+//        exit;
+        if (($this->session->get('cart')) !== null) {
             $cart = $this->session->get('cart');
             $productId = $this->session->get('product_id');
             array_push($cart, $productId);
             $this->session->set('cart', $cart);
         } else {
-            $cart = array($productId);
             $productId = $this->session->get('product_id');
+            $cart = array($productId);
             $this->session->set('cart', $cart);
         }
     }

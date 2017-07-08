@@ -6,6 +6,7 @@ use Shop\Core\Controller;
 use Shop\Models\Products\CategoryManagement;
 use Shop\Models\Products\ProductManagement;
 use Shop\libs\Session;
+use Shop\Models\Cart;
 
 class ViewProduct extends Controller {
 
@@ -36,13 +37,34 @@ class ViewProduct extends Controller {
     }
 
     public function cart() {
-        $this->shoppingCart();
-        
+        $pro = new ProductManagement;
+        $cart = new Cart;
+
         $id = $this->session->get('product_id');
-        
+
+        $params = $this->getParameters();
+        $product = $pro->loadProductView($id);
+        $quantity = $product[0]['quantity'];
+        $amount = $params['amount'];
+
+        if ($amount > $quantity) {
+            $amount = $quantity; 
+        }
+        $cart->setProductId($product[0]['id']);
+        $cart->setProductPrice($product[0]['price']);
+        $cart->setProductQuantity($amount);
+
+        if ($this->session->get('table_id') !== NULL) {
+            $tableIdd = $this->session->get('table_id');
+            $cart->setTableId($tableIdd);
+        }
+
+        $tableId = $cart->addQuote();
+        $this->session->set('table_id', $tableId);
+        $cart->calculateQuantityAndPrice();
+
+
         $this->redirect("produkt", "$id");
-        
-        
     }
 
 }

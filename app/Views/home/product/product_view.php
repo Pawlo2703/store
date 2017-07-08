@@ -47,9 +47,17 @@
                         <td><?php echo $data['product'][0]['country']; ?></td>
                         <td><?php echo $data['product'][0]['quantity']; ?></td>
                         <td><?php echo $data['product'][0]['price']; ?></td>
-                        <td><?php $productId = $data['product'][0]['id'];
-                        echo "<a href='http://" . ($_SERVER['HTTP_HOST']) . "/" . 'koszyk' . "/$productId/' class='btn btn-success'>Dodaj do koszyka</a></td>";
-                 ?>   </tr>
+                        <td><?php $productId = $data['product'][0]['id'];?>
+                       <form method="post" action="http://sup.dev/koszyk" role="form">
+                        
+                                <div class="form-group">
+                                    <input required type="text" name="amount" value="1" class="form-control input-sm" placeholder="ilość">
+                                </div>
+                          
+                             <input type="submit" class="btn btn-info btn-block" value="Dodaj produkt(y)">
+
+                    </form>
+                    </tr>
                 </tbody>
             </table>
 
