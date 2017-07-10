@@ -6,10 +6,21 @@ namespace Shop\Core;
  * Class App
  */
 
-class App {
+class App extends Controller {
 
+    /**
+     * @var controller 
+     */
     protected $controller = 'home';
+
+    /**
+     * @var method
+     */
     protected $method = 'display';
+
+    /**
+     * @var params
+     */
     protected $params = [];
 
     /**
@@ -18,14 +29,16 @@ class App {
      */
     private $namespace = "\\Shop\\Controllers\\";
 
-    /*
+    /**
      * Constructor
      */
-
     public function __construct() {
-        $url = $this->parseUrl();
-        $nameClass = $this->parseNamespace($url);
+        if (!isset($_GET['url'])) {
+            $_GET['url'] = 'home/display';
+        }
 
+        $url = $this->parseUrl($_GET['url']);
+        $nameClass = $this->parseNamespace($url);
         $size = sizeof($nameClass);
 
 
@@ -48,12 +61,11 @@ class App {
         }
     }
 
-    public function parseUrl() {
-        if (isset($_GET['url'])) {
-            return $url = explode('/', filter_var(rtrim($_GET['url'], '/'), FILTER_SANITIZE_URL));
-        }
-    }
-
+    /**
+     * Parse subfolder and controller name
+     * @param array $url
+     * @return array
+     */
     public function parseNamespace($url) {
         if (isset($url[0])) {
             return $nameClass = explode('_', filter_var(rtrim($url[0], '_'), FILTER_SANITIZE_URL));

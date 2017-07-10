@@ -10,16 +10,16 @@ include __DIR__ . '/../header_footer/admin_header.php'
         <div class="col-xs-12">
             <div class="table-responsive">
                 <table class="table table-striped">
-                    <thead>
-                        <tr><?php echo $data['jUrl']; ?>
-                            <th>nazwa</th>
-                            <th>typ</th>
-                            <th>kategoria</th>
-                            <th>kolor</th>
-                            <th>kraj pochodzenia</th>
-                            <th>ilość</th>
-                            <th>cena</th>
-                        </tr>
+                    <thead>                      
+                        <tr><a href= <?php echo $data['categoryNavigation'] ?> >Category</a>-><a href= <?php echo $data['productNavigation'] ?> >Product</a>
+                    <th>nazwa</th>
+                    <th>typ</th>
+                    <th>kategoria</th>
+                    <th>kolor</th>
+                    <th>kraj pochodzenia</th>
+                    <th>ilość</th>
+                    <th>cena</th>
+                    </tr>
                     </thead>
                     <tbody>
                         <tr>
@@ -37,10 +37,10 @@ include __DIR__ . '/../header_footer/admin_header.php'
                         <td><select name="category">
                                 <option required style="display:none">Wybierz kategorię</option>
                                 <?php
-                                $cat = $data['catList'];
-                                for ($i = 0; $i < sizeof($cat); $i++) {
-                                    $catName = $cat[$i]['name'];
-                                    echo "<option>$catName</option>";
+                                $categoryList = $data['categoryList'];
+                                for ($i = 0; $i < sizeof($categoryList); $i++) {
+                                    $categoryName = $categoryList[$i]['name'];
+                                    echo "<option>$categoryName</option>";
                                 }
                                 ?>
 

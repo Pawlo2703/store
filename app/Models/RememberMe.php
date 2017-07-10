@@ -2,37 +2,56 @@
 
 namespace Shop\Models;
 
-use Shop\libs\Session;
+use Shop\Core\Model;
 
 /**
- * Class User
+ * Class RememberMe
  */
-class RememberMe {
+class RememberMe extends Model {
 
+    /**
+     * @var bigKey
+     */
     private $bigKey;
+    
+    /**
+     * @var bigUserID
+     */
     private $bigUserID;
 
+    /**
+     * @return string
+     */
     public function getBigKey() {
         return $this->bigKey;
     }
 
+    /**
+     * @return string
+     */
     public function getBigUserID() {
         return $this->bigUserID;
     }
 
+    /**
+     * @param string $bigKey
+     */
     public function setBigKey($bigKey) {
         $this->bigKey = $bigKey;
     }
 
+    /**
+     * @param string $bigUserID
+     */
     public function setBigUserID($bigUserID) {
         $this->bigUserID = $bigUserID;
     }
 
-    public function __construct() {
-        $this->database = \Shop\Core\Database::getInstance();
-        $this->session = new Session;
-    }
-
+    /**
+     * Create cookie
+     * @param string $id
+     * @return array
+     */
     public function addCookie($id) {
         $result = $this->database->getRow('*', 'remember', "WHERE id = ?", [$id]);
         if ((!$result) && (isset($this->bigKey))) {
@@ -46,6 +65,9 @@ class RememberMe {
         }
     }
 
+    /**
+     * Search for cookie
+     */
     public function checkCookie() {
         $result = $this->database->getRow('id', 'remember', "WHERE bigKey = ?", [$this->bigKey]);
         if (!empty($result)) {
@@ -54,6 +76,10 @@ class RememberMe {
         }
     }
 
+    /**
+     * Generates 20 characters long string
+     * @return string
+     */
     public function generateRandomString() {
         $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
         $charactersLength = strlen($characters);

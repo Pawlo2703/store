@@ -15,9 +15,9 @@
                         for ($i = 0; $i < sizeof($categoryList); $i++) {
                             $categoryId = $categoryList[$i]['id'];
                             $categoryAmount = $categoryList[$i]['amount'];
-                            $availability = $categoryList[$i]['is_available'];
+                            $productAvailability = $categoryList[$i]['is_available'];
                             $categoryName = $categoryList[$i]['name'];
-                            if ($availability == 'turned on') {
+                            if ($productAvailability == 'turned on') {
                                 echo "<a href='http://" . ($_SERVER['HTTP_HOST']) . "/" . 'kategoria' . "/$categoryId' class='list-group-item'>$categoryName<span class='badge'>$categoryAmount</span></a>";
                             }
                         }

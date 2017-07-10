@@ -2,106 +2,144 @@
 
 namespace Shop\Models;
 
+use Shop\Core\Model;
+
 /**
  * Class User
  */
-class User {
+class User extends Model {
 
     /**
-     *
      * @var id 
      */
     private $id;
 
     /**
-     *
      * @var name 
      */
     private $name;
 
     /**
-     *
      * @var surname 
      */
     private $surname;
 
     /**
-     *
      * @var email 
      */
     private $email;
 
     /**
-     *
      * @var password
      */
     private $password;
 
     /**
-     *
      * @var newsletter
      */
     private $newsletter;
+
+    /**
+     * @var admin 
+     */
     private $admin;
 
+    /**
+     * @return string
+     */
     public function getAdmin() {
         return $this->admin;
     }
 
+    /**
+     * @param string $admin
+     */
     public function setAdmin($admin) {
         $this->admin = $admin;
     }
 
+    /**
+     * @return string
+     */
     public function getNewsletter() {
         return $this->newsletter;
     }
 
+    /**
+     * @param string$newsletter
+     */
     public function setNewsletter($newsletter) {
         $this->newsletter = $newsletter;
     }
 
+    /**
+     * @return string
+     */
     public function getId() {
         return $this->id;
     }
 
+    /**
+     * @return string
+     */
     public function getName() {
         return $this->name;
     }
 
+    /**
+     * @return string
+     */
     public function getSurname() {
         return $this->surname;
     }
 
+    /**
+     * @return string
+     */
     public function getEmail() {
         return $this->email;
     }
 
+    /**
+     * @return string
+     */
     public function getPassword() {
         return $this->password;
     }
 
+    /**
+     * @param string $id
+     */
     public function setId($id) {
         $this->id = $id;
     }
 
+    /**
+     * @param string $name
+     */
     public function setName($name) {
         $this->name = $name;
     }
 
+    /**
+     * @param string $surname
+     */
     public function setSurname($surname) {
         $this->surname = $surname;
     }
 
+    /**
+     * @param string $email
+     */
     public function setEmail($email) {
         $this->email = $email;
     }
 
+    /**
+     * @param string $password
+     */
     public function setPassword($password) {
         $this->password = $password;
-    }
-
-    public function __construct() {
-        $this->database = \Shop\Core\Database::getInstance();
     }
 
     /**
@@ -140,6 +178,9 @@ class User {
         return isset($result['password']) ? $result['password'] : 0;
     }
 
+    /**
+     * @param string $id
+     */
     public function load($id) {
         $result = $this->database->getRow('*', 'user', "WHERE id = ?", [$id]);
 

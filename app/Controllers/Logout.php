@@ -3,17 +3,21 @@
 namespace Shop\Controllers;
 
 use Shop\Core\Controller;
-use Shop\libs\Session;
 
+/**
+ * Class Logout
+ */
 class Logout extends Controller {
 
-    public function submit() {
-
-        $session = new Session;
+    /**
+     * Logout from account
+     */
+    public function logout() {
         if (isset($_COOKIE['email'])) {
             setcookie('email', '', time());
         }
-        $session->destroy();
+        $this->session->destroy();
         $this->redirect('home', '');
     }
+
 }

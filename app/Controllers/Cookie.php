@@ -5,13 +5,19 @@ namespace Shop\Controllers;
 use Shop\Core\Controller;
 use Shop\Models\RememberMe;
 
+/**
+ * Class Cookie
+ */
 class Cookie extends Controller {
 
+    /**
+     * Check if cookie exists
+     */
     public function checkCookie() {
-        $remember = new RememberMe;
+        $rememberMe = new RememberMe;
         if (isset($_COOKIE['email'])) {
-            $remember->setBigKey($_COOKIE['email']);
-            $remember->checkCookie();
+            $rememberMe->setBigKey($_COOKIE['email']);
+            $rememberMe->checkCookie();
         }
     }
 

@@ -6,29 +6,36 @@ use Shop\Core\Controller;
 use Shop\Models\User;
 use Shop\Models\RememberMe;
 
+/**
+ * Class Login
+ */
 class Login extends Controller {
 
+    /**
+     * Display login form
+     */
     public function display() {
         $this->header();
         $this->view('home/login/login');
     }
 
+    /**
+     * Submit login form
+     */
     public function submit() {
         $this->header();
         $params = $this->getParameters();
         $user = new User;
-        $remember = new RememberMe;
+        $rememberMe = new RememberMe;
 
         if ($userId = $user->findByEmail($params['email'])) {
-
             if (!$userId) {
                 $this->view('home/login/error/email');
                 return;
             }
-
-            $userPw = $user->checkPassword($userId);
-            $pw = $params['password'];
-            if (password_verify($pw, $userPw)) {
+            $databasePassword = $user->checkPassword($userId);
+            $formPassword = $params['password'];
+            if (password_verify($formPassword, $databasePassword)) {
                 $user->load($userId);
                 $this->session->set('admin', $user->getAdmin());
                 $this->session->set('user_id', $user->getId());
@@ -42,13 +49,11 @@ class Login extends Controller {
         }
 
         if (isset($params['remember'])) {
-            $bigKey = $remember->generateRandomString();
-            $remember->setBigKey($bigKey);
-            $remember->addCookie($userId);
+            $bigKey = $rememberMe->generateRandomString();
+            $rememberMe->setBigKey($bigKey);
+            $rememberMe->addCookie($userId);
             setcookie('email', $bigKey, time() + 60 * 60 * 7);
         }
-
-
         $this->redirect('home', '');
     }
 

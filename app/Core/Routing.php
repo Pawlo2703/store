@@ -2,23 +2,29 @@
 
 namespace Shop\Core;
 
-class Routing {
+/**
+ * Class Routing
+ */
+class Routing extends Controller {
 
+    /**
+     * Constructor
+     */
     public function __construct() {
         $action = array("home", "rejestracja", "submit", "login", "zalogowano", "logout", "dodaj_kat",
             "zatwierdz_kat", "category", "product", "dodaj_pro", "zatwierdz_pro", "usun_produkt", "usun_kategorie", "widok_produktu", "zmiana_produktu",
             "dostepnosc_produktu", "kategoria", "dostepnosc_kategorii", "zatwierdz_zmiane", "zmiana_nazwy_kategorii", "produkt", "koszyk");
 
         $controller = array("home/display", "register/display", "register/submit", "login/display",
-            "login/submit", "logout/submit", "admin_addnew/displayCategory", "admin_category_category/addCategory",
-            "admin_category_category/display", "admin_product_productlist/display", "admin_addnew/displayProduct", "admin_product_productlist/addProduct",
-            "admin_product_productlist/remove", "admin_category_category/remove", "admin_product_productview/display", "admin_product_productupdate/update",
-            "admin_product_productlist/isavailable", "category_viewcategory/display", "admin_category_category/isavailable", "admin_category_category/nameChange",
-            "admin_category_category/nameChangeForm", "product_viewproduct/display", "product_viewproduct/cart");
+            "login/submit", "logout/logout", "admin_category_category/displaycreatecategoryform", "admin_category_category/createCategory",
+            "admin_category_category/display", "admin_product_product/display", "admin_product_product/displayCreateProductForm", "admin_product_product/createProduct",
+            "admin_product_product/remove", "admin_category_category/remove", "admin_product_productview/display", "admin_product_productactions/updateproduct",
+            "admin_product_productactions/changeAvailability", "category_viewcategory/display", "admin_category_categoryactions/changeavailability", "admin_category_categoryactions/changeCategoryName",
+            "admin_category_categoryactions/displaynamechangeform", "product_viewproduct/display", "product_viewproduct/addProductToCart");
         var_dump($_SESSION);
         if (isset($_GET['url'])) {
             if (strpos($_GET['url'], '/') !== false) {
-                $url = $this->parseUrl();
+                $url = $this->parseUrl($_GET['url']);
                 $key = array_search($url[0], $action);
 
                 switch ($url[0]) {
@@ -41,12 +47,6 @@ class Routing {
                         break;
                 }
             }
-        }
-    }
-
-    public function parseUrl() {
-        if (isset($_GET['url'])) {
-            return $url = explode('/', filter_var(rtrim($_GET['url'], '/'), FILTER_SANITIZE_URL));
         }
     }
 

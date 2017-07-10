@@ -2,114 +2,205 @@
 
 namespace Shop\Models\Products;
 
-/**
- * Class 
- */
-class ProductManagement {
+use Shop\Core\Model;
 
+/**
+ * Class ProductManagement
+ */
+class ProductManagement extends Model {
+
+    /**
+     * @var id 
+     */
     private $id;
+
+    /**
+     * @var name
+     */
     private $name;
+
+    /**
+     * @var type 
+     */
     private $type;
+
+    /**
+     * @var color
+     */
     private $color;
+
+    /**
+     * @var country
+     */
     private $country;
+
+    /**
+     * @var quantity
+     */
     private $quantity;
+
+    /**
+     * @var price
+     */
     private $price;
+
+    /**
+     * @var category
+     */
     private $category;
+
+    /**
+     * @var image
+     */
     private $image;
 
+    /**
+     * @return string
+     */
     public function getImage() {
         return $this->image;
     }
 
+    /**
+     * @param string $image
+     */
     public function setImage($image) {
         $this->image = $image;
     }
 
+    /**
+     * @return string
+     */
     public function getId() {
         return $this->id;
     }
 
+    /**
+     * @param string $id
+     */
     public function setId($id) {
         if ($id == !NULL) {
             $this->id = $id;
         }
     }
 
+    /**
+     * @return string
+     */
     public function getType() {
         return $this->type;
     }
 
+    /**
+     * @return string
+     */
     public function getColor() {
         return $this->color;
     }
 
+    /**
+     * @return string
+     */
     public function getCountry() {
         return $this->country;
     }
 
+    /**
+     * @return string
+     */
     public function getQuantity() {
         return $this->quantity;
     }
 
+    /**
+     * @return string
+     */
     public function getPrice() {
         return $this->price;
     }
 
+    /**
+     * @param string $type
+     */
     public function setType($type) {
         if ($type == !NULL) {
             $this->type = $type;
         }
     }
 
+    /**
+     * @param string $color
+     */
     public function setColor($color) {
         if ($color == !NULL) {
             $this->color = $color;
         }
     }
 
+    /**
+     * @param string $country
+     */
     public function setCountry($country) {
         if ($country == !NULL) {
             $this->country = $country;
         }
     }
 
+    /**
+     * @param string $quantity
+     */
     public function setQuantity($quantity) {
         if ($quantity == !NULL) {
             $this->quantity = $quantity;
         }
     }
 
+    /**
+     * @param string $price
+     */
     public function setPrice($price) {
         if ($price == !NULL) {
             $this->price = $price;
         }
     }
 
+    /**
+     * @return string
+     */
     public function getName() {
         return $this->Name;
     }
 
+    /**
+     * @param string $name
+     */
     public function setName($name) {
         if ($name == !NULL) {
             $this->name = $name;
         }
     }
 
+    /**
+     * @return string
+     */
     public function getCategory() {
         return $this->category;
     }
 
+    /**
+     * @param string $category
+     */
     public function setCategory($category) {
         if ($category > 0) {
             $this->category = $category;
         }
     }
 
-    public function __construct() {
-        $this->database = \Shop\Core\Database::getInstance();
-    }
-
-    public function addPro() {
+    /**
+     * Create new product
+     * @return array
+     */
+    public function createProduct() {
         $result = $this->database->getRow('*', 'products', "WHERE name = ?", [$this->name]);
         $result2 = $this->database->getRow('amount', 'category', "WHERE id = ?", [$this->category]);
         if ((!$result)) {
@@ -123,6 +214,10 @@ class ProductManagement {
         return;
     }
 
+    /**
+     * Initialization
+     * @param array $data
+     */
     public function init($data) {
         $this->setName($data['name']);
         $this->setType($data['type']);
@@ -132,6 +227,9 @@ class ProductManagement {
         $this->setPrice($data['price']);
     }
 
+    /**
+     * Update product details
+     */
     public function updateProduct() {
         $name = $this->name;
         $type = $this->type;
@@ -153,16 +251,31 @@ class ProductManagement {
         return;
     }
 
+    /**
+     * Load single product
+     * @param string $id
+     * @return array
+     */
     public function loadProduct($id) {
         $result = $this->database->getRows('name, id, is_available, price, image', 'products', "WHERE category_id = ?", [$id]);
         return $result;
     }
 
+    /**
+     * Load multiple products
+     * @param string $id
+     * @return array
+     */
     public function loadProductView($id) {
         $result = $this->database->getRows('*', 'products', "WHERE id = ?", [$id]);
         return $result;
     }
 
+    /**
+     * Remove single product
+     * @param string $id
+     * @param string $categoryId
+     */
     public function remove($id, $categoryId) {
         $this->database->deleteRow('products', "WHERE id = ?", [$id]);
         $result = $this->database->getRow('amount', 'category', "WHERE id = ?", [$categoryId]);
@@ -172,6 +285,10 @@ class ProductManagement {
         return;
     }
 
+    /**
+     * Set product turned off or turned on
+     * @param string $id
+     */
     public function isAvailable($id) {
         $result = $this->database->getRow('is_available', 'products', "WHERE id = ?", [$id]);
         if (($result['is_available']) == "turned off") {
@@ -184,11 +301,10 @@ class ProductManagement {
         }
     }
 
-    public function loadAllProducts() {
-        $result = $this->database->getRows('name, id, is_available, price, category_id', 'products');
-        return $result;
-    }
-
+    /**
+     * Product image upload
+     * @return boolean|int
+     */
     public function uploadImage($names) {
         if ($_FILES['image']['name']) {
             if (!($_FILES['image']['error'])) {

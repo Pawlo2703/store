@@ -11,29 +11,27 @@ include __DIR__ . '/../header_footer/admin_header.php'
             <div class="table-responsive">
                 <table  class="table table-bordered table-hover">
                     <thead>
-                        <tr><?php echo $data['jUrl']; ?>
-                            <th>Category | 
-                                <?php
-                                echo "<a href=' http://" . ($_SERVER['HTTP_HOST']) . "/" . 'dodaj_pro' . "'>add new</a>";
-                                ?>
-                            </th>
-                        </tr>
+                        <tr><a href= <?php echo $data['navigationUrl'] ?>>Category</a>
+                    <th>Category | 
+                        <?php
+                        echo "<a href=' http://" . ($_SERVER['HTTP_HOST']) . "/" . 'dodaj_pro' . "'>add new</a>";
+                        ?>
+                    </th>
+                    </tr>
                     </thead>
                     <tbody>
                         <?php
-                        $name = ($data['name']);
-                        for ($i = 0; $i < sizeof($name); $i++) {
-                            $name1 = $name[$i]['name'];
-                            $availability = $name[$i]['is_available'];
-                            $id1 = $name[$i]['id'];
+                        $productName = ($data['productName']);
+                        for ($i = 0; $i < sizeof($productName); $i++) {
+                            $name = $productName[$i]['name'];
+                            $productAvailability = $productName[$i]['is_available'];
+                            $productId = $productName[$i]['id'];
 
                             echo '<tr>';
-
-                            echo "<td><a href=' http://" . ($_SERVER['HTTP_HOST']) . "/widok_produktu/$id1'>$name1</a><p align='right'><a href=' http://" . $_SERVER['HTTP_HOST'] . "/dostepnosc_produktu" . "/$id1'>$availability</a></p><p align='right'><a href=' http://" . $_SERVER['HTTP_HOST'] . "/usun_produkt" . "/$id1'>remove</a></p></td>";
+                            echo "<td><a href=' http://" . ($_SERVER['HTTP_HOST']) . "/widok_produktu/$productId'>$name</a><p align='right'><a href=' http://" . $_SERVER['HTTP_HOST'] . "/dostepnosc_produktu" . "/$productId'>$productAvailability</a></p><p align='right'><a href=' http://" . $_SERVER['HTTP_HOST'] . "/usun_produkt" . "/$productId'>remove</a></p></td>";
                             echo '</tr>';
                         }
                         ?>
-
                     </tbody>
                     <tfoot>
                         <tr>

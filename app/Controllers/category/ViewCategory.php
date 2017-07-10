@@ -5,15 +5,20 @@ namespace Shop\Controllers\category;
 use Shop\Core\Controller;
 use Shop\Models\Products\CategoryManagement;
 use Shop\Models\Products\ProductManagement;
-use Shop\libs\Session;
 
+/**
+ * Class ViewCategory
+ */
 class ViewCategory extends Controller {
 
+    /**
+     * Display Category View
+     */
     public function display() {
         $this->header();
-        $cat = new CategoryManagement;
-        $pro = new ProductManagement;
-        $url = $this->getUrlParam();
+        $categoryManagement = new CategoryManagement;
+        $producManagement = new ProductManagement;
+        $url = $this->parseUrl($_GET['url']);
 
         if (2 < sizeof($url)) {
             $this->session->set('category_id', $url[2]);
@@ -21,13 +26,11 @@ class ViewCategory extends Controller {
             $this->redirect('home', '');
         }
 
-        $categoryList = $cat->loadCat();
-        $productsList = $pro->loadProduct($url[2]);
-        $allProducts = $pro->loadAllProducts();
+        $categoryList = $categoryManagement->loadCategory();
+        $productsList = $producManagement->loadProduct($url[2]);
         $data = [
             'categoryList' => $categoryList,
-            'productsList' => $productsList,
-            'allProducts' => $allProducts
+            'productsList' => $productsList
         ];
         $this->view('home/category/view_category', $data);
     }

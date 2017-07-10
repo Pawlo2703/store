@@ -11,35 +11,38 @@ class Controller {
      */
     protected $session;
 
+    /**
+     * constructor
+     */
     public function __construct() {
         $this->session = new \Shop\libs\Session();
     }
 
-    public function getUrlParam() {
-        if (isset($_GET['url'])) {
-            return $url = explode('/', filter_var(rtrim($_GET['url'], '/'), FILTER_SANITIZE_URL));
+    /**
+     * Parse URL into array elements
+     * @return array
+     */
+    public function parseUrl($uri) {
+        if (isset($uri)) {
+            return $url = explode('/', filter_var(rtrim($uri, '/'), FILTER_SANITIZE_URL));
         }
     }
 
-    public function getParam($name) {
-        if (isset($_POST[$name])) {
-            return $_POST[$name];
-        }
-
-        if (isset($_GET[$name])) {
-            return $_GET[$name];
-        }
-    }
-
+    /**
+     * Merge $_POST and $_GET 
+     * @return array params
+     */
     public function getParameters() {
         $params = array_merge($_POST, $_GET);
         if ($params) {
             return $params;
         }
-
         return [];
     }
 
+    /**
+     * Check if logged user has admin privileges
+     */
     public function checkIfAdmin() {
         if (($this->session->get('admin')) == !NULL) {
             if ($this->session->get('admin') == 0) {
@@ -50,6 +53,9 @@ class Controller {
         }
     }
 
+    /**
+     * Check if logged user is admin
+     */
     public function checkIfUser() {
         if (($this->session->get('admin')) == !NULL) {
             
@@ -58,6 +64,9 @@ class Controller {
         }
     }
 
+    /**
+     * Create different header for logged and not logged users
+     */
     public function header() {
         if (($this->session->get('user_id')) != null) {
             $this->view('home/header_footer/header_logged');
@@ -66,12 +75,22 @@ class Controller {
         }
     }
 
+    /**
+     * Create view
+     * @param string $view
+     * @param array $data
+     */
     public function view($view, $data = []) {
         require_once '../app/Views/' . $view . '.php';
     }
 
+    /**
+     * Redirect action to a different controller and method
+     * @param string $action
+     * @param array $params
+     */
     public function redirect($action, $params) {
-        $url = $this->getUrlParam();
+        $url = $this->parseUrl($_GET['url']);
         $count = count($url);
 
         if ($params == NULL) {
@@ -93,21 +112,6 @@ class Controller {
         }
         header("Location: " . $location);
         exit;
-    }
-
-    public function shoppingCart() {
-//       $this->session->pull('cart');
-//        exit;
-        if (($this->session->get('cart')) !== null) {
-            $cart = $this->session->get('cart');
-            $productId = $this->session->get('product_id');
-            array_push($cart, $productId);
-            $this->session->set('cart', $cart);
-        } else {
-            $productId = $this->session->get('product_id');
-            $cart = array($productId);
-            $this->session->set('cart', $cart);
-        }
     }
 
 }

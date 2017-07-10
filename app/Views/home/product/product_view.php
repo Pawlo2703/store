@@ -15,9 +15,9 @@
                         for ($i = 0; $i < sizeof($categoryList); $i++) {
                             $categoryId = $categoryList[$i]['id'];
                             $categoryAmount = $categoryList[$i]['amount'];
-                            $availability = $categoryList[$i]['is_available'];
+                            $productAvailability = $categoryList[$i]['is_available'];
                             $categoryName = $categoryList[$i]['name'];
-                            if ($availability == 'turned on') {
+                            if ($productAvailability == 'turned on') {
                                 echo "<a href='http://" . ($_SERVER['HTTP_HOST']) . "/" . 'kategoria' . "/$categoryId' class='list-group-item'>$categoryName<span class='badge'>$categoryAmount</span></a>";
                             }
                         }
@@ -28,7 +28,8 @@
 
             <table class="table table-striped">
                 <thead>
-                    <tr><?php echo $data['jUrl']; ?>
+                    <a href=<?php echo $data['navigation']?>>Product</a>
+                    <tr>
                         <th>nazwa</th>
                         <th>typ</th>
                         <th>kategoria</th>

@@ -3,68 +3,75 @@
 namespace Shop\Controllers\product;
 
 use Shop\Core\Controller;
-use Shop\Models\Products\CategoryManagement;
-use Shop\Models\Products\ProductManagement;
-use Shop\libs\Session;
+use Shop\Models\Products\{
+    CategoryManagement,
+    ProductManagement
+};
 use Shop\Models\Cart;
 
+/**
+ * Class ViewProduct
+ */
 class ViewProduct extends Controller {
 
+    /**
+     * Display Product View
+     */
     public function display() {
         $this->header();
-        $pro = new ProductManagement;
-        $cat = new CategoryManagement;
-        $url = $this->getUrlParam();
-        $pro_id = $url[2];
+        $productManagement = new ProductManagement;
+        $categoryManagement = new CategoryManagement;
+        $url = $this->parseUrl($_GET['url']);
+        $productId = $url[2];
         $this->session->set('product_id', $url[2]);
         $categoryId = $this->session->get('category_id');
+        $categoryList = $categoryManagement->loadCategory();
+        $productList = $this->session->get('category_id');
 
-        $categoryList = $cat->loadCat();
-        $prodList = $this->session->get('category_id');
-        $jUrl = "<a href=' http://" . ($_SERVER['HTTP_HOST']) . "/" . 'kategoria/' . $categoryId . "'>Product</a>";
-        $product = $pro->loadProductView($pro_id);
+        $navigation = "' http://" . ($_SERVER['HTTP_HOST']) . "/" . 'kategoria/' . $categoryId . "'";
+        $product = $productManagement->loadProductView($productId);
 
-        $category = $cat->getCategoryById($product[0]['category_id']);
+        $category = $categoryManagement->getCategoryById($product[0]['category_id']);
 
         $data = [
-            'pro' => $pro,
             'product' => $product,
             'category' => $category,
-            'jUrl' => $jUrl,
+            'navigation' => $navigation,
             'categoryList' => $categoryList
         ];
         $this->view('home/product/product_view', $data);
     }
 
-    public function cart() {
-        $pro = new ProductManagement;
+    /**
+     * Class Cart
+     */
+    public function addProductToCart() {
+        $productManagement = new ProductManagement;
         $cart = new Cart;
 
-        $id = $this->session->get('product_id');
+        $productId = $this->session->get('product_id');
 
         $params = $this->getParameters();
-        $product = $pro->loadProductView($id);
-        $quantity = $product[0]['quantity'];
-        $amount = $params['amount'];
+        $product = $productManagement->loadProductView($productId);
+        $productQuantityDB = $product[0]['quantity'];
+        $productQuantityParams = $params['amount'];
 
-        if ($amount > $quantity) {
-            $amount = $quantity; 
+        if ($productQuantityParams > $productQuantityDB) {
+            $productQuantityParams = $productQuantityDB;
         }
         $cart->setProductId($product[0]['id']);
         $cart->setProductPrice($product[0]['price']);
-        $cart->setProductQuantity($amount);
+        $cart->setProductQuantity($productQuantityParams);
 
         if ($this->session->get('table_id') !== NULL) {
-            $tableIdd = $this->session->get('table_id');
-            $cart->setTableId($tableIdd);
+            $tableId = $this->session->get('table_id');
+            $cart->setTableId($tableId);
         }
-
-        $tableId = $cart->addQuote();
+        $tableId = $cart->createQuote();
         $this->session->set('table_id', $tableId);
-        $cart->calculateQuantityAndPrice();
-
-
-        $this->redirect("produkt", "$id");
+        $cart->calculateQuantity();
+        $cart->calculatePrice();
+        $this->redirect("produkt", "$productId");
     }
 
 }

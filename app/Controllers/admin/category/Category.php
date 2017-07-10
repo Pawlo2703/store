@@ -3,77 +3,68 @@
 namespace Shop\Controllers\admin\category;
 
 use Shop\Core\Controller;
-use Shop\Models\Products\CategoryManagement;
-use Shop\Models\Products\ProductManagement;
-use Shop\libs\Session;
+use Shop\Models\Products\{
+    CategoryManagement,
+    ProductManagement
+};
 
+/**
+ * Class Category
+ */
 class Category extends Controller {
 
+    /**
+     * Display categories list
+     */
     public function display() {
         $this->checkIfAdmin();
 
-        $cat = new CategoryManagement;
-        $pro = new ProductManagement;
+        $categoryManagement = new CategoryManagement;
 
-        $name = $cat->loadCat();
-        $id = $cat->loadId();
-
-
+        $categoryName = $categoryManagement->loadCategory();
+        $categoryId = $categoryManagement->loadId();
 
         $data = [
-            'cat' => $cat,
-            'id' => $id,
-            'name' => $name
+            'categoryName' => $categoryName
         ];
         $this->view('home/admin/category', $data);
     }
 
+    /**
+     * Remove single category
+     */
     public function remove() {
-        $cat = new CategoryManagement;
-        $url = $this->getUrlParam();
-        $id = $url[2];
-        $cat->remove($id);
+        $this->checkIfAdmin();
+        $categoryManagement = new CategoryManagement;
+        $url = $this->parseUrl($_GET['url']);
+        $categoryId = $url[2];
+        $categoryManagement->remove($categoryId);
         $this->redirect("category", "");
     }
 
-    public function addCategory() {
+    /**
+     * Displays form with new Category input
+     */
+    public function displayCreateCategoryForm() {
+        $this->checkIfAdmin();
+        $this->view('home/admin/category/add_category');
+    }
+
+    /**
+     * Create new category
+     */
+    public function createCategory() {
         $this->checkIfAdmin();
         $params = $this->getParameters();
-        $new = new CategoryManagement;
-        $new->setCategory($params['category']);
-        if ($new->addCat() !== NULL) {
+        $categoryManagement = new CategoryManagement;
+        $categoryManagement->setCategory($params['category']);
+        if ($categoryManagement->createCategory() !== NULL) {
             $this->redirect("category", "");
             exit;
         } else {
             $this->view('home/admin/category/error/category_exists');
             exit;
         }
-    }
-
-    public function isAvailable() {
-        $cat = new CategoryManagement;
-        $url = $this->getUrlParam();
-        $cat->isAvailable($url[2]);
-
-        $this->redirect("category", "");
-    }
-
-    public function nameChange() {
-        $cat = new CategoryManagement;
-        $params = $this->getParameters();
-        $cat->setName($params['name']);
-        $url = $this->getUrlParam();
-        $category_id = $this->session->get('category_id');
-        $cat->nameChange($category_id);
-
-        $this->redirect("category", "");
-    }
-
-    public function nameChangeForm() {
-        $this->checkIfAdmin();
-        $url = $this->getUrlParam();
-        $this->session->set('category_id', $url[2]);
-        $this->view('home/admin/category/change_category_name');
     }
 
 }
