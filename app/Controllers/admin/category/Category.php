@@ -22,7 +22,7 @@ class Category extends Controller {
         $categoryManagement = new CategoryManagement;
 
         $categoryName = $categoryManagement->loadCategory();
-        $categoryId = $categoryManagement->loadId();
+        $categoryId = $categoryManagement->loadCategoriesId();
 
         $data = [
             'categoryName' => $categoryName

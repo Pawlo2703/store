@@ -27,7 +27,7 @@ class ViewCategory extends Controller {
         }
 
         $categoryList = $categoryManagement->loadCategory();
-        $productsList = $producManagement->loadProduct($url[2]);
+        $productsList = $producManagement->loadProducts($url[2]);
         $data = [
             'categoryList' => $categoryList,
             'productsList' => $productsList

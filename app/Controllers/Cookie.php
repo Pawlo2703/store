@@ -18,6 +18,10 @@ class Cookie extends Controller {
         if (isset($_COOKIE['email'])) {
             $rememberMe->setBigKey($_COOKIE['email']);
             $rememberMe->checkCookie();
+            $userId = $rememberMe->getId();
+            $isAdmin = $rememberMe->getAdmin();
+            $this->session->set('user_id', $rememberMe->getId());
+            $this->session->set('admin', $rememberMe->getAdmin());
         }
     }
 

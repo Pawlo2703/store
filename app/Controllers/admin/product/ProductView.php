@@ -20,9 +20,9 @@ class ProductView extends Controller {
         $categoryId = $this->session->get('category_id');
         $categoryNavigation = "' http://" . ($_SERVER['HTTP_HOST']) . "/" . 'category' . "'";
         $productNavigation = "' http://" . ($_SERVER['HTTP_HOST']) . "/" . 'product/' . $categoryId . "'";
-        $product = $productManagement->loadProductView($productId);
+        $product = $productManagement->loadProductsView($productId);
 
-        $category = $categoryManagement->getCategoryById($product[0]['category_id']);
+        $category = $categoryManagement->getCategoriesById($product[0]['category_id']);
 
         $data = [
             'pro' => $productManagement,

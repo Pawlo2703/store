@@ -211,7 +211,6 @@ class ProductManagement extends Model {
             $result = $this->database->insertRow('products', "(`name`,`category_id`,`type`,`color`,`country`,`quantity`,`price`, `image`) VALUES(?,?,?,?,?,?,?,?)", [$this->name, $this->category, $this->type, $this->color, $this->country, $this->quantity, $this->price, $this->image]);
             return $result;
         }
-        return;
     }
 
     /**
@@ -231,32 +230,22 @@ class ProductManagement extends Model {
      * Update product details
      */
     public function updateProduct() {
-        $name = $this->name;
-        $type = $this->type;
-        $category = $this->category;
-        $color = $this->color;
-        $quantity = $this->quantity;
-        $price = $this->price;
-        $country = $this->country;
-        $id = $this->id;
-
-        $this->database->updateRow('products', "name='$name', "
-                . "type='$type', "
-                . "color='$color',"
-                . "quantity='$quantity',"
-                . "price='$price',"
-                . "country='$country',"
-                . "category_id='$category'"
-                . "WHERE id= $id");
-        return;
+        $this->database->updateRow('products', "name='{$this->name}', "
+                . "type='{$this->type}', "
+                . "color='{$this->color}',"
+                . "quantity='{$this->quantity}',"
+                . "price='{$this->price}',"
+                . "country='{$this->country}',"
+                . "category_id='{$this->category}'"
+                . "WHERE id= {$this->id}");
     }
 
     /**
-     * Load single product
+     * Load products
      * @param string $id
      * @return array
      */
-    public function loadProduct($id) {
+    public function loadProducts($id) {
         $result = $this->database->getRows('name, id, is_available, price, image', 'products', "WHERE category_id = ?", [$id]);
         return $result;
     }
@@ -266,7 +255,7 @@ class ProductManagement extends Model {
      * @param string $id
      * @return array
      */
-    public function loadProductView($id) {
+    public function loadProductsView($id) {
         $result = $this->database->getRows('*', 'products', "WHERE id = ?", [$id]);
         return $result;
     }
@@ -282,7 +271,6 @@ class ProductManagement extends Model {
         $amount = $result['amount'] - 1;
         $this->database->updateRow('category', "amount= '$amount'"
                 . "WHERE id= $categoryId");
-        return;
     }
 
     /**
@@ -297,7 +285,6 @@ class ProductManagement extends Model {
         } else {
             $this->database->updateRow('products', "is_available= 'turned off'"
                     . "WHERE id= $id");
-            return;
         }
     }
 
@@ -305,7 +292,7 @@ class ProductManagement extends Model {
      * Product image upload
      * @return boolean|int
      */
-    public function uploadImage($names) {
+    public function x($names) {
         if ($_FILES['image']['name']) {
             if (!($_FILES['image']['error'])) {
                 $newFileName = strtolower($_FILES['image']['name']);
@@ -323,6 +310,25 @@ class ProductManagement extends Model {
                 return 0;
             }
         }
+    }
+
+    public function uploadImage($names) {
+        if (!($_FILES['image']['name'])) {
+            return;
+        }
+        if (($_FILES['image']['error'])) {
+            return 0;
+        }
+        $newFileName = strtolower($_FILES['image']['name']);
+        $cut = explode('.', filter_var(rtrim($_FILES['image']['name'], '.'), FILTER_SANITIZE_URL));
+        $i = sizeof($cut) - 1;
+        $type = $cut[$i];
+        if ($_FILES['image']['size'] > (1024000)) {
+            return 0;
+        }
+        $this->setImage($names . "." . $type);
+        move_uploaded_file($_FILES['image']['tmp_name'], __DIR__ . '/../../../public/images/' . $names . "." . $type);
+        return true;
     }
 
 }

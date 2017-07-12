@@ -22,13 +22,13 @@ class ProductActions extends Controller {
         $categoryManagement = new CategoryManagement;
         $params = $this->getParameters();
         $productId = $this->session->get('product_id');
-        $loadedProduct = $productManagement->loadProductView($productId);
+        $loadedProduct = $productManagement->loadProductsView($productId);
 
         $productManagement->init($loadedProduct[0]);
         $productManagement->init($params);
         $productManagement->setId($productId);
         $productManagement->setCategory($loadedProduct[0]['category_id']);
-        $categoryId = $categoryManagement->getCategoryByName($params['category']);
+        $categoryId = $categoryManagement->getCategoriesByName($params['category']);
         $productManagement->setCategory($categoryId[0]['id']);
         $productManagement->updateProduct();
 

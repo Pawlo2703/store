@@ -3,6 +3,7 @@
 namespace Shop\Models;
 
 use Shop\Core\Model;
+use Shop\libs\Session;
 
 /**
  * Class RememberMe
@@ -10,14 +11,42 @@ use Shop\Core\Model;
 class RememberMe extends Model {
 
     /**
+     *
+     * @var admin
+     */
+    private $admin;
+
+    /**
+     *
+     * @var id 
+     */
+    private $id;
+
+    /**
      * @var bigKey
      */
     private $bigKey;
-    
+
     /**
      * @var bigUserID
      */
     private $bigUserID;
+
+    /**
+     * 
+     * @return string
+     */
+    public function getAdmin() {
+        return $this->admin;
+    }
+
+    /**
+     * 
+     * @param string $admin
+     */
+    public function setAdmin($admin) {
+        $this->admin = $admin;
+    }
 
     /**
      * @return string
@@ -48,18 +77,35 @@ class RememberMe extends Model {
     }
 
     /**
+     * 
+     * @return string
+     */
+    public function getId() {
+        return $this->id;
+    }
+
+    /**
+     * 
+     * @param string $id
+     */
+    public function setId($id) {
+        $this->id = $id;
+    }
+
+    /**
      * Create cookie
      * @param string $id
      * @return array
      */
-    public function addCookie($id) {
+    public function addCookie($id, $admin) {
         $result = $this->database->getRow('*', 'remember', "WHERE id = ?", [$id]);
         if ((!$result) && (isset($this->bigKey))) {
-            $result = $this->database->insertRow('remember', "( `id`, `bigKey`) VALUES(?,?)", [$id, $this->bigKey]);
+            $result = $this->database->insertRow('remember', "( `id`, `bigKey`, `admin`) VALUES(?,?,?)", [$id, $this->bigKey, $admin]);
             return $result;
         } else {
             $bigKey = $this->bigKey;
-            $result = $this->database->updateRow('remember', "bigKey='$bigKey' "
+            $result = $this->database->updateRow('remember', "bigKey='$bigKey',"
+                    . "admin='$admin'"
                     . "WHERE id = $id");
             return $result;
         }
@@ -69,10 +115,10 @@ class RememberMe extends Model {
      * Search for cookie
      */
     public function checkCookie() {
-        $result = $this->database->getRow('id', 'remember', "WHERE bigKey = ?", [$this->bigKey]);
+        $result = $this->database->getRow('id, admin', 'remember', "WHERE bigKey = ?", [$this->bigKey]);
         if (!empty($result)) {
             $this->id = $result['id'];
-            $this->session->set('user_id', $this->id);
+            $this->admin = $result['admin'];
         }
     }
 

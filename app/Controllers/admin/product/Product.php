@@ -24,7 +24,7 @@ class Product extends Controller {
 
         $productManagement = new ProductManagement;
 
-        $productName = $productManagement->loadProduct($url[2]);
+        $productName = $productManagement->loadProducts($url[2]);
         $availability = '';
         $navigationUrl = "' http://" . ($_SERVER['HTTP_HOST']) . "/" . 'category' . "'";
 

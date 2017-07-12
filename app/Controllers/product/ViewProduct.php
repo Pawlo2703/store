@@ -29,9 +29,9 @@ class ViewProduct extends Controller {
         $productList = $this->session->get('category_id');
 
         $navigation = "' http://" . ($_SERVER['HTTP_HOST']) . "/" . 'kategoria/' . $categoryId . "'";
-        $product = $productManagement->loadProductView($productId);
+        $product = $productManagement->loadProductsView($productId);
 
-        $category = $categoryManagement->getCategoryById($product[0]['category_id']);
+        $category = $categoryManagement->getCategoriesById($product[0]['category_id']);
 
         $data = [
             'product' => $product,
@@ -52,7 +52,7 @@ class ViewProduct extends Controller {
         $productId = $this->session->get('product_id');
 
         $params = $this->getParameters();
-        $product = $productManagement->loadProductView($productId);
+        $product = $productManagement->loadProductsView($productId);
         $productQuantityDB = $product[0]['quantity'];
         $productQuantityParams = $params['amount'];
 

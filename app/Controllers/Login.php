@@ -51,7 +51,8 @@ class Login extends Controller {
         if (isset($params['remember'])) {
             $bigKey = $rememberMe->generateRandomString();
             $rememberMe->setBigKey($bigKey);
-            $rememberMe->addCookie($userId);
+            $admin = $user->getAdmin();
+            $rememberMe->addCookie($userId, $admin);
             setcookie('email', $bigKey, time() + 60 * 60 * 7);
         }
         $this->redirect('home', '');

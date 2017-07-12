@@ -94,13 +94,6 @@ class CategoryManagement extends Model {
     }
 
     /**
-     *  Constructor
-     */
-    public function __construct() {
-        $this->database = \Shop\Core\Database::getInstance();
-    }
-
-    /**
      * Create new category
      * @return array
      */
@@ -110,7 +103,6 @@ class CategoryManagement extends Model {
             $result = $this->database->insertRow('category', "(`name`) VALUES(?)", [$this->category]);
             return $result;
         }
-        return;
     }
 
     /**
@@ -123,20 +115,20 @@ class CategoryManagement extends Model {
     }
 
     /**
-     * Load category IDs
+     * Load categories IDs
      * @return array
      */
-    public function loadId() {
+    public function loadCategoriesId() {
         $result = $this->database->getRows('id', 'category');
         return $result;
     }
 
     /**
-     * Find category by name
+     * Find categories by name
      * @param string $name
      * @return array
      */
-    public function getCategoryByName($name) {
+    public function getCategoriesByName($name) {
         $result = $this->database->getRows('id', 'category', "WHERE name = ?", [$name]);
         return $result;
     }
@@ -146,7 +138,7 @@ class CategoryManagement extends Model {
      * @param string $id
      * @return array
      */
-    public function getCategoryById($id) {
+    public function getCategoriesById($id) {
         $result = $this->database->getRows('name', 'category', "WHERE id = ?", [$id]);
         return $result;
     }
@@ -157,7 +149,6 @@ class CategoryManagement extends Model {
      */
     public function remove($id) {
         $this->database->deleteRow('category', "WHERE id = ?", [$id]);
-        return;
     }
 
     /**
@@ -172,7 +163,6 @@ class CategoryManagement extends Model {
         } else {
             $this->database->updateRow('category', "is_available= 'turned off'"
                     . "WHERE id= $id");
-            return;
         }
     }
 
@@ -181,8 +171,7 @@ class CategoryManagement extends Model {
      * @param string $id
      */
     public function changeCategoryName($id) {
-        $name = $this->name;
-        $this->database->updateRow('category', "name= '$name'"
+        $this->database->updateRow('category', "name= '{$this->name}'"
                 . "WHERE id= $id");
     }
 
