@@ -21,7 +21,7 @@ class Home extends Controller {
         $categoryManagement = new CategoryManagement;
         $productManagement = new ProductManagement;
 
-        $categoryList = $categoryManagement->loadCategory();
+        $categoryList = $categoryManagement->loadCategories();
 
         $data = [
             'categoryList' => $categoryList

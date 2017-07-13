@@ -5,7 +5,8 @@ namespace Shop\Controllers\admin\category;
 use Shop\Core\Controller;
 use Shop\Models\Products\{
     CategoryManagement,
-    ProductManagement
+    ProductManagement,
+    CategoryCollection
 };
 
 /**
@@ -21,7 +22,11 @@ class Category extends Controller {
 
         $categoryManagement = new CategoryManagement;
 
-        $categoryName = $categoryManagement->loadCategory();
+        $collection = new CategoryCollection;
+        $collection->createCategoryCollection();
+        $test = $collection->getCategoryCollection();
+        
+        $categoryName = $categoryManagement->loadCategories();
         $categoryId = $categoryManagement->loadCategoriesId();
 
         $data = [

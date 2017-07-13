@@ -10,14 +10,24 @@ use Shop\Core\Model;
 class CategoryManagement extends Model {
 
     /**
-     * @var id 
+     * @var categoryId 
      */
-    private $id;
+    private $categoryId;
 
     /**
-     * @var category
+     * @var string
      */
-    private $category;
+    private $isAvailable;
+
+    /**
+     * @var string
+     */
+    private $amount;
+
+    /**
+     * @var categoryName
+     */
+    private $categoryName;
 
     /**
      * @var uri
@@ -25,28 +35,62 @@ class CategoryManagement extends Model {
     private $uri;
 
     /**
-     * @var name
-     */
-    private $name;
-
-    /**
-     * 
      * @return string
      */
-    public function getName() {
-        return $this->name;
+    public function getCategoryId() {
+        return $this->categoryId;
     }
 
     /**
-     * 
-     * @param string $name
+     * @return string
      */
-    public function setName($name) {
-        $this->name = $name;
+    public function getIsAvailable() {
+        return $this->isAvailable;
     }
 
     /**
-     * 
+     * @return string
+     */
+    public function getAmount() {
+        return $this->amount;
+    }
+
+    /**
+     * @return string
+     */
+    public function getCategoryName() {
+        return $this->categoryName;
+    }
+
+    /**
+     * @param string $categoryId
+     */
+    public function setCategoryId($categoryId) {
+        $this->categoryId = $categoryId;
+    }
+
+    /**
+     * @param string $isAvailable
+     */
+    public function setIsAvailable($isAvailable) {
+        $this->isAvailable = $isAvailable;
+    }
+
+    /**
+     * @param string $amount
+     */
+    public function setAmount($amount) {
+        $this->amount = $amount;
+    }
+
+    /**
+     * @param string $categoryName
+     */
+    public function setCategoryName($categoryName) {
+        $this->categoryName = $categoryName;
+    }
+
+    /**
      * @return sring
      */
     public function getUri() {
@@ -54,7 +98,6 @@ class CategoryManagement extends Model {
     }
 
     /**
-     * 
      * @param string $uri
      */
     public function setUri($uri) {
@@ -62,45 +105,13 @@ class CategoryManagement extends Model {
     }
 
     /**
-     * 
-     * @return string
-     */
-    public function getId() {
-        return $this->id;
-    }
-
-    /**
-     * 
-     * @param string $id
-     */
-    public function setId($id) {
-        $this->id = $id;
-    }
-
-    /**
-     * 
-     * @return string
-     */
-    public function getCategory() {
-        return $this->category;
-    }
-
-    /**
-     * 
-     * @param string $category
-     */
-    public function setCategory($category) {
-        $this->category = $category;
-    }
-
-    /**
      * Create new category
      * @return array
      */
     public function createCategory() {
-        $result = $this->database->getRow('*', 'category', "WHERE name = ?", [$this->category]);
+        $result = $this->database->getRow('*', 'category', "WHERE name = ?", [$this->categoryName]);
         if ((!$result)) {
-            $result = $this->database->insertRow('category', "(`name`) VALUES(?)", [$this->category]);
+            $result = $this->database->insertRow('category', "(`name`) VALUES(?)", [$this->categoryName]);
             return $result;
         }
     }
@@ -109,7 +120,7 @@ class CategoryManagement extends Model {
      * Load all categories
      * @return array
      */
-    public function loadCategory() {
+    public function loadCategories() {
         $result = $this->database->getRows('*', 'category');
         return $result;
     }

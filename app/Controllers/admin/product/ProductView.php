@@ -16,7 +16,7 @@ class ProductView extends Controller {
         $productId = $url[2];
         $this->session->set('product_id', $url[2]);
 
-        $categoryList = $categoryManagement->loadCategory();
+        $categoryList = $categoryManagement->loadCategories();
         $categoryId = $this->session->get('category_id');
         $categoryNavigation = "' http://" . ($_SERVER['HTTP_HOST']) . "/" . 'category' . "'";
         $productNavigation = "' http://" . ($_SERVER['HTTP_HOST']) . "/" . 'product/' . $categoryId . "'";

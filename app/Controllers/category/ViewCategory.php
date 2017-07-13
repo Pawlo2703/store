@@ -26,7 +26,7 @@ class ViewCategory extends Controller {
             $this->redirect('home', '');
         }
 
-        $categoryList = $categoryManagement->loadCategory();
+        $categoryList = $categoryManagement->loadCategories();
         $productsList = $producManagement->loadProducts($url[2]);
         $data = [
             'categoryList' => $categoryList,

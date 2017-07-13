@@ -25,7 +25,7 @@ class ViewProduct extends Controller {
         $productId = $url[2];
         $this->session->set('product_id', $url[2]);
         $categoryId = $this->session->get('category_id');
-        $categoryList = $categoryManagement->loadCategory();
+        $categoryList = $categoryManagement->loadCategories();
         $productList = $this->session->get('category_id');
 
         $navigation = "' http://" . ($_SERVER['HTTP_HOST']) . "/" . 'kategoria/' . $categoryId . "'";
