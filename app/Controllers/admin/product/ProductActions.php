@@ -22,14 +22,13 @@ class ProductActions extends Controller {
         $categoryManagement = new CategoryManagement;
         $params = $this->getParameters();
         $productId = $this->session->get('product_id');
-        $loadedProduct = $productManagement->loadProductsView($productId);
-
-        $productManagement->init($loadedProduct[0]);
+        $loadedProduct = $productManagement->loadProduct($productId);
+        $productManagement->init($loadedProduct);
         $productManagement->init($params);
-        $productManagement->setId($productId);
-        $productManagement->setCategory($loadedProduct[0]['category_id']);
-        $categoryId = $categoryManagement->getCategoriesByName($params['category']);
-        $productManagement->setCategory($categoryId[0]['id']);
+        $productManagement->setProductId($productId);
+        $productManagement->setCategoryId($loadedProduct['category_id']);
+        $categoryId = $categoryManagement->getCategoryByName($params['category']);
+        $productManagement->setCategoryId($categoryId['id']);
         $productManagement->updateProduct();
 
         $this->redirect("category", '');
@@ -40,8 +39,8 @@ class ProductActions extends Controller {
      */
     public function changeAvailability() {
         $productManagement = new ProductManagement;
-        $url = $this->parseUrl($_GET['url']);
-        $productManagement->isAvailable($url[2]);
+        $productManagement->setProductId($this->parseUrl($_GET['url'])[2]);
+        $productManagement->isAvailable();
         $categoryId = $this->session->get('category_id');
         $this->redirect("product", "$categoryId");
     }

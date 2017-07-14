@@ -21,14 +21,16 @@ include __DIR__ . '/../header_footer/admin_header.php'
                     </thead>
                     <tbody>
                         <?php
-                        $categoryName = ($data['categoryName']);
-                        for ($i = 0; $i < sizeof($categoryName); $i++) {
-                            $name = $categoryName[$i]['name'];
-                            $categoryAvailability = $categoryName[$i]['is_available'];
-                            $categoryId = $categoryName[$i]['id'];
-
+                        for ($i = 0; $i < sizeof($data['categoryCollection']); $i++) {
                             echo '<tr>';
-                            echo "<td><a href='" . "product" . "/$categoryId'>$name</a><p align='right'><a href=' http://" . $_SERVER['HTTP_HOST'] . "/zmiana_nazwy_kategorii" . "/$categoryId'>zmień nazwę</a></p><p align='right'><a href=' http://" . $_SERVER['HTTP_HOST'] . "/dostepnosc_kategorii" . "/$categoryId'>$categoryAvailability</a></p><p align='right'><a href=' http://" . $_SERVER['HTTP_HOST'] . "/usun_kategorie" . "/$categoryId'>remove</a></p></td>";
+                            echo "<td><a href='" . "product" . "/{$data['categoryCollection'][$i]->getCategoryId()}'"
+                            . ">{$data['categoryCollection'][$i]->getCategoryName()}</a>"
+                            . "<p align='right'><a href=' http://" . $_SERVER['HTTP_HOST'] . "/zmiana_nazwy_kategorii" .
+                            "/{$data['categoryCollection'][$i]->getCategoryId()}'>zmień nazwę</a></p>"
+                            . "<p align='right'><a href=' http://" . $_SERVER['HTTP_HOST'] . "/dostepnosc_kategorii" .
+                            "/{$data['categoryCollection'][$i]->getCategoryId()}'>{$data['categoryCollection'][$i]->getIsAvailable()}</a>"
+                            . "</p><p align='right'><a href=' http://" . $_SERVER['HTTP_HOST'] . "/usun_kategorie" .
+                            "/{$data['categoryCollection'][$i]->getCategoryId()}'>remove</a></p></td>";
                             echo '</tr>';
                         }
                         ?>

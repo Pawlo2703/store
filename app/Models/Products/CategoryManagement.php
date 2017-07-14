@@ -30,11 +30,6 @@ class CategoryManagement extends Model {
     private $categoryName;
 
     /**
-     * @var uri
-     */
-    private $uri;
-
-    /**
      * @return string
      */
     public function getCategoryId() {
@@ -91,20 +86,6 @@ class CategoryManagement extends Model {
     }
 
     /**
-     * @return sring
-     */
-    public function getUri() {
-        return $this->uri;
-    }
-
-    /**
-     * @param string $uri
-     */
-    public function setUri($uri) {
-        $this->uri = $uri;
-    }
-
-    /**
      * Create new category
      * @return array
      */
@@ -117,30 +98,12 @@ class CategoryManagement extends Model {
     }
 
     /**
-     * Load all categories
-     * @return array
-     */
-    public function loadCategories() {
-        $result = $this->database->getRows('*', 'category');
-        return $result;
-    }
-
-    /**
-     * Load categories IDs
-     * @return array
-     */
-    public function loadCategoriesId() {
-        $result = $this->database->getRows('id', 'category');
-        return $result;
-    }
-
-    /**
      * Find categories by name
      * @param string $name
      * @return array
      */
-    public function getCategoriesByName($name) {
-        $result = $this->database->getRows('id', 'category', "WHERE name = ?", [$name]);
+    public function getCategoryByName($name) {
+        $result = $this->database->getRow('id', 'category', "WHERE name = ?", [$name]);
         return $result;
     }
 
@@ -149,8 +112,8 @@ class CategoryManagement extends Model {
      * @param string $id
      * @return array
      */
-    public function getCategoriesById($id) {
-        $result = $this->database->getRows('name', 'category', "WHERE id = ?", [$id]);
+    public function getCategoryById($id) {
+        $result = $this->database->getRow('name', 'category', "WHERE id = ?", [$id]);
         return $result;
     }
 
@@ -158,22 +121,22 @@ class CategoryManagement extends Model {
      * Remove single category
      * @param string $id
      */
-    public function remove($id) {
-        $this->database->deleteRow('category', "WHERE id = ?", [$id]);
+    public function remove() {
+        $this->database->deleteRow('category', "WHERE id = ?", [$this->categoryId]);
     }
 
     /**
      * Turn off or turn on category
      * @param string $id
      */
-    public function isAvailable($id) {
-        $result = $this->database->getRow('is_available', 'category', "WHERE id = ?", [$id]);
+    public function isAvailable() {
+        $result = $this->database->getRow('is_available', 'category', "WHERE id = ?", [$this->categoryId]);
         if (($result['is_available']) == "turned off") {
             $this->database->updateRow('category', "is_available= 'turned on'"
-                    . "WHERE id= $id");
+                    . "WHERE id= {$this->categoryId}");
         } else {
             $this->database->updateRow('category', "is_available= 'turned off'"
-                    . "WHERE id= $id");
+                    . "WHERE id= {$this->categoryId}");
         }
     }
 
@@ -181,9 +144,9 @@ class CategoryManagement extends Model {
      * Change category name
      * @param string $id
      */
-    public function changeCategoryName($id) {
-        $this->database->updateRow('category', "name= '{$this->name}'"
-                . "WHERE id= $id");
+    public function changeCategoryName() {
+        $this->database->updateRow('category', "name= '{$this->categoryName}'"
+                . "WHERE id= {$this->categoryId}");
     }
 
 }

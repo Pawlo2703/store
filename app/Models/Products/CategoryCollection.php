@@ -43,7 +43,8 @@ class CategoryCollection extends Model {
                     $collection = array($category);
                 }
             }
-        } $this->categoryCollection = $collection;
+        }
+        return $this->categoryCollection = $collection;
     }
 
 }

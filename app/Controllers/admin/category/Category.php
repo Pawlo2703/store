@@ -20,17 +20,12 @@ class Category extends Controller {
     public function display() {
         $this->checkIfAdmin();
 
-        $categoryManagement = new CategoryManagement;
-
         $collection = new CategoryCollection;
-        $collection->createCategoryCollection();
-        $test = $collection->getCategoryCollection();
-        
-        $categoryName = $categoryManagement->loadCategories();
-        $categoryId = $categoryManagement->loadCategoriesId();
+        $categoryCollection = $collection->createCategoryCollection();
+       
 
         $data = [
-            'categoryName' => $categoryName
+            'categoryCollection' => $categoryCollection
         ];
         $this->view('home/admin/category', $data);
     }
@@ -42,8 +37,8 @@ class Category extends Controller {
         $this->checkIfAdmin();
         $categoryManagement = new CategoryManagement;
         $url = $this->parseUrl($_GET['url']);
-        $categoryId = $url[2];
-        $categoryManagement->remove($categoryId);
+        $categoryManagement->setCategoryId($url[2]);
+        $categoryManagement->remove();
         $this->redirect("category", "");
     }
 
@@ -62,7 +57,7 @@ class Category extends Controller {
         $this->checkIfAdmin();
         $params = $this->getParameters();
         $categoryManagement = new CategoryManagement;
-        $categoryManagement->setCategory($params['category']);
+        $categoryManagement->setCategoryName($params['category']);
         if ($categoryManagement->createCategory() !== NULL) {
             $this->redirect("category", "");
             exit;

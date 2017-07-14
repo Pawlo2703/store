@@ -23,13 +23,13 @@ include __DIR__ . '/../header_footer/admin_header.php'
                     </thead>
                     <tbody>
                         <tr>
-                            <td><?php echo $data['product'][0]['name']; ?></td>
-                            <td><?php echo $data['product'][0]['type']; ?></td>
-                            <td><?php echo $data['category'][0]['name']; ?></td>
-                            <td><?php echo $data['product'][0]['color']; ?></td>
-                            <td><?php echo $data['product'][0]['country']; ?></td>
-                            <td><?php echo $data['product'][0]['quantity']; ?></td>
-                            <td><?php echo $data['product'][0]['price']; ?></td>
+                            <td> <?php echo $data['product']['name']; ?></td>
+                            <td><?php echo $data['product']['type']; ?></td>
+                            <td><?php echo $data['category']['name']; ?></td>
+                            <td><?php echo $data['product']['color']; ?></td>
+                            <td><?php echo $data['product']['country']; ?></td>
+                            <td><?php echo $data['product']['quantity']; ?></td>
+                            <td><?php echo $data['product']['price']; ?></td>
                         </tr>
                         <tr> <form method="post" action="http://sup.dev/zmiana_produktu" role="form">
                         <td><input type="text" name="name" placeholder="zmień nazwę"></td>
@@ -37,10 +37,8 @@ include __DIR__ . '/../header_footer/admin_header.php'
                         <td><select name="category">
                                 <option required style="display:none">Wybierz kategorię</option>
                                 <?php
-                                $categoryList = $data['categoryList'];
-                                for ($i = 0; $i < sizeof($categoryList); $i++) {
-                                    $categoryName = $categoryList[$i]['name'];
-                                    echo "<option>$categoryName</option>";
+                                for ($i = 0; $i < sizeof($data['collection']); $i++) {
+                                    echo "<option>{$data['collection'][$i]->getCategoryName()}</option>";
                                 }
                                 ?>
 

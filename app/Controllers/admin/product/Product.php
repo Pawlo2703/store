@@ -5,6 +5,7 @@ namespace Shop\Controllers\admin\product;
 use Shop\Core\Controller;
 use Shop\Models\Products\{
     CategoryManagement,
+    ProductCollection,
     ProductManagement
 };
 use Shop\Models\RememberMe;
@@ -22,20 +23,24 @@ class Product extends Controller {
         $url = $this->parseUrl($_GET['url']);
         $this->session->set('category_id', $url[2]);
 
-        $productManagement = new ProductManagement;
+        $collection = new ProductCollection;
+        $productCollection = $collection->createProductCollection($url[2]);
 
-        $productName = $productManagement->loadProducts($url[2]);
-        $availability = '';
         $navigationUrl = "' http://" . ($_SERVER['HTTP_HOST']) . "/" . 'category' . "'";
 
         $data = [
-            'productName' => $productName,
+            'productCollection' => $productCollection,
             'navigationUrl' => $navigationUrl
         ];
-        $this->view('home/admin/product', $data);
+
+        if (!isset($data['productCollection'])) {
+            $this->view('home/admin/no_products', $data);
+        } else {
+            $this->view('home/admin/product', $data);
+        }
     }
 
-     /**
+    /**
      * Displays form with new Product input
      */
     public function displayCreateProductForm() {
@@ -54,16 +59,16 @@ class Product extends Controller {
         $productManagement = new ProductManagement;
         $rememberMe = new RememberMe;
 
-        $productManagement->setName($params['product']);
-        $productManagement->setType($params['type']);
-        $productManagement->setColor($params['color']);
-        $productManagement->setCountry($params['country']);
-        $productManagement->setQuantity($params['quantity']);
-        $productManagement->setPrice($params['price']);
+        $productManagement->setProductName($params['product']);
+        $productManagement->setProductType($params['type']);
+        $productManagement->setProductColor($params['color']);
+        $productManagement->setProductCountry($params['country']);
+        $productManagement->setProductQuantity($params['quantity']);
+        $productManagement->setProductPrice($params['price']);
 
         $randomString = $rememberMe->generateRandomString();
         if ($productManagement->uploadImage($randomString) == true) {
-            $productManagement->setCategory($categoryId);
+            $productManagement->setCategoryId($categoryId);
 
             if ($productManagement->createProduct() !== NULL) {
 
@@ -83,10 +88,9 @@ class Product extends Controller {
      */
     public function remove() {
         $productManagement = new ProductManagement;
-        $url = $this->parseUrl($_GET['url']);
-        $productId = $url[2];
-        $categoryId = $this->session->get('category_id');
-        $productManagement->remove($productId, $categoryId);
+        $productManagement->setProductId($this->parseUrl($_GET['url'])[2]);
+        $productManagement->setCategoryId($this->session->get('category_id'));
+        $productManagement->remove();
         $this->redirect("product", "$categoryId");
     }
 

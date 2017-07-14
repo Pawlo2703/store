@@ -21,16 +21,9 @@ include __DIR__ . '/../header_footer/admin_header.php'
                     </thead>
                     <tbody>
                         <?php
-                        for ($i = 0; $i < sizeof($data['productCollection']); $i++) {
-
-                            echo '<tr>';
-                            echo "<td><a href=' http://" . ($_SERVER['HTTP_HOST']) . "/widok_produktu"
-                            . "/{$data['productCollection'][$i]->getProductId()}'>{$data['productCollection'][$i]->getProductName()}</a><p align='right'><a href=' http://" . $_SERVER['HTTP_HOST'] .
-                            "/dostepnosc_produktu" . "/{$data['productCollection'][$i]->getProductId()}'>{$data['productCollection'][$i]->getIsAvailable()}</a></p>"
-                            . "<p align='right'><a href=' http://" . $_SERVER['HTTP_HOST'] . "/usun_produkt" .
-                            "/{$data['productCollection'][$i]->getProductId()}'>remove</a></p></td>";
-                            echo '</tr>';
-                        }
+                           echo '<tr></br>';
+                            echo "No products available!!";
+                        echo '</tr>';
                         ?>
                     </tbody>
                     <tfoot>

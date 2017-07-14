@@ -17,9 +17,9 @@ class CategoryActions extends Controller {
      * Turn on/off single category
      */
     public function changeAvailability() {
-        $cat = new CategoryManagement;
-        $url = $this->parseUrl($_GET['url']);
-        $cat->isAvailable($url[2]);
+        $categoryManagement = new CategoryManagement;
+        $categoryManagement->setCategoryId($this->parseUrl($_GET['url'])[2]);
+        $categoryManagement->isAvailable();
         $this->redirect("category", "");
     }
 
@@ -28,8 +28,7 @@ class CategoryActions extends Controller {
      */
     public function displayNameChangeForm() {
         $this->checkIfAdmin();
-        $url = $this->parseUrl($_GET['url']);
-        $this->session->set('category_id', $url[2]);
+        $this->session->set('category_id', $this->parseUrl($_GET['url'])[2]);
         $this->view('home/admin/category/change_category_name');
     }
 
@@ -40,11 +39,9 @@ class CategoryActions extends Controller {
         $params = $this->getParameters();
 
         $categoryManagement = new CategoryManagement;
-        $categoryManagement->setName($params['name']);
-
-        $url = $this->parseUrl($_GET['url']);
-        $category_id = $this->session->get('category_id');
-        $categoryManagement->changeCategoryName($category_id);
+        $categoryManagement->setCategoryName($params['name']);
+        $categoryManagement->setCategoryId($this->session->get('category_id'));
+        $categoryManagement->changeCategoryName();
         $this->redirect("category", "");
     }
 

@@ -10,189 +10,202 @@ use Shop\Core\Model;
 class ProductManagement extends Model {
 
     /**
-     * @var id 
+     * @var productId
      */
-    private $id;
+    private $productId;
 
     /**
-     * @var name
+     * @var productName
      */
-    private $name;
+    private $productName;
 
     /**
-     * @var type 
+     * @var productType
      */
-    private $type;
+    private $productType;
 
     /**
-     * @var color
+     * @var productColor
      */
-    private $color;
+    private $productColor;
 
     /**
-     * @var country
+     * @var productCountry
      */
-    private $country;
+    private $productCountry;
 
     /**
-     * @var quantity
+     * @var productQuantity
      */
-    private $quantity;
+    private $productQuantity;
 
     /**
-     * @var price
+     * @var productPrice
      */
-    private $price;
+    private $productPrice;
 
     /**
-     * @var category
+     * @var categoryId
      */
-    private $category;
+    private $categoryId;
 
     /**
-     * @var image
+     * @var productImage
      */
-    private $image;
+    private $productImage;
+
+    /**
+     * @var isAvailable
+     */
+    private $isAvailable;
+
+    public function getIsAvailable() {
+        return $this->isAvailable;
+    }
+
+    public function setIsAvailable($isAvailable) {
+        $this->isAvailable = $isAvailable;
+    }
 
     /**
      * @return string
      */
-    public function getImage() {
-        return $this->image;
+    public function getProductImage() {
+        return $this->productImage;
     }
 
     /**
-     * @param string $image
+     * @param string $productImage
      */
-    public function setImage($image) {
-        $this->image = $image;
+    public function setProductImage($productImage) {
+        $this->productImage = $productImage;
     }
 
     /**
      * @return string
      */
-    public function getId() {
-        return $this->id;
+    public function getProductId() {
+        return $this->productId;
     }
 
     /**
-     * @param string $id
+     * @param string $productId
      */
-    public function setId($id) {
-        if ($id == !NULL) {
-            $this->id = $id;
+    public function setProductId($productId) {
+        if ($productId == !NULL) {
+            $this->productId = $productId;
         }
     }
 
     /**
      * @return string
      */
-    public function getType() {
-        return $this->type;
+    public function getProductType() {
+        return $this->productType;
     }
 
     /**
      * @return string
      */
-    public function getColor() {
-        return $this->color;
+    public function getProductColor() {
+        return $this->productColor;
     }
 
     /**
      * @return string
      */
-    public function getCountry() {
-        return $this->country;
+    public function getProductCountry() {
+        return $this->productCountry;
     }
 
     /**
      * @return string
      */
-    public function getQuantity() {
-        return $this->quantity;
+    public function getProductQuantity() {
+        return $this->productQuantity;
     }
 
     /**
      * @return string
      */
-    public function getPrice() {
-        return $this->price;
+    public function getProductPrice() {
+        return $this->productPrice;
     }
 
     /**
-     * @param string $type
+     * @param string $productType
      */
-    public function setType($type) {
-        if ($type == !NULL) {
-            $this->type = $type;
+    public function setProductType($productType) {
+        if ($productType == !NULL) {
+            $this->productType = $productType;
         }
     }
 
     /**
-     * @param string $color
+     * @param string $productColor
      */
-    public function setColor($color) {
-        if ($color == !NULL) {
-            $this->color = $color;
+    public function setProductColor($productColor) {
+        if ($productColor == !NULL) {
+            $this->productColor = $productColor;
         }
     }
 
     /**
-     * @param string $country
+     * @param string $productCountry
      */
-    public function setCountry($country) {
-        if ($country == !NULL) {
-            $this->country = $country;
+    public function setProductCountry($productCountry) {
+        if ($productCountry == !NULL) {
+            $this->productCountry = $productCountry;
         }
     }
 
     /**
-     * @param string $quantity
+     * @param string $productQuantity
      */
-    public function setQuantity($quantity) {
-        if ($quantity == !NULL) {
-            $this->quantity = $quantity;
+    public function setProductQuantity($productQuantity) {
+        if ($productQuantity == !NULL) {
+            $this->productQuantity = $productQuantity;
         }
     }
 
     /**
-     * @param string $price
+     * @param string $productPrice
      */
-    public function setPrice($price) {
-        if ($price == !NULL) {
-            $this->price = $price;
-        }
-    }
-
-    /**
-     * @return string
-     */
-    public function getName() {
-        return $this->Name;
-    }
-
-    /**
-     * @param string $name
-     */
-    public function setName($name) {
-        if ($name == !NULL) {
-            $this->name = $name;
+    public function setProductPrice($productPrice) {
+        if ($productPrice == !NULL) {
+            $this->productPrice = $productPrice;
         }
     }
 
     /**
      * @return string
      */
-    public function getCategory() {
-        return $this->category;
+    public function getProductName() {
+        return $this->productName;
+    }
+
+    /**
+     * @param string $productName
+     */
+    public function setProductName($productName) {
+        if ($productName == !NULL) {
+            $this->productName = $productName;
+        }
+    }
+
+    /**
+     * @return string
+     */
+    public function getCategoryId() {
+        return $this->categoryId;
     }
 
     /**
      * @param string $category
      */
-    public function setCategory($category) {
-        if ($category > 0) {
-            $this->category = $category;
+    public function setCategoryId($categoryId) {
+        if ($categoryId > 0) {
+            $this->categoryId = $categoryId;
         }
     }
 
@@ -201,14 +214,14 @@ class ProductManagement extends Model {
      * @return array
      */
     public function createProduct() {
-        $result = $this->database->getRow('*', 'products', "WHERE name = ?", [$this->name]);
-        $result2 = $this->database->getRow('amount', 'category', "WHERE id = ?", [$this->category]);
+        $result = $this->database->getRow('*', 'products', "WHERE name = ?", [$this->productName]);
+        $result2 = $this->database->getRow('amount', 'category', "WHERE id = ?", [$this->categoryId]);
         if ((!$result)) {
-            $id = $this->category;
+            $id = $this->categoryId;
             $amount = $result2['amount'] + 1;
             $this->database->updateRow('category', "amount= '$amount'"
                     . "WHERE id= $id");
-            $result = $this->database->insertRow('products', "(`name`,`category_id`,`type`,`color`,`country`,`quantity`,`price`, `image`) VALUES(?,?,?,?,?,?,?,?)", [$this->name, $this->category, $this->type, $this->color, $this->country, $this->quantity, $this->price, $this->image]);
+            $result = $this->database->insertRow('products', "(`name`,`category_id`,`type`,`color`,`country`,`quantity`,`price`, `image`) VALUES(?,?,?,?,?,?,?,?)", [$this->productName, $this->categoryId, $this->productType, $this->productColor, $this->productCountry, $this->productQuantity, $this->productPrice, $this->productImage]);
             return $result;
         }
     }
@@ -218,97 +231,61 @@ class ProductManagement extends Model {
      * @param array $data
      */
     public function init($data) {
-        $this->setName($data['name']);
-        $this->setType($data['type']);
-        $this->setColor($data['color']);
-        $this->setCountry($data['country']);
-        $this->setQuantity($data['quantity']);
-        $this->setPrice($data['price']);
+        $this->setProductName($data['name']);
+        $this->setProductType($data['type']);
+        $this->setProductColor($data['color']);
+        $this->setProductCountry($data['country']);
+        $this->setProductQuantity($data['quantity']);
+        $this->setProductPrice($data['price']);
     }
 
     /**
      * Update product details
      */
     public function updateProduct() {
-        $this->database->updateRow('products', "name='{$this->name}', "
-                . "type='{$this->type}', "
-                . "color='{$this->color}',"
-                . "quantity='{$this->quantity}',"
-                . "price='{$this->price}',"
-                . "country='{$this->country}',"
-                . "category_id='{$this->category}'"
-                . "WHERE id= {$this->id}");
+        $this->database->updateRow('products', "name='{$this->productName}', "
+                . "type='{$this->productType}', "
+                . "color='{$this->productColor}',"
+                . "quantity='{$this->productQuantity}',"
+                . "price='{$this->productPrice}',"
+                . "country='{$this->productCountry}',"
+                . "category_id='{$this->categoryId}'"
+                . "WHERE id= {$this->productId}");
     }
 
     /**
-     * Load products
+     * Load single product
      * @param string $id
      * @return array
      */
-    public function loadProducts($id) {
-        $result = $this->database->getRows('name, id, is_available, price, image', 'products', "WHERE category_id = ?", [$id]);
-        return $result;
-    }
-
-    /**
-     * Load multiple products
-     * @param string $id
-     * @return array
-     */
-    public function loadProductsView($id) {
-        $result = $this->database->getRows('*', 'products', "WHERE id = ?", [$id]);
+    public function loadProduct($id) {
+        $result = $this->database->getRow('*', 'products', "WHERE id = ?", [$id]);
         return $result;
     }
 
     /**
      * Remove single product
-     * @param string $id
-     * @param string $categoryId
      */
-    public function remove($id, $categoryId) {
-        $this->database->deleteRow('products', "WHERE id = ?", [$id]);
-        $result = $this->database->getRow('amount', 'category', "WHERE id = ?", [$categoryId]);
+    public function remove() {
+        $this->database->deleteRow('products', "WHERE id = ?", [$this->productId]);
+        $result = $this->database->getRow('amount', 'category', "WHERE id = ?", [$this->categoryId]);
         $amount = $result['amount'] - 1;
         $this->database->updateRow('category', "amount= '$amount'"
-                . "WHERE id= $categoryId");
+                . "WHERE id= {$this->categoryId}");
     }
 
     /**
      * Set product turned off or turned on
      * @param string $id
      */
-    public function isAvailable($id) {
-        $result = $this->database->getRow('is_available', 'products', "WHERE id = ?", [$id]);
+    public function isAvailable() {
+        $result = $this->database->getRow('is_available', 'products', "WHERE id = ?", [$this->productId]);
         if (($result['is_available']) == "turned off") {
             $this->database->updateRow('products', "is_available= 'turned on'"
-                    . "WHERE id= $id");
+                    . "WHERE id= {$this->productId}");
         } else {
             $this->database->updateRow('products', "is_available= 'turned off'"
-                    . "WHERE id= $id");
-        }
-    }
-
-    /**
-     * Product image upload
-     * @return boolean|int
-     */
-    public function x($names) {
-        if ($_FILES['image']['name']) {
-            if (!($_FILES['image']['error'])) {
-                $newFileName = strtolower($_FILES['image']['name']);
-                $cut = explode('.', filter_var(rtrim($_FILES['image']['name'], '.'), FILTER_SANITIZE_URL));
-                $i = sizeof($cut) - 1;
-                $type = $cut[$i];
-                if ($_FILES['image']['size'] > (1024000)) {
-                    return 0;
-                } else {
-                    $this->setImage($names . "." . $type);
-                    move_uploaded_file($_FILES['image']['tmp_name'], __DIR__ . '/../../../public/images/' . $names . "." . $type);
-                    return true;
-                }
-            } else {
-                return 0;
-            }
+                    . "WHERE id= {$this->productId}");
         }
     }
 
@@ -326,7 +303,7 @@ class ProductManagement extends Model {
         if ($_FILES['image']['size'] > (1024000)) {
             return 0;
         }
-        $this->setImage($names . "." . $type);
+        $this->setProductImage($names . "." . $type);
         move_uploaded_file($_FILES['image']['tmp_name'], __DIR__ . '/../../../public/images/' . $names . "." . $type);
         return true;
     }
