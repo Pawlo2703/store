@@ -49,12 +49,11 @@
                             Owoce:
                         </a>
                         <?php
-                        $categoryList = $data['categoryList'];
-                        for ($i = 0; $i < sizeof($categoryList); $i++) {
-                            $categoryId = $categoryList[$i]['id'];
-                             $categoryAmount = $categoryList[$i]['amount'];
-                            $categoryName = $categoryList[$i]['name'];
-                            echo "<a href='http://" . ($_SERVER['HTTP_HOST']) . "/" . 'kategoria' . "/$categoryId' class='list-group-item'>$categoryName<span class='badge'>$categoryAmount</span></a>";
+                        for ($i = 0; $i < sizeof($data['category']); $i++) {
+                            if ($data['category'][$i]->getIsAvailable() == 'turned on') {
+                                echo "<a href='http://" . ($_SERVER['HTTP_HOST']) . "/" . 'kategoria' . "/{$data['category'][$i]->getCategoryId()}' "
+                                . "class='list-group-item'>{$data['category'][$i]->getCategoryName()}<span class='badge'>{$data['category'][$i]->getAmount()}</span></a>";
+                            }
                         }
                         ?>
                     </div>

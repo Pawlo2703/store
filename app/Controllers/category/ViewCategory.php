@@ -3,8 +3,10 @@
 namespace Shop\Controllers\category;
 
 use Shop\Core\Controller;
-use Shop\Models\Products\CategoryManagement;
-use Shop\Models\Products\ProductManagement;
+use Shop\Models\Products\{
+    CategoryCollection,
+    ProductCollection
+};
 
 /**
  * Class ViewCategory
@@ -16,21 +18,23 @@ class ViewCategory extends Controller {
      */
     public function display() {
         $this->header();
-        $categoryManagement = new CategoryManagement;
-        $producManagement = new ProductManagement;
         $url = $this->parseUrl($_GET['url']);
 
+        $categoryCollection = new CategoryCollection();
+        $productCollection = new ProductCollection();
+        
         if (2 < sizeof($url)) {
             $this->session->set('category_id', $url[2]);
         } else {
             $this->redirect('home', '');
         }
 
-        $categoryList = $categoryManagement->loadCategories();
-        $productsList = $producManagement->loadProducts($url[2]);
+        $category = $categoryCollection->createCategoryCollection();
+        $product = $productCollection->createProductCollection($url[2]);
+       
         $data = [
-            'categoryList' => $categoryList,
-            'productsList' => $productsList
+            'category' => $category,
+            'product' => $product
         ];
         $this->view('home/category/view_category', $data);
     }

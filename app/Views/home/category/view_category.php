@@ -11,14 +11,11 @@
                             Owoce:
                         </a>
                         <?php
-                        $categoryList = $data['categoryList'];
-                        for ($i = 0; $i < sizeof($categoryList); $i++) {
-                            $categoryId = $categoryList[$i]['id'];
-                            $categoryAmount = $categoryList[$i]['amount'];
-                            $productAvailability = $categoryList[$i]['is_available'];
-                            $categoryName = $categoryList[$i]['name'];
-                            if ($productAvailability == 'turned on') {
-                                echo "<a href='http://" . ($_SERVER['HTTP_HOST']) . "/" . 'kategoria' . "/$categoryId' class='list-group-item'>$categoryName<span class='badge'>$categoryAmount</span></a>";
+                        for ($i = 0; $i < sizeof($data['category']); $i++) {
+                          
+                            if ($data['category'][$i]->getIsAvailable() == 'turned on') {
+                                echo "<a href='http://" . ($_SERVER['HTTP_HOST']) . "/" . 'kategoria' . "/{$data['category'][$i]->getCategoryId()}' class='list-group-item'>"
+                                . "{$data['category'][$i]->getCategoryName()}<span class='badge'>{$data['category'][$i]->getAmount()}</span></a>";
                             }
                         }
                         ?>
@@ -27,17 +24,14 @@
             </div>
             <div class="col-md-8">
                 <?php
-                $productsList = $data['productsList'];
-                for ($i = 0; $i < sizeof($productsList); $i++) {
-                    $productName = $productsList[$i]['name'];
-                    $productPrice = $productsList[$i]['price'];
-                    $productId = $productsList[$i]['id'];
-                    $productImage = $productsList[$i]['image'];
+               
+                for ($i = 0; $i < sizeof($data['product']); $i++) {
 
                     echo "<div class='col-md-4'>";
-                    echo "<img src='https://sup.dev/Shop/public/images/$productImage' class='sc-item-img img-responsive' />";
-                    echo "<div class='text-center'><a href='http://" . ($_SERVER['HTTP_HOST']) . "/" . 'produkt' . "/$productId'>$productName</a>";
-                    echo "<p class='text-center'>$productPrice zł</p>";
+                    echo "<img src='https://sup.dev/Shop/public/images/{$data['product'][$i]->getProductImage()}' class='sc-item-img img-responsive' />";
+                    echo "<div class='text-center'><a href='http://" . ($_SERVER['HTTP_HOST']) . "/" . 'produkt' . "/{$data['product'][$i]->getProductid()}'>"
+                    . "{$data['product'][$i]->getProductName()}</a>";
+                    echo "<p class='text-center'>{$data['product'][$i]->getProductPrice()} zł</p>";
                     echo "</div>";
                     echo "</div>";
                 }

@@ -4,27 +4,25 @@ namespace Shop\Controllers;
 
 use Shop\Core\Controller;
 use Shop\Models\Products\{
-    CategoryManagement,
-    ProductManagement
+    CategoryCollection
 };
 
 /**
  * Class Home
  */
 class Home extends Controller {
-
     /*
      * Display homepage
      */
+
     public function display() {
         $this->header();
-        $categoryManagement = new CategoryManagement;
-        $productManagement = new ProductManagement;
 
-        $categoryList = $categoryManagement->loadCategories();
+        $categoryCollection = new CategoryCollection;
+        $category = $categoryCollection->createCategoryCollection();
 
         $data = [
-            'categoryList' => $categoryList
+            'category' => $category
         ];
         $this->view('home/home_page/index', $data);
     }

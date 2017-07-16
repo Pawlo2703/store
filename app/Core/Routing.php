@@ -13,14 +13,14 @@ class Routing extends Controller {
     public function __construct() {
         $action = array("home", "rejestracja", "submit", "login", "zalogowano", "logout", "dodaj_kat",
             "zatwierdz_kat", "category", "product", "dodaj_pro", "zatwierdz_pro", "usun_produkt", "usun_kategorie", "widok_produktu", "zmiana_produktu",
-            "dostepnosc_produktu", "kategoria", "dostepnosc_kategorii", "zatwierdz_zmiane", "zmiana_nazwy_kategorii", "produkt", "koszyk");
+            "dostepnosc_produktu", "kategoria", "dostepnosc_kategorii", "zatwierdz_zmiane", "zmiana_nazwy_kategorii", "produkt", "koszyk", "pokaz_koszyk");
 
         $controller = array("home/display", "register/display", "register/submit", "login/display",
             "login/submit", "logout/logout", "admin_category_category/displaycreatecategoryform", "admin_category_category/createCategory",
             "admin_category_category/display", "admin_product_product/display", "admin_product_product/displayCreateProductForm", "admin_product_product/createProduct",
             "admin_product_product/remove", "admin_category_category/remove", "admin_product_productview/display", "admin_product_productactions/updateproduct",
             "admin_product_productactions/changeAvailability", "category_viewcategory/display", "admin_category_categoryactions/changeavailability", "admin_category_categoryactions/changeCategoryName",
-            "admin_category_categoryactions/displaynamechangeform", "product_viewproduct/display", "product_viewproduct/addProductToCart");
+            "admin_category_categoryactions/displaynamechangeform", "product_viewproduct/display", "product_viewproduct/addProductToCart", "CartView/display");
         var_dump($_SESSION);
         if (isset($_GET['url'])) {
             if (strpos($_GET['url'], '/') !== false) {
