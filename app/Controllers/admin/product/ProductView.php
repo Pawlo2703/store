@@ -2,11 +2,11 @@
 
 namespace Shop\Controllers\admin\product;
 
+use Shop\Models\Products\ProductManagement;
 use Shop\Core\Controller;
-use Shop\Models\Products\{
+use Shop\Models\Category\{
     CategoryManagement,
-    CategoryCollection,
-    ProductManagement
+    CategoryCollection
 };
 
 class ProductView extends Controller {
@@ -27,13 +27,12 @@ class ProductView extends Controller {
         $categoryId = $this->session->get('category_id');
         $categoryNavigation = "' http://" . ($_SERVER['HTTP_HOST']) . "/" . 'category' . "'";
         $productNavigation = "' http://" . ($_SERVER['HTTP_HOST']) . "/" . 'product/' . $categoryId . "'";
-        $product = $productManagement->loadProduct($productId);
-
-        $category = $categoryManagement->getCategoryById($product['category_id']);
+        $productManagement->loadProduct($productId);
+        $categoryManagement->findBy("id", $productManagement->getCategoryId());
 
         $data = [
-            'product' => $product,
-            'category' => $category,
+            'productManagement' => $productManagement,
+            'categoryManagement' => $categoryManagement,
             'categoryNavigation' => $categoryNavigation,
             'productNavigation' => $productNavigation,
             'collection' => $collection

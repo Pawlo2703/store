@@ -3,6 +3,10 @@
 namespace Shop\Controllers;
 
 use Shop\Core\Controller;
+use Shop\Models\Products\{
+    ProductCollection,
+    ProductManagement
+};
 use Shop\Models\Cart\{
     CartCollection,
     CartManagement
@@ -20,17 +24,32 @@ class CartView extends Controller {
         $this->header();
         $cartCollection = new CartCollection;
         $cartManagement = new CartManagement;
-        
+        $productCollection = new ProductCollection;
+        $productManagement = new ProductManagement;
+        if (($this->session->get('cart_id')) === null) {
+            $this->view('home/cart/empty_cart');
+            exit;
+        }
+
         $cartId = $this->session->get('cart_id');
         $cartManagement->setCartId($cartId);
-        $quote = $cartManagement->loadQuote();
-        $cartManagement->setTotalQuantity($quote['quantity']);
-        $cartManagement->setTotalPrice($quote['price']);
-        $cart = $cartCollection->createCartCollection($cartId);
-        
+        $cartManagement->loadcart();
+
+        $productQuantity = $cartManagement->getProductQuantity();
+        $productPrice = $cartManagement->getProductPrice();
+
+        $cartManagement->setTotalQuantity($productQuantity);
+        $cartManagement->setTotalPrice($productPrice);
+
+        $cartCollection->filterBy('cart_id', $cartId);
+        $product = $productCollection->createProductCollection();
+        $cart = $cartCollection->createCartCollection();
+
         $data = [
+            'product' => $product,
             'cart' => $cart,
-            'cartManagement' => $cartManagement
+            'cartManagement' => $cartManagement,
+                'productManagement' => $productManagement
         ];
         $this->view('home/cart/cart_view', $data);
     }

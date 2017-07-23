@@ -11,11 +11,15 @@ use Shop\Models\Products\ProductManagement;
 class ProductCollection extends Model {
 
     /**
-     *
      * @var array
      */
     private $productCollection;
 
+    /**
+     * @var tableName
+     */
+    protected $tableName = "products";
+    
     /**
      * @return array
      */
@@ -26,11 +30,12 @@ class ProductCollection extends Model {
     /**
      * Creates objects products and saves to array
      */
-    public function createProductCollection($id) {
-        $result = $this->database->getRows('*', 'products', "WHERE category_id = ?", [$id]);
+    public function createProductCollection() {
+       
+       Model::loadCollection();
 
-        if (!empty($result)) {
-            foreach ($result as $key => $value) {
+        if (!empty($this->rawData)) {
+            foreach ($this->rawData as $value) {
                 $product = new ProductManagement;
                 $product->setProductId($value['id']);
                 $product->setProductName($value['name']);

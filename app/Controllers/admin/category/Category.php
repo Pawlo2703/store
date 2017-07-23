@@ -3,11 +3,11 @@
 namespace Shop\Controllers\admin\category;
 
 use Shop\Core\Controller;
-use Shop\Models\Products\{
+use Shop\Models\Category\{
     CategoryManagement,
-    ProductManagement,
     CategoryCollection
 };
+use Shop\Models\Products\ProductManagement;
 
 /**
  * Class Category
@@ -22,7 +22,7 @@ class Category extends Controller {
 
         $collection = new CategoryCollection;
         $categoryCollection = $collection->createCategoryCollection();
-       
+
 
         $data = [
             'categoryCollection' => $categoryCollection

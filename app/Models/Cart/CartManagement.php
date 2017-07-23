@@ -153,26 +153,33 @@ class CartManagement extends Model {
     }
 
     /**
-     * Add items to cart, create new cart if doesnt exist
-     * @return string
+     * Create row cart
      */
-    public function createQuote() {
-        if (!isset($this->cartId)) {
-            $this->database->insertRow('quote', "(`user_id`,`quantity`,`price`) VALUES(?,?,?)", ["0", "0", "0"]);
-            $cartId = $this->database->getRow('cart_id', 'quote', "ORDER BY cart_id DESC LIMIT 1");
-            $this->setCartId($cartId['cart_id']);
-            $this->database->insertRow('quote_item', "(`cart_id`,`product_id`,`product_quantity`,`product_price`) VALUES(?,?,?,?)", [$this->cartId, $this->productId, $this->productQuantity, $this->productPrice]);
+    public function createcart() {
+        if (isset($this->cartId)) {
             return;
         }
-        $result = $this->database->getRow('product_quantity', 'quote_item', "WHERE cart_id =? AND product_id = ?", [$this->cartId, $this->productId]);
+        $this->database->insertRow('cart', "(`user_id`,`quantity`,`price`) VALUES(?,?,?)", ["0", "0", "0"]);
+    }
+
+    /**
+     * Create row cartItem, update if exists
+     */
+    public function savecartItem() {
+        if (!isset($this->cartId)) {
+            $cartId = $this->database->getRow('cart_id', 'cart', "ORDER BY cart_id DESC LIMIT 1");
+            $this->setCartId($cartId['cart_id']);
+            $this->database->insertRow('cart_item', "(`cart_id`,`product_id`,`product_quantity`,`product_price`) VALUES(?,?,?,?)", [$this->cartId, $this->productId, $this->productQuantity, $this->productPrice]);
+            return;
+        }
+        $result = $this->database->getRow('product_quantity', 'cart_item', "WHERE cart_id =? AND product_id = ?", [$this->cartId, $this->productId]);
         if (!empty($result)) {
             $productAmount = $this->productQuantity + $result['product_quantity'];
-            $this->database->updateRow('quote_item', "product_quantity= '$productAmount'"
+            $this->database->updateRow('cart_item', "product_quantity= '$productAmount'"
                     . "WHERE cart_id = {$this->cartId} AND product_id = {$this->productId}");
             return;
         }
-        $this->database->insertRow('quote_item', "(`cart_id`,`product_id`,`product_quantity`,`product_price`) VALUES(?,?,?,?)", [$this->cartId, $this->productId, $this->productQuantity, $this->productPrice]);
-        return;
+        $this->database->insertRow('cart_item', "(`cart_id`,`product_id`,`product_quantity`,`product_price`) VALUES(?,?,?,?)", [$this->cartId, $this->productId, $this->productQuantity, $this->productPrice]);
     }
 
     /*
@@ -180,11 +187,11 @@ class CartManagement extends Model {
      */
 
     public function calculateQuantity() {
-        $quote = $this->database->getRow('quantity, price', 'quote', "WHERE cart_id = ? ", [$this->cartId]);
+        $cart = $this->database->getRow('quantity, price', 'cart', "WHERE cart_id = ? ", [$this->cartId]);
 
-        if (isset($quote)) {
-            $newQuantity = (int) ($quote['quantity']) + (int) ($this->productQuantity);
-            $this->database->updateRow('quote', "quantity= '$newQuantity'"
+        if (isset($cart)) {
+            $newQuantity = (int) ($cart['quantity']) + (int) ($this->productQuantity);
+            $this->database->updateRow('cart', "quantity= '$newQuantity'"
                     . "WHERE cart_id = {$this->cartId}");
         }
     }
@@ -193,19 +200,26 @@ class CartManagement extends Model {
      * Calculate products price
      */
     public function calculatePrice() {
-        $quoteItem = $this->database->getRow('product_quantity, product_price', 'quote_item', "WHERE cart_id = ? ORDER BY id DESC LIMIT 1", [$this->cartId]);
+        $cartItem = $this->database->getRow('product_quantity, product_price', 'cart_item', "WHERE cart_id = ? ORDER BY id DESC LIMIT 1", [$this->cartId]);
 
-        $quote = $this->database->getRow('quantity, price', 'quote', "WHERE cart_id = ? ", [$this->cartId]);
-        if (isset($quoteItem)) {
-            $price = (int) ($quote['price']) + ((int) ($quoteItem['product_price']) * (int) ($this->productQuantity));
-            $this->database->updateRow('quote', "price = '$price' "
+        $cart = $this->database->getRow('quantity, price', 'cart', "WHERE cart_id = ? ", [$this->cartId]);
+        if (isset($cartItem)) {
+            $price = (int) ($cart['price']) + ((int) ($cartItem['product_price']) * (int) ($this->productQuantity));
+            $this->database->updateRow('cart', "price = '$price' "
                     . "WHERE cart_id = $this->cartId");
         }
     }
 
-    public function loadQuote() {
-        $quote = $this->database->getRow('quantity, price', 'quote', "WHERE cart_id = ? ", [$this->cartId]);
-        return $quote;
+    /**
+     * Load costam dopisac
+     */
+    public function loadcart() {
+        $cart = $this->database->getRow('*', 'cart', "WHERE cart_id = ? ", [$this->cartId]);
+
+        if (!empty($cart)) {
+            $this->productQuantity = $cart['quantity'];
+            $this->productPrice = $cart['price'];
+        }
     }
-    
+
 }

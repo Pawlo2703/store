@@ -59,10 +59,16 @@ class ProductManagement extends Model {
      */
     private $isAvailable;
 
+    /**
+     * @return string
+     */
     public function getIsAvailable() {
         return $this->isAvailable;
     }
 
+    /**
+     * @param string $isAvailable
+     */
     public function setIsAvailable($isAvailable) {
         $this->isAvailable = $isAvailable;
     }
@@ -260,7 +266,19 @@ class ProductManagement extends Model {
      */
     public function loadProduct($id) {
         $result = $this->database->getRow('*', 'products', "WHERE id = ?", [$id]);
-        return $result;
+
+        if (!empty($result)) {
+            $this->productId = $id;
+            $this->categoryId = $result['category_id'];
+            $this->productType = $result['type'];
+            $this->productColor = $result['color'];
+            $this->productName = $result['name'];
+            $this->productCountry = $result['country'];
+            $this->productQuantity = $result['quantity'];
+            $this->productPrice = $result['price'];
+            $this->isAvailable = $result['is_available'];
+            $this->productImage = $result['image'];
+        }
     }
 
     /**
@@ -283,12 +301,17 @@ class ProductManagement extends Model {
         if (($result['is_available']) == "turned off") {
             $this->database->updateRow('products', "is_available= 'turned on'"
                     . "WHERE id= {$this->productId}");
-        } else {
-            $this->database->updateRow('products', "is_available= 'turned off'"
-                    . "WHERE id= {$this->productId}");
+            return;
         }
+        $this->database->updateRow('products', "is_available= 'turned off'"
+                . "WHERE id= {$this->productId}");
     }
 
+    /**
+     * 
+     * @param string $names
+     * @return boolean|int
+     */
     public function uploadImage($names) {
         if (!($_FILES['image']['name'])) {
             return;

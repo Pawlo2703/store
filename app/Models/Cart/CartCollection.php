@@ -11,11 +11,15 @@ use Shop\Models\Cart\CartManagement;
 class CartCollection extends Model {
 
     /**
-     *
      * @var array
      */
     private $cartCollection;
 
+    /**
+     * @var string
+     */
+    protected $tableName = 'cart_item';
+    
     /**
      * @return array
      */
@@ -26,16 +30,19 @@ class CartCollection extends Model {
     /**
      * Creates cart objects and saves to array
      */
-    public function createCartCollection($id) {
-        $result = $this->database->getRows('*', 'quote_item', "WHERE cart_id= ?", [$id]);
+    public function createCartCollection() {
 
-        if (!empty($result)) {
-            foreach ($result as $key => $value) {
+        Model::loadCollection();
+
+        if (!empty($this->rawData)) {
+            
+            foreach ($this->rawData as $value) {
                 $cart = new CartManagement;
                 $cart->setCartId($value['cart_id']);
                 $cart->setProductName($value['product_id']);
                 $cart->setProductPrice($value['product_price']);
                 $cart->setProductQuantity($value['product_quantity']);
+                $cart->setProductId($value['product_id']);
 
                 if (isset($collection)) {
                     array_push($collection, $cart);

@@ -3,9 +3,8 @@
 namespace Shop\Controllers\admin\product;
 
 use Shop\Core\Controller;
-use Shop\Models\Products\CategoryManagement;
+use Shop\Models\Category\CategoryManagement;
 use Shop\Models\Products\ProductManagement;
-use Shop\libs\Session;
 
 /**
  * ProductActions
@@ -21,14 +20,18 @@ class ProductActions extends Controller {
         $productManagement = new ProductManagement;
         $categoryManagement = new CategoryManagement;
         $params = $this->getParameters();
+
         $productId = $this->session->get('product_id');
         $loadedProduct = $productManagement->loadProduct($productId);
         $productManagement->init($loadedProduct);
         $productManagement->init($params);
         $productManagement->setProductId($productId);
         $productManagement->setCategoryId($loadedProduct['category_id']);
-        $categoryId = $categoryManagement->getCategoryByName($params['category']);
-        $productManagement->setCategoryId($categoryId['id']);
+
+        $categoryManagement->findBy("name", $params['category']);
+        $categoryId = $categoryManagement->getCategoryId();
+        $productManagement->setCategoryId($categoryId);
+
         $productManagement->updateProduct();
 
         $this->redirect("category", '');

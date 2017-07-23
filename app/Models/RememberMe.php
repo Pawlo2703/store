@@ -102,13 +102,12 @@ class RememberMe extends Model {
         if ((!$result) && (isset($this->bigKey))) {
             $result = $this->database->insertRow('remember', "( `id`, `bigKey`, `admin`) VALUES(?,?,?)", [$id, $this->bigKey, $admin]);
             return $result;
-        } else {
-            $bigKey = $this->bigKey;
-            $result = $this->database->updateRow('remember', "bigKey='$bigKey',"
-                    . "admin='$admin'"
-                    . "WHERE id = $id");
-            return $result;
         }
+        $bigKey = $this->bigKey;
+        $result = $this->database->updateRow('remember', "bigKey='$bigKey',"
+                . "admin='$admin'"
+                . "WHERE id = $id");
+        return $result;
     }
 
     /**

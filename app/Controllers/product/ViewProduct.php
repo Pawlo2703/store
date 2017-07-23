@@ -2,11 +2,11 @@
 
 namespace Shop\Controllers\product;
 
+use Shop\Models\Products\ProductManagement;
 use Shop\Core\Controller;
-use Shop\Models\Products\{
+use Shop\Models\Category\{
     CategoryCollection,
-    CategoryManagement,
-    ProductManagement
+    CategoryManagement
 };
 use \Shop\Models\Cart\CartManagement;
 
@@ -32,15 +32,15 @@ class ViewProduct extends Controller {
         $productList = $this->session->get('category_id');
 
         $navigation = "' http://" . ($_SERVER['HTTP_HOST']) . "/" . 'kategoria/' . $categoryId . "'";
-        $product = $productManagement->loadProduct($url[2]);
+        $productManagement->loadProduct($url[2]);
 
-        $categoryName = $categoryManagement->getCategoryById($categoryId);
-
+      
+        $categoryManagement->findBy("id", $categoryId);
         $data = [
-            'product' => $product,
+            'productManagement' => $productManagement,
             'category' => $category,
             'navigation' => $navigation,
-            'categoryName' => $categoryName
+            'categoryManagement' => $categoryManagement
         ];
         $this->view('home/product/product_view', $data);
     }
@@ -55,22 +55,23 @@ class ViewProduct extends Controller {
         $productId = $this->session->get('product_id');
 
         $params = $this->getParameters();
-        $product = $productManagement->loadProduct($productId);
-        $productQuantityDB = $product['quantity'];
+        $productManagement->loadProduct($productId);
+        $productQuantityDB = $productManagement->getProductQuantity();
         $productQuantityParams = $params['amount'];
 
         if ($productQuantityParams > $productQuantityDB) {
             $productQuantityParams = $productQuantityDB;
         }
-        $cart->setProductId($product['id']);
-        $cart->setProductPrice($product['price']);
+        $cart->setProductId($productManagement->getProductId());
+        $cart->setProductPrice($productManagement->getProductPrice());
         $cart->setProductQuantity($productQuantityParams);
 
         if ($this->session->get('cart_id') !== NULL) {
             $cartId = $this->session->get('cart_id');
             $cart->setCartId($cartId);
         }
-        $cart->createQuote();
+        $cart->createcart();
+        $cart->savecartItem();
         $cartId = $cart->getCartId();
         $this->session->set('cart_id', $cartId);
         $cart->calculateQuantity();

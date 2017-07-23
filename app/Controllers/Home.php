@@ -3,9 +3,7 @@
 namespace Shop\Controllers;
 
 use Shop\Core\Controller;
-use Shop\Models\Products\{
-    CategoryCollection
-};
+use Shop\Models\Category\CategoryCollection;
 
 /**
  * Class Home

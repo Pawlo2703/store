@@ -3,10 +3,8 @@
 namespace Shop\Controllers\admin\category;
 
 use Shop\Core\Controller;
-use Shop\Models\Products\{
-    CategoryManagement,
-    ProductManagement
-};
+use Shop\Models\Products\ProductManagement;
+use Shop\Models\Category\CategoryManagement;
 
 /**
  * Class CategoryActions

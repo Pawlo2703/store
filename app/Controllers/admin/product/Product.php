@@ -2,9 +2,9 @@
 
 namespace Shop\Controllers\admin\product;
 
+use Shop\Models\Category\CategoryManagement;
 use Shop\Core\Controller;
 use Shop\Models\Products\{
-    CategoryManagement,
     ProductCollection,
     ProductManagement
 };
@@ -24,7 +24,8 @@ class Product extends Controller {
         $this->session->set('category_id', $url[2]);
 
         $collection = new ProductCollection;
-        $productCollection = $collection->createProductCollection($url[2]);
+        $collection->filterBy('category_id', $url[2]);
+        $productCollection = $collection->createProductCollection();
 
         $navigationUrl = "' http://" . ($_SERVER['HTTP_HOST']) . "/" . 'category' . "'";
 

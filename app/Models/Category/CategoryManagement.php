@@ -1,6 +1,6 @@
 <?php
 
-namespace Shop\Models\Products;
+namespace Shop\Models\Category;
 
 use Shop\Core\Model;
 
@@ -98,23 +98,19 @@ class CategoryManagement extends Model {
     }
 
     /**
-     * Find categories by name
-     * @param string $name
-     * @return array
+     * Load all columns by given parameters
+     * @param string $column
+     * @param string $param
      */
-    public function getCategoryByName($name) {
-        $result = $this->database->getRow('id', 'category', "WHERE name = ?", [$name]);
-        return $result;
-    }
+    public function findBy($column, $param) {
+        $result = $this->database->getRow('*', 'category', "WHERE $column = ?", [$param]);
 
-    /**
-     * Find category by id
-     * @param string $id
-     * @return array
-     */
-    public function getCategoryById($id) {
-        $result = $this->database->getRow('name', 'category', "WHERE id = ?", [$id]);
-        return $result;
+        if (!empty($result)) {
+            $this->categoryId = $result['id'];
+            $this->categoryName = $result['name'];
+            $this->amount = $result['amount'];
+            $this->isAvailable = $result['is_available'];
+        }
     }
 
     /**

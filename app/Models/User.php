@@ -151,11 +151,9 @@ class User extends Model {
         if ((!$email) && (isset($this->newsletter))) {
             $result = $this->database->insertRow('user', "( `name`, `surname`, `email`, `password`, `newsletter`) VALUES(?,?,?,?,?)", [$this->name, $this->surname, $this->email, $this->password, $this->newsletter]);
             return $result;
-        } else {
-            $result = $this->database->insertRow('user', "( `name`, `surname`, `email`, `password`) VALUES(?,?,?,?)", [$this->name, $this->surname, $this->email, $this->password]);
-            return $result;
         }
-        return NULL;
+        $result = $this->database->insertRow('user', "( `name`, `surname`, `email`, `password`) VALUES(?,?,?,?)", [$this->name, $this->surname, $this->email, $this->password]);
+        return $result;
     }
 
     /**

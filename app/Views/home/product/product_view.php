@@ -38,14 +38,14 @@
                 </thead>
                 <tbody>
                     <tr>
-                        <td><?php echo $data['product']['name']; ?></td>
-                        <td><?php echo $data['product']['type']; ?></td>
-                        <td><?php echo $data['categoryName']['name']; ?></td>
-                        <td><?php echo $data['product']['color']; ?></td>
-                        <td><?php echo $data['product']['country']; ?></td>
-                        <td><?php echo $data['product']['quantity']; ?></td>
-                        <td><?php echo $data['product']['price']; ?></td>
-                        <td><?php $productId = $data['product']['id']; ?>
+                        <td><?php echo $data['productManagement']->getProductName(); ?></td>
+                        <td><?php echo $data['productManagement']->getProductType(); ?></td>
+                        <td><?php echo $data['categoryManagement']->getCategoryName(); ?></td>
+                        <td><?php echo $data['productManagement']->getProductColor(); ?></td>
+                        <td><?php echo $data['productManagement']->getProductCountry(); ?></td>
+                        <td><?php echo $data['productManagement']->getProductQuantity(); ?></td>
+                        <td><?php echo $data['productManagement']->getProductPrice(); ?></td>
+                        <td><?php $productId = $data['productManagement']->getProductId(); ?>
                             <form method="post" action="http://sup.dev/koszyk" role="form">
 
                                 <div class="form-group">

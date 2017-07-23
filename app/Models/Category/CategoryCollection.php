@@ -1,9 +1,9 @@
 <?php
 
-namespace Shop\Models\Products;
+namespace Shop\Models\Category;
 
 use Shop\Core\Model;
-use Shop\Models\Products\CategoryManagement;
+use Shop\Models\Category\CategoryManagement;
 
 /**
  * Class CategoryCollection
@@ -11,10 +11,14 @@ use Shop\Models\Products\CategoryManagement;
 class CategoryCollection extends Model {
 
     /**
-     *
-     * @var array
+     * @var categoryCollection
      */
     private $categoryCollection;
+
+    /**
+     * @var $tableName
+     */
+    protected $tableName = "category";
 
     /**
      * @return array
@@ -27,10 +31,11 @@ class CategoryCollection extends Model {
      * Creates objects collection and saves to array
      */
     public function createCategoryCollection() {
-        $result = $this->database->getRows('*', 'category');
 
-        if (!empty($result)) {
-            foreach ($result as $key => $value) {
+        Model::loadCollection();
+
+        if (!empty($this->rawData)) {
+            foreach ($this->rawData as $value) {
                 $category = new CategoryManagement;
                 $category->setCategoryId($value['id']);
                 $category->setCategoryName($value['name']);

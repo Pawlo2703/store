@@ -23,13 +23,13 @@ include __DIR__ . '/../header_footer/admin_header.php'
                     </thead>
                     <tbody>
                         <tr>
-                            <td> <?php echo $data['product']['name']; ?></td>
-                            <td><?php echo $data['product']['type']; ?></td>
-                            <td><?php echo $data['category']['name']; ?></td>
-                            <td><?php echo $data['product']['color']; ?></td>
-                            <td><?php echo $data['product']['country']; ?></td>
-                            <td><?php echo $data['product']['quantity']; ?></td>
-                            <td><?php echo $data['product']['price']; ?></td>
+                            <td><?php echo $data['productManagement']->getProductName(); ?></td>
+                            <td><?php echo $data['productManagement']->getProductType(); ?></td>
+                            <td><?php echo $data['categoryManagement']->getCategoryName(); ?></td>
+                            <td><?php echo $data['productManagement']->getProductColor(); ?></td>
+                            <td><?php echo $data['productManagement']->getProductCountry(); ?></td>
+                            <td><?php echo $data['productManagement']->getProductQuantity(); ?></td>
+                            <td><?php echo $data['productManagement']->getProductPrice(); ?></td>
                         </tr>
                         <tr> <form method="post" action="http://sup.dev/zmiana_produktu" role="form">
                         <td><input type="text" name="name" placeholder="zmień nazwę"></td>
