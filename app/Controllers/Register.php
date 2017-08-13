@@ -20,7 +20,9 @@ class Register extends Controller {
      */
     public function display() {
         $this->header();
-        $this->view('home/register/register');
+        $user = new User;
+        $data = ['user' => $user];
+        $this->view('home/register/register', $data);
     }
 
     /**

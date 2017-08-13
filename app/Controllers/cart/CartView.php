@@ -1,6 +1,6 @@
 <?php
 
-namespace Shop\Controllers;
+namespace Shop\Controllers\cart;
 
 use Shop\Core\Controller;
 use Shop\Models\Products\{
@@ -9,11 +9,12 @@ use Shop\Models\Products\{
 };
 use Shop\Models\Cart\{
     CartCollection,
+    Product,
     CartManagement
 };
 
 /**
- * Class Home
+ * Class CartView
  */
 class CartView extends Controller {
     /*
@@ -26,30 +27,33 @@ class CartView extends Controller {
         $cartManagement = new CartManagement;
         $productCollection = new ProductCollection;
         $productManagement = new ProductManagement;
-        if (($this->session->get('cart_id')) === null) {
+        $product = new Product;
+
+
+        $cartId = $this->session->get('cart_id');
+        $product->setCartId($cartId);
+
+
+        if ($cartManagement->loadCartItem($product) === false) {
             $this->view('home/cart/empty_cart');
             exit;
         }
 
-        $cartId = $this->session->get('cart_id');
-        $cartManagement->setCartId($cartId);
-        $cartManagement->loadcart();
+        $productQuantity = $product->getProductQuantity();
+        $productPrice = $product->getProductPrice();
 
-        $productQuantity = $cartManagement->getProductQuantity();
-        $productPrice = $cartManagement->getProductPrice();
-
-        $cartManagement->setTotalQuantity($productQuantity);
-        $cartManagement->setTotalPrice($productPrice);
+        $product->setTotalQuantity($productQuantity);
+        $product->setTotalPrice($productPrice);
 
         $cartCollection->filterBy('cart_id', $cartId);
-        $product = $productCollection->createProductCollection();
+        $products = $productCollection->createProductCollection();
         $cart = $cartCollection->createCartCollection();
 
         $data = [
-            'product' => $product,
+            'product' => $products,
             'cart' => $cart,
             'cartManagement' => $cartManagement,
-                'productManagement' => $productManagement
+            'productManagement' => $productManagement
         ];
         $this->view('home/cart/cart_view', $data);
     }

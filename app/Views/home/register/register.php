@@ -1,3 +1,23 @@
+<script>
+//    function checkEmail() {
+//        $(document).ready(function () {
+//            alert("test");
+//        });
+//    }
+
+    function checkEmail() {
+        $(document).ready(function () {
+            $.ajax({
+                method: "POST",
+                url: "email_confirmation",
+          //      url: "http://sup.dev/email_confirmation",
+                data: {params: email},
+                
+               
+            });
+        });
+    }
+</script>
 <div class="container">
     <div class="row centered-form">
         <div class="col-xs-12 col-sm-8 col-md-4 col-sm-offset-2 col-md-offset-4">
@@ -22,6 +42,7 @@
 
                         <div class="form-group">
                             <input type="email" name="email" id="email" class="form-control input-sm" placeholder="Email Address" required>
+                            <button type="button" value="checkEmail" onclick="checkEmail()" />Check availability</button>
                         </div>
 
                         <div class="row">

@@ -8,7 +8,12 @@ use Shop\Models\Category\{
     CategoryCollection,
     CategoryManagement
 };
-use \Shop\Models\Cart\CartManagement;
+use \Shop\Models\Cart\{
+    CartDetails,
+    Product,
+    CartManagement
+}
+;
 
 /**
  * Class ViewProduct
@@ -24,6 +29,7 @@ class ViewProduct extends Controller {
         $categoryCollection = new CategoryCollection();
         $categoryManagement = new CategoryManagement();
 
+
         $url = $this->parseUrl($_GET['url']);
         $this->session->set('product_id', $url[2]);
 
@@ -34,7 +40,7 @@ class ViewProduct extends Controller {
         $navigation = "' http://" . ($_SERVER['HTTP_HOST']) . "/" . 'kategoria/' . $categoryId . "'";
         $productManagement->loadProduct($url[2]);
 
-      
+
         $categoryManagement->findBy("id", $categoryId);
         $data = [
             'productManagement' => $productManagement,
@@ -51,6 +57,7 @@ class ViewProduct extends Controller {
     public function addProductToCart() {
         $productManagement = new ProductManagement;
         $cart = new CartManagement;
+        $product = new Product;
 
         $productId = $this->session->get('product_id');
 
@@ -62,20 +69,23 @@ class ViewProduct extends Controller {
         if ($productQuantityParams > $productQuantityDB) {
             $productQuantityParams = $productQuantityDB;
         }
-        $cart->setProductId($productManagement->getProductId());
-        $cart->setProductPrice($productManagement->getProductPrice());
-        $cart->setProductQuantity($productQuantityParams);
-
+        $product->setProductId($productManagement->getProductId());
+        $product->setProductPrice($productManagement->getProductPrice());
+        $product->setProductQuantity($productQuantityParams);
+    
+   
+        
         if ($this->session->get('cart_id') !== NULL) {
             $cartId = $this->session->get('cart_id');
-            $cart->setCartId($cartId);
+            $product->setCartId($cartId);
         }
-        $cart->createcart();
-        $cart->savecartItem();
-        $cartId = $cart->getCartId();
+         
+        $cart->createCart($product);
+        $cart->saveCartItem($product);
+        $cartId = $product->getCartId();
         $this->session->set('cart_id', $cartId);
-        $cart->calculateQuantity();
-        $cart->calculatePrice();
+        $cart->calculateQuantity($product);
+        $cart->calculatePrice($product);
         $this->redirect("produkt", "$productId");
     }
 

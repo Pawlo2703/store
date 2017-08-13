@@ -3,7 +3,10 @@
 namespace Shop\Models\Cart;
 
 use Shop\Core\Model;
-use Shop\Models\Cart\CartManagement;
+use Shop\Models\Cart\{
+    CartManagement,
+    ProductDetails
+};
 
 /**
  * Class CartCollection
@@ -19,7 +22,7 @@ class CartCollection extends Model {
      * @var string
      */
     protected $tableName = 'cart_item';
-    
+
     /**
      * @return array
      */
@@ -35,19 +38,19 @@ class CartCollection extends Model {
         Model::loadCollection();
 
         if (!empty($this->rawData)) {
-            
+
             foreach ($this->rawData as $value) {
-                $cart = new CartManagement;
-                $cart->setCartId($value['cart_id']);
-                $cart->setProductName($value['product_id']);
-                $cart->setProductPrice($value['product_price']);
-                $cart->setProductQuantity($value['product_quantity']);
-                $cart->setProductId($value['product_id']);
+                $product = new Product;
+                $product->setCartId($value['cart_id']);
+                $product->setProductName($value['product_id']);
+                $product->setProductPrice($value['product_price']);
+                $product->setProductQuantity($value['product_quantity']);
+                $product->setProductId($value['product_id']);
 
                 if (isset($collection)) {
-                    array_push($collection, $cart);
+                    array_push($collection, $product);
                 } else {
-                    $collection = array($cart);
+                    $collection = array($product);
                 }
             }
         } else {
