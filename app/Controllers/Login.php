@@ -12,10 +12,35 @@ use Shop\Models\RememberMe;
 class Login extends Controller {
 
     /**
+     * @var string
+     */
+    private $loginParameter;
+
+    /**
+     * @return string
+     */
+    public function getLoginParameter() {
+        return $this->loginParameter;
+    }
+
+    /**
+     * @param string $loginParameter
+     */
+    public function setLoginParameter($loginParameter) {
+        $this->loginParameter = $loginParameter;
+    }
+
+    /**
      * Display login form
      */
     public function display() {
         $this->header();
+        $url = $this->parseUrl($_GET['url']);
+
+        if (isset($url[2])) {
+            $this->setLoginParameter($url[2]);
+        }
+
         $this->view('home/login/login');
     }
 
@@ -24,6 +49,7 @@ class Login extends Controller {
      */
     public function submit() {
         $this->header();
+
         $params = $this->getParameters();
         $user = new User;
         $rememberMe = new RememberMe;
@@ -55,6 +81,14 @@ class Login extends Controller {
             $rememberMe->addCookie($userId, $admin);
             setcookie('email', $bigKey, time() + 60 * 60 * 7);
         }
+
+        var_dump($this->getLoginParameter());
+        exit;
+
+        if ($this->getLoginParameter() == "payment") {
+            $this->redirect('orderCreate', '');
+        }
+
         $this->redirect('home', '');
     }
 

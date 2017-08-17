@@ -6,7 +6,7 @@
                     <center>  <h3 class="panel-title">Zaloguj</h3> </center>
                 </div>
                 <div class="panel-body">
-                    <form method="post" action="zalogowano" role="form">
+                    <form method="post" action="http://sup.dev/zalogowano" role="form">
                 
                         <div class="form-group">
                             <input type="email" name="email" id="email" class="form-control input-sm" placeholder="Email Address" required>

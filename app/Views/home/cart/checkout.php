@@ -9,7 +9,7 @@
                 </ul>
             </div>
             <table class="table table-striped">
-                <thead>
+                <thead><a href="http://sup.dev/loginCheck" class="btn btn-success">Zapłać</a>
                     <tr>
                         <th>Nazwa</th>
                         <th>Ilość</th>
