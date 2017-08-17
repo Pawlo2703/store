@@ -29,10 +29,10 @@ class CartManagement extends Model {
      */
     public function saveCartItem($product) {
         if (!($product->getCartId() !== null)) {
-                        
+
             $cartId = $this->database->getRow('cart_id', 'cart', "ORDER BY cart_id DESC LIMIT 1");
             $product->setCartId($cartId['cart_id']);
-            
+
             $this->database->insertRow('cart_item', "(`cart_id`,`product_id`,`product_quantity`,`product_price`) VALUES(?,?,?,?)", [$product->getCartId(), $product->getProductId(), $product->getProductQuantity(), $product->getProductPrice()]);
             return;
         }
@@ -64,11 +64,10 @@ class CartManagement extends Model {
      * Calculate products price
      */
     public function calculatePrice($product) {
-        $cartItem = $this->database->getRow('product_quantity, product_price', 'cart_item', "WHERE cart_id = ? ORDER BY id DESC LIMIT 1", [$product->getCartId()]);
-
         $cart = $this->database->getRow('quantity, price', 'cart', "WHERE cart_id = ? ", [$product->getCartId()]);
+
         if (isset($product)) {
-            $price = (int) ($cart['price']) + ((int) ($cartItem['product_price']) * (int) ($product->getProductQuantity()));
+            $price = (int) ($cart['price']) + ((int) ($product->getProductPrice()) * (int) ($product->getProductQuantity()));
             $this->database->updateRow('cart', "price = '$price' "
                     . "WHERE cart_id = {$product->getCartId()}");
         }
@@ -89,10 +88,19 @@ class CartManagement extends Model {
         $cart = $this->database->getRow('*', 'cart', "WHERE cart_id = ? ", [$product->getCartId()]);
 
         if (!empty($cart)) {
-            $product->setProductQuantity($cart['quantity']);
-            $product->setProductPrice($cart['price']);
+            $product->setTotalQuantity($cart['quantity']);
+            $product->setTotalPrice($cart['price']);
         }
     }
 
-    
+    /**
+     * Saves/updates user id
+     */
+    public function saveUserId($product) {
+        $userId = $product->getUserId();
+        $cartId = $product->getCartId();
+        $this->database->updateRow('cart', "user_id = '$userId' "
+                . "WHERE cart_id = $cartId");
+    }
+
 }

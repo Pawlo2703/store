@@ -28,6 +28,7 @@ class Controller {
         }
     }
 
+
     /**
      * Merge $_POST and $_GET 
      * @return array params

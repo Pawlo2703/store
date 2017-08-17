@@ -72,18 +72,22 @@ class ViewProduct extends Controller {
         $product->setProductId($productManagement->getProductId());
         $product->setProductPrice($productManagement->getProductPrice());
         $product->setProductQuantity($productQuantityParams);
-    
-   
-        
+
         if ($this->session->get('cart_id') !== NULL) {
             $cartId = $this->session->get('cart_id');
             $product->setCartId($cartId);
         }
-         
+
         $cart->createCart($product);
         $cart->saveCartItem($product);
         $cartId = $product->getCartId();
         $this->session->set('cart_id', $cartId);
+
+        if ($this->session->get('user_id') !== NULL) {
+            $product->setUserId($this->session->get('user_id'));
+            $cart->saveUserId($product);
+        }
+
         $cart->calculateQuantity($product);
         $cart->calculatePrice($product);
         $this->redirect("produkt", "$productId");

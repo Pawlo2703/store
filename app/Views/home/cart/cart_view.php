@@ -30,15 +30,15 @@
             </div>
             <table class="table table-striped">
                 <thead>
-                <button type="button" value="checkEmail" onclick="checkEmail()" />Check availability</button>
-                <tr>
-                    <th>Nazwa</th>
-                    <th>Ilość</th>
-                    <th>Cena za sztukę</th>
-                    <th></th>
-                </tr>
+                    <tr>
+                        <th>Nazwa</th>
+                        <th>Ilość</th>
+                        <th>Cena za sztukę</th>
+                        <th></th>
+                    </tr>
                 </thead>
                 <tbody>
+                <form action="http://sup.dev/checkout" method="post">
                     <?php
                     $productManagement = $data['productManagement'];
 
@@ -50,24 +50,24 @@
                         echo '</td>';
                         echo '<td>';
                         ?>
-                    <button type="button" value="-" onclick="minus(this)" />-</button>
-                    <input type="text" value="<?php echo $data['cart'][$i]->getProductQuantity(); ?>" max="10" class='qty<?php echo $i ?>'/>
-                    <button type="button" value="-" onclick="add(this, <?php echo $productManagement->getProductQuantity(); ?>)" />+</button>
-                    <?php
+                        <button type="button" value="-" onclick="minus(this)" />-</button>
+                        <input type="text" name="<?php echo $i ?>" value="<?php echo $data['cart'][$i]->getProductQuantity(); ?>" max="10" class='qty<?php echo $i ?>'/>
+                        <button type="button" value="-" onclick="add(this, <?php echo $productManagement->getProductQuantity(); ?>)" />+</button>
+                        <?php
+                        echo "</td>";
+                        echo "<td>";
+                        echo $data['cart'][$i]->getProductPrice();
+                        echo "zł";
+                        echo "</td>";
+                        echo "<td>";
+                        echo "<a href=' http://" . ($_SERVER['HTTP_HOST']) . "/" . 'usun_z_koszyka' . "/" . "{$product_id}" . "'>usuń</a>";
+                        echo "</td>";
+                    }
                     echo "</td>";
-                    echo "<td>";
-                    echo $data['cart'][$i]->getProductPrice();
-                    echo "zł";
-                    echo "</td>";
-                    echo "<td>";
-                    echo "<a href=' http://" . ($_SERVER['HTTP_HOST']) . "/" . 'usun_z_koszyka' . "/" . "{$product_id}" . "'>usuń</a>";
-                    echo "</td>";
-                }
-                echo "</td>";
 
-                echo "</tr>";
-                ?>
-                </tbody>
+                    echo "</tr>";
+                    ?>
+                    <input type="submit"></form></tbody>
             </table>
         </div>
     </div>  

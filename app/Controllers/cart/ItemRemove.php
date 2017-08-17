@@ -25,14 +25,11 @@ class ItemRemove extends Controller {
         $cartId = $this->session->get('cart_id');
         
         $product = new Product;
-        $cartManagement = new CartManagement;
-        $cartCollection = new CartCollection;
-        
-        $cartCollection->filterBy('cart_id', $cartId);
-        $cart = $cartCollection->createCartCollection();
-        
-       
+        $cartManagement = new CartManagement;     
         $itemRemoval = new ItemRemoval;
+        
+        
+        
         $product->setCartId($cartId);
         $product->setProductId($productId);
         
