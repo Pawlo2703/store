@@ -88,6 +88,7 @@ class CartManagement extends Model {
         $cart = $this->database->getRow('*', 'cart', "WHERE cart_id = ? ", [$product->getCartId()]);
 
         if (!empty($cart)) {
+            $product->setUserId($cart['user_id']);
             $product->setTotalQuantity($cart['quantity']);
             $product->setTotalPrice($cart['price']);
         }
@@ -103,4 +104,6 @@ class CartManagement extends Model {
                 . "WHERE cart_id = $cartId");
     }
 
+    
+    
 }

@@ -40,7 +40,6 @@ class ViewProduct extends Controller {
         $navigation = "' http://" . ($_SERVER['HTTP_HOST']) . "/" . 'kategoria/' . $categoryId . "'";
         $productManagement->loadProduct($url[2]);
 
-
         $categoryManagement->findBy("id", $categoryId);
         $data = [
             'productManagement' => $productManagement,
@@ -48,6 +47,7 @@ class ViewProduct extends Controller {
             'navigation' => $navigation,
             'categoryManagement' => $categoryManagement
         ];
+
         $this->view('home/product/product_view', $data);
     }
 
@@ -90,6 +90,11 @@ class ViewProduct extends Controller {
 
         $cart->calculateQuantity($product);
         $cart->calculatePrice($product);
+
+        if ($this->session->get('product_id') !== NULL) {
+            $this->session->pull('product_id');
+        }
+
         $this->redirect("produkt", "$productId");
     }
 

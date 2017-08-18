@@ -14,7 +14,7 @@ class Routing extends Controller {
         $action = array("home", "rejestracja", "submit", "login", "zalogowano", "logout", "dodaj_kat",
             "zatwierdz_kat", "category", "product", "dodaj_pro", "zatwierdz_pro", "usun_produkt", "usun_kategorie", "widok_produktu", "zmiana_produktu",
             "dostepnosc_produktu", "kategoria", "dostepnosc_kategorii", "zatwierdz_zmiane", "zmiana_nazwy_kategorii", "produkt", "koszyk", "pokaz_koszyk", "email_confirmation", "usun_z_koszyka",
-            "checkout", "podsumowanie", "loginCheck", "orderCreate" );
+            "checkout", "podsumowanie", "loginCheck", "orderCreate", "dokonano_zakupu" );
 
         $controller = array("home/display", "register/display", "register/submit", "login/display",
             "login/submit", "logout/logout", "admin_category_category/displaycreatecategoryform", "admin_category_category/createCategory",
@@ -22,7 +22,7 @@ class Routing extends Controller {
             "admin_product_product/remove", "admin_category_category/remove", "admin_product_productview/display", "admin_product_productactions/updateproduct",
             "admin_product_productactions/changeAvailability", "category_viewcategory/display", "admin_category_categoryactions/changeavailability", "admin_category_categoryactions/changeCategoryName",
             "admin_category_categoryactions/displaynamechangeform", "product_viewproduct/display", "product_viewproduct/addProductToCart", "cart_CartView/display", "register_emailCheck/emailconfirmation",
-            "cart_ItemRemove/remove", "cart_Checkout/cartUpdate", "cart_Checkout/display", "cart_Payment/loginCheck", "cart_Payment/orderCreate");
+            "cart_ItemRemove/remove", "cart_Checkout/cartUpdate", "cart_Checkout/display", "cart_Payment/loginCheck", "cart_Payment/orderCreate", "cart_Payment/display");
         var_dump($_SESSION);
         if (isset($_GET['url'])) {
             if (strpos($_GET['url'], '/') !== false) {

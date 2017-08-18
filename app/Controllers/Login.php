@@ -4,31 +4,16 @@ namespace Shop\Controllers;
 
 use Shop\Core\Controller;
 use Shop\Models\User;
+use Shop\Models\Cart\{
+    Product,
+    CartManagement
+};
 use Shop\Models\RememberMe;
 
 /**
  * Class Login
  */
 class Login extends Controller {
-
-    /**
-     * @var string
-     */
-    private $loginParameter;
-
-    /**
-     * @return string
-     */
-    public function getLoginParameter() {
-        return $this->loginParameter;
-    }
-
-    /**
-     * @param string $loginParameter
-     */
-    public function setLoginParameter($loginParameter) {
-        $this->loginParameter = $loginParameter;
-    }
 
     /**
      * Display login form
@@ -38,10 +23,13 @@ class Login extends Controller {
         $url = $this->parseUrl($_GET['url']);
 
         if (isset($url[2])) {
-            $this->setLoginParameter($url[2]);
+            $loginParameter = ($url[2]);
+            $data = $loginParameter;
+        } else {
+            $data = '';
         }
 
-        $this->view('home/login/login');
+        $data = $this->view('home/login/login', $data);
     }
 
     /**
@@ -49,10 +37,12 @@ class Login extends Controller {
      */
     public function submit() {
         $this->header();
-
+        $url = $this->parseUrl($_GET['url']);
         $params = $this->getParameters();
+        $cartManagement = new CartManagement;
         $user = new User;
         $rememberMe = new RememberMe;
+
 
         if ($userId = $user->findByEmail($params['email'])) {
             if (!$userId) {
@@ -82,11 +72,14 @@ class Login extends Controller {
             setcookie('email', $bigKey, time() + 60 * 60 * 7);
         }
 
-        var_dump($this->getLoginParameter());
-        exit;
-
-        if ($this->getLoginParameter() == "payment") {
-            $this->redirect('orderCreate', '');
+        if (isset($url[2])) {
+            if ($url[2] == "payment") {
+                $product = new Product;
+                $product->setUserId($this->session->get('user_id'));
+                $product->setCartId($this->session->get('cart_id'));
+                $cartManagement->saveUserId($product);
+                $this->redirect('orderCreate', '');
+            }
         }
 
         $this->redirect('home', '');
