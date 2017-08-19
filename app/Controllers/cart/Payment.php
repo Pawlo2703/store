@@ -4,6 +4,8 @@ namespace Shop\Controllers\cart;
 
 use Shop\Core\Controller;
 use Shop\Models\Cart\{
+    UserAddress,
+    CartCollection,
     CheckoutManagement,
     CartManagement,
     Product
@@ -13,12 +15,11 @@ use Shop\Models\Cart\{
  * Class Payment
  */
 class Payment extends Controller {
-    /*
-     * Display Cart View
-     */
 
+    /**
+     * Check if user is logged in
+     */
     public function loginCheck() {
-        $this->header();
         if ($this->session->get('user_id') !== NULL) {
             $this->redirect("orderCreate", "");
         }
@@ -26,22 +27,36 @@ class Payment extends Controller {
         $this->redirect('login', 'payment');
     }
 
+    /**
+     * Create orders and orders_items tables
+     */
     public function orderCreate() {
-        $this->header();
+        $cartCollection = new CartCollection;
         $cartManagement = new CartManagement;
         $product = new Product;
         $checkoutManagement = new CheckoutManagement;
+        $address = new UserAddress;
 
         $cartId = $this->session->get('cart_id');
         $product->setCartId($cartId);
 
+        $cartCollection->filterBy('cart_id', $cartId);
+        $cartCollectionz = $cartCollection->createCartCollection();
+       
         $cartManagement->loadcart($product);
-        $checkoutManagement->orderCreate($product);
-        $checkoutManagement->removeCart($product);
 
-        $this->redirect('dokonano_zakupu', '');
+        $checkoutManagement->orderCreate($product);
+        $checkoutManagement->searchOrderId();
+        $checkoutManagement->orderItemsCreate($cartCollectionz);
+
+        $orderId = $this->session->set('order_id', $checkoutManagement->getOrderId());
+        $orderId = $this->session->get('order_id');
+        $this->redirect('adres_dostawy', '');
     }
 
+    /**
+     * View of finished order
+     */
     public function display() {
         $this->header();
         $checkoutManagement = new CheckoutManagement;

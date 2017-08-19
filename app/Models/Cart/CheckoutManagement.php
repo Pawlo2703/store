@@ -119,14 +119,34 @@ class CheckoutManagement extends Model {
         }
     }
 
+    /**
+     * Create row in table order
+     */
     public function orderCreate($product) {
         $this->database->insertRow('orders', "(`cart_id`,`quantity`,`price`,`user_id`) VALUES(?,?,?,?)", [$product->getCartId(), $product->getTotalQuantity(), $product->getTotalPrice(), $product->getUserId()]);
     }
 
+    /**
+     * Search for ID from most recent row
+     */
+    public function searchOrderId() {
+        $result = $this->database->getRow('id', 'orders', "ORDER BY cart_id DESC LIMIT 1");
+
+        if (!empty($result)) {
+            $this->setOrderId($result['id']);
+        }
+    }
+
+    /**
+     * Remove cart, unnecessery as we have order now
+     */
     public function removeCart($product) {
         $this->database->deleteRow('cart', "WHERE cart_id = ?", [$product->getCartId()]);
     }
 
+    /**
+     * Load Order by cartId
+     */
     public function loadOrderByCartId($product) {
         $result = $cartId = $this->database->getRow('*', 'orders', "WHERE cart_id = ?", [$product->getCartId()]);
 
@@ -136,6 +156,15 @@ class CheckoutManagement extends Model {
             $this->setOrderQuantity($result['quantity']);
             $this->setStatus($result['status']);
             $this->setUserId($result['user_id']);
+        }
+    }
+
+    /**
+     * Create row in table orders_items
+     */
+    public function orderItemsCreate($cartCollectionz) {
+        for ($i = 0; $i < sizeof($cartCollectionz); $i++) {
+            $this->database->insertRow('orders_items', "(`order_id`,`product_id`, `product_quantity`,`product_price`) VALUES(?,?,?,?)", [$this->orderId, $cartCollectionz[$i]->getProductId(), $cartCollectionz[$i]->getProductQuantity(), $cartCollectionz[$i]->getProductPrice()]);
         }
     }
 
