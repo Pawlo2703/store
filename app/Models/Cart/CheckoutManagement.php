@@ -190,6 +190,14 @@ class CheckoutManagement extends Model {
             if ($result['quantity'] == 0) {
                 $this->database->updateRow('products', "is_available = 'turned off' "
                         . "WHERE id = {$cartCollection[$i]->getProductId()}");
+
+                $result = $this->database->getRow('category_id', 'products', "WHERE id = ?", [$cartCollection[$i]->getProductId()]);
+                $result2 = $this->database->getRow('amount', 'category', "WHERE id = ?", [$result['category_id']]);
+
+                $newAmount = (int) ($result2['amount']) - 1;
+
+                $this->database->updateRow('category', "amount = {$newAmount} "
+                        . "WHERE id = {$result['category_id']}");
             }
         }
     }

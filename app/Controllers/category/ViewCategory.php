@@ -11,32 +11,32 @@ use Shop\Models\Products\ProductCollection;
  */
 class ViewCategory extends Controller {
 
-/**
- * Display Category View
- */
-public function display() {
-$this->header();
-$url = $this->parseUrl($_GET['url']);
+    /**
+     * Display Category View
+     */
+    public function display() {
+        $this->header();
+        $url = $this->parseUrl($_GET['url']);
 
-$categoryCollection = new CategoryCollection();
-$productCollection = new ProductCollection();
+        $categoryCollection = new CategoryCollection();
+        $productCollection = new ProductCollection();
 
-if (2 < sizeof($url)) {
-$this->session->set('category_id', $url[2]);
-} else {
-$this->redirect('home', '');
-}
+        if (2 < sizeof($url)) {
+            $this->session->set('category_id', $url[2]);
+        } else {
+            $this->redirect('home', '');
+        }
 
-$category = $categoryCollection->createCategoryCollection();
-$productCollection->filterBy('category_id', $url[2]);
-$product = $productCollection->createProductCollection();
+        $category = $categoryCollection->createCategoryCollection();
+        $productCollection->filterBy('category_id', $url[2]);
+        $product = $productCollection->createProductCollection();
 
 
-$data = [
-'category' => $category,
- 'product' => $product
-];
-$this->view('home/category/view_category', $data);
-}
+        $data = [
+            'category' => $category,
+            'product' => $product
+        ];
+        $this->view('home/category/view_category', $data);
+    }
 
 }

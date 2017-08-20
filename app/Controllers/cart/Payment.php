@@ -2,6 +2,7 @@
 
 namespace Shop\Controllers\cart;
 
+use Shop\Models\Category\CategoryCollection;
 use Shop\Core\Controller;
 use Shop\Models\Cart\{
     UserAddress,
@@ -36,6 +37,7 @@ class Payment extends Controller {
         $product = new Product;
         $checkoutManagement = new CheckoutManagement;
         $address = new UserAddress;
+        $categoryCollection = new CategoryCollection;
 
         $cartId = $this->session->get('cart_id');
         $product->setCartId($cartId);
@@ -50,6 +52,7 @@ class Payment extends Controller {
         $checkoutManagement->orderItemsCreate($cartCollectionz);
         $checkoutManagement->updateProductsQuantity($cartCollectionz);
         $checkoutManagement->checkIfOutOfStock($cartCollectionz);
+
 
         $orderId = $this->session->set('order_id', $checkoutManagement->getOrderId());
         $orderId = $this->session->get('order_id');
