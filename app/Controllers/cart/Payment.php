@@ -28,7 +28,7 @@ class Payment extends Controller {
     }
 
     /**
-     * Create orders and orders_items tables
+     * Create orders and orders_items tables, update products quantity
      */
     public function orderCreate() {
         $cartCollection = new CartCollection;
@@ -42,12 +42,14 @@ class Payment extends Controller {
 
         $cartCollection->filterBy('cart_id', $cartId);
         $cartCollectionz = $cartCollection->createCartCollection();
-       
+
         $cartManagement->loadcart($product);
 
         $checkoutManagement->orderCreate($product);
         $checkoutManagement->searchOrderId();
         $checkoutManagement->orderItemsCreate($cartCollectionz);
+        $checkoutManagement->updateProductsQuantity($cartCollectionz);
+        $checkoutManagement->checkIfOutOfStock($cartCollectionz);
 
         $orderId = $this->session->set('order_id', $checkoutManagement->getOrderId());
         $orderId = $this->session->get('order_id');

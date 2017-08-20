@@ -168,4 +168,30 @@ class CheckoutManagement extends Model {
         }
     }
 
+    /**
+     * Update product quantity after purchase
+     */
+    public function updateProductsQuantity($cartCollection) {
+        for ($i = 0; $i < sizeof($cartCollection); $i++) {
+            $result = $this->database->getRow('quantity', 'products', "WHERE id = ?", [$cartCollection[$i]->getProductId()]);
+            $newQuantity = $result['quantity'] - $cartCollection[$i]->getProductQuantity();
+
+            $this->database->updateRow('products', "quantity = '{$newQuantity}' "
+                    . "WHERE id = {$cartCollection[$i]->getProductId()}");
+        }
+    }
+
+    /**
+     * Check if product is out of stock and turn it off if it is
+     */
+    public function checkIfOutOfStock($cartCollection) {
+        for ($i = 0; $i < sizeof($cartCollection); $i++) {
+            $result = $this->database->getRow('quantity', 'products', "WHERE id = ?", [$cartCollection[$i]->getProductId()]);
+            if ($result['quantity'] == 0) {
+                $this->database->updateRow('products', "is_available = 'turned off' "
+                        . "WHERE id = {$cartCollection[$i]->getProductId()}");
+            }
+        }
+    }
+
 }
