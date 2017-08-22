@@ -3,7 +3,7 @@
 namespace Shop\Models\Category;
 
 use Shop\Core\Model;
-use Shop\Models\Category\CategoryManagement;
+use Shop\Models\Category\Category;
 
 /**
  * Class CategoryCollection
@@ -36,7 +36,7 @@ class CategoryCollection extends Model {
 
         if (!empty($this->rawData)) {
             foreach ($this->rawData as $value) {
-                $category = new CategoryManagement;
+                $category = new Category;
                 $category->setCategoryId($value['id']);
                 $category->setCategoryName($value['name']);
                 $category->setAmount($value['amount']);

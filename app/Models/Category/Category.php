@@ -5,9 +5,9 @@ namespace Shop\Models\Category;
 use Shop\Core\Model;
 
 /**
- * Class CategoryManagement
+ * Class Category
  */
-class CategoryManagement extends Model {
+class Category extends Model {
 
     /**
      * @var categoryId 

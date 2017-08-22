@@ -3,7 +3,7 @@
 namespace Shop\Models\Products;
 
 use Shop\Core\Model;
-use Shop\Models\Products\ProductManagement;
+use Shop\Models\Products\Product;
 
 /**
  * Class CategoryCollection
@@ -36,7 +36,7 @@ class ProductCollection extends Model {
 
         if (!empty($this->rawData)) {
             foreach ($this->rawData as $value) {
-                $product = new ProductManagement;
+                $product = new Product;
                 $product->setProductId($value['id']);
                 $product->setProductName($value['name']);
                 $product->setProductType($value['type']);

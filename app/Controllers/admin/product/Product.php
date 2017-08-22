@@ -2,11 +2,10 @@
 
 namespace Shop\Controllers\admin\product;
 
-use Shop\Models\Category\CategoryManagement;
 use Shop\Core\Controller;
 use Shop\Models\Products\{
     ProductCollection,
-    ProductManagement
+    Product
 };
 use Shop\Models\RememberMe;
 
@@ -57,21 +56,21 @@ class Product extends Controller {
         $params = $this->getParameters();
         $categoryId = $this->session->get('category_id');
 
-        $productManagement = new ProductManagement;
+        $product = new Product;
         $rememberMe = new RememberMe;
 
-        $productManagement->setProductName($params['product']);
-        $productManagement->setProductType($params['type']);
-        $productManagement->setProductColor($params['color']);
-        $productManagement->setProductCountry($params['country']);
-        $productManagement->setProductQuantity($params['quantity']);
-        $productManagement->setProductPrice($params['price']);
+        $product->setProductName($params['product']);
+        $product->setProductType($params['type']);
+        $product->setProductColor($params['color']);
+        $product->setProductCountry($params['country']);
+        $product->setProductQuantity($params['quantity']);
+        $product->setProductPrice($params['price']);
 
         $randomString = $rememberMe->generateRandomString();
-        if ($productManagement->uploadImage($randomString) == true) {
-            $productManagement->setCategoryId($categoryId);
+        if ($product->uploadImage($randomString) == true) {
+            $product->setCategoryId($categoryId);
 
-            if ($productManagement->createProduct() !== NULL) {
+            if ($product->createProduct() !== NULL) {
 
                 $this->redirect("product", "$categoryId");
                 exit;
@@ -88,10 +87,10 @@ class Product extends Controller {
      * Remove single product
      */
     public function remove() {
-        $productManagement = new ProductManagement;
-        $productManagement->setProductId($this->parseUrl($_GET['url'])[2]);
-        $productManagement->setCategoryId($this->session->get('category_id'));
-        $productManagement->remove();
+        $product = new Product;
+        $product->setProductId($this->parseUrl($_GET['url'])[2]);
+        $product->setCategoryId($this->session->get('category_id'));
+        $product->remove();
         $this->redirect("product", "$categoryId");
     }
 

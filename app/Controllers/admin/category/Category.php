@@ -4,10 +4,9 @@ namespace Shop\Controllers\admin\category;
 
 use Shop\Core\Controller;
 use Shop\Models\Category\{
-    CategoryManagement,
+    Category as CategoryModel,
     CategoryCollection
 };
-use Shop\Models\Products\ProductManagement;
 
 /**
  * Class Category
@@ -35,10 +34,10 @@ class Category extends Controller {
      */
     public function remove() {
         $this->checkIfAdmin();
-        $categoryManagement = new CategoryManagement;
+        $category = new CategoryModel;
         $url = $this->parseUrl($_GET['url']);
-        $categoryManagement->setCategoryId($url[2]);
-        $categoryManagement->remove();
+        $category->setCategoryId($url[2]);
+        $category->remove();
         $this->redirect("category", "");
     }
 
@@ -56,9 +55,9 @@ class Category extends Controller {
     public function createCategory() {
         $this->checkIfAdmin();
         $params = $this->getParameters();
-        $categoryManagement = new CategoryManagement;
-        $categoryManagement->setCategoryName($params['category']);
-        if ($categoryManagement->createCategory() !== NULL) {
+        $category = new CategoryModel;
+        $category->setCategoryName($params['category']);
+        if ($category->createCategory() !== NULL) {
             $this->redirect("category", "");
             exit;
         } else {

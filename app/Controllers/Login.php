@@ -5,8 +5,8 @@ namespace Shop\Controllers;
 use Shop\Core\Controller;
 use Shop\Models\User;
 use Shop\Models\Cart\{
-    Product,
-    CartManagement
+    Item,
+    Cart
 };
 use Shop\Models\RememberMe;
 
@@ -39,7 +39,7 @@ class Login extends Controller {
         $this->header();
         $url = $this->parseUrl($_GET['url']);
         $params = $this->getParameters();
-        $cartManagement = new CartManagement;
+        $cart = new Cart;
         $user = new User;
         $rememberMe = new RememberMe;
 
@@ -74,10 +74,10 @@ class Login extends Controller {
 
         if (isset($url[2])) {
             if ($url[2] == "payment") {
-                $product = new Product;
-                $product->setUserId($this->session->get('user_id'));
-                $product->setCartId($this->session->get('cart_id'));
-                $cartManagement->saveUserId($product);
+                $item = new Item;
+                $item->setUserId($this->session->get('user_id'));
+                $item->setCartId($this->session->get('cart_id'));
+                $cart->saveUserId($item);
                 $this->redirect('orderCreate', '');
             }
         }

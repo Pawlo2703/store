@@ -5,9 +5,9 @@ namespace Shop\Models\Cart;
 use Shop\Core\Model;
 
 /**
- * Class CartManagement
+ * Class Item
  */
-class Product extends Model {
+class Item extends Model {
 
     /**
      * @var totalQuantity

@@ -3,8 +3,8 @@
 namespace Shop\Controllers\admin\product;
 
 use Shop\Core\Controller;
-use Shop\Models\Category\CategoryManagement;
-use Shop\Models\Products\ProductManagement;
+use Shop\Models\Category\Category;
+use Shop\Models\Products\Product;
 
 /**
  * ProductActions
@@ -17,22 +17,22 @@ class ProductActions extends Controller {
     public function updateProduct() {
         $this->checkIfAdmin();
 
-        $productManagement = new ProductManagement;
-        $categoryManagement = new CategoryManagement;
+        $product = new Product;
+        $category = new Category;
         $params = $this->getParameters();
 
         $productId = $this->session->get('product_id');
-        $loadedProduct = $productManagement->loadProduct($productId);
-        $productManagement->init($loadedProduct);
-        $productManagement->init($params);
-        $productManagement->setProductId($productId);
-        $productManagement->setCategoryId($loadedProduct['category_id']);
+        $loadedProduct = $product->loadProduct($productId);
+        $product->init($loadedProduct);
+        $product->init($params);
+        $product->setProductId($productId);
+        $product->setCategoryId($loadedProduct['category_id']);
 
-        $categoryManagement->findBy("name", $params['category']);
-        $categoryId = $categoryManagement->getCategoryId();
-        $productManagement->setCategoryId($categoryId);
+        $category->findBy("name", $params['category']);
+        $categoryId = $category->getCategoryId();
+        $product->setCategoryId($categoryId);
 
-        $productManagement->updateProduct();
+        $product->updateProduct();
 
         $this->redirect("category", '');
     }
@@ -41,9 +41,9 @@ class ProductActions extends Controller {
      * Turn on/off single product
      */
     public function changeAvailability() {
-        $productManagement = new ProductManagement;
-        $productManagement->setProductId($this->parseUrl($_GET['url'])[2]);
-        $productManagement->isAvailable();
+        $product = new Product;
+        $product->setProductId($this->parseUrl($_GET['url'])[2]);
+        $product->isAvailable();
         $categoryId = $this->session->get('category_id');
         $this->redirect("product", "$categoryId");
     }

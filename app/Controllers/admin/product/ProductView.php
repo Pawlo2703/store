@@ -2,10 +2,10 @@
 
 namespace Shop\Controllers\admin\product;
 
-use Shop\Models\Products\ProductManagement;
+use Shop\Models\Products\Product;
 use Shop\Core\Controller;
 use Shop\Models\Category\{
-    CategoryManagement,
+    Category,
     CategoryCollection
 };
 
@@ -16,9 +16,9 @@ class ProductView extends Controller {
      */
     public function display() {
         $this->checkIfAdmin();
-        $productManagement = new ProductManagement;
+        $product = new Product;
         $categoryCollection = new CategoryCollection;
-        $categoryManagement = new CategoryManagement;
+        $category = new Category;
 
         $productId = $this->parseUrl($_GET['url'])[2];
         $this->session->set('product_id', $productId);
@@ -27,12 +27,12 @@ class ProductView extends Controller {
         $categoryId = $this->session->get('category_id');
         $categoryNavigation = "' http://" . ($_SERVER['HTTP_HOST']) . "/" . 'category' . "'";
         $productNavigation = "' http://" . ($_SERVER['HTTP_HOST']) . "/" . 'product/' . $categoryId . "'";
-        $productManagement->loadProduct($productId);
-        $categoryManagement->findBy("id", $productManagement->getCategoryId());
+        $product->loadProduct($productId);
+        $category->findBy("id", $product->getCategoryId());
 
         $data = [
-            'productManagement' => $productManagement,
-            'categoryManagement' => $categoryManagement,
+            'productManagement' => $product,
+            'categoryManagement' => $category,
             'categoryNavigation' => $categoryNavigation,
             'productNavigation' => $productNavigation,
             'collection' => $collection

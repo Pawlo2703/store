@@ -5,9 +5,9 @@ namespace Shop\Models\Products;
 use Shop\Core\Model;
 
 /**
- * Class ProductManagement
+ * Class Product
  */
-class ProductManagement extends Model {
+class Product extends Model {
 
     /**
      * @var productId

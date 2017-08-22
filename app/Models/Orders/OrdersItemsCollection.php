@@ -1,47 +1,44 @@
 <?php
 
-namespace Shop\Models\Cart;
+namespace Shop\Models\Orders;
 
 use Shop\Core\Model;
 use Shop\Models\Cart\Item;
 /**
- * Class CartCollection
+ * Class CategoryCollection
  */
-class CartCollection extends Model {
+class OrdersItemsCollection extends Model {
 
     /**
-     * @var array
+     * @var categoryCollection
      */
-    private $cartCollection;
+    private $ordersItemsCollection;
 
     /**
-     * @var string
+     * @var $tableName
      */
-    protected $tableName = 'cart_item';
+    protected $tableName = "orders_items";
 
     /**
      * @return array
      */
-    public function getCartCollection() {
-        return $this->cartCollection;
+    public function getOrdersItemsCollection() {
+        return $this->ordersItemsCollection;
     }
 
     /**
-     * Creates cart objects and saves to array
+     * Creates objects collection and saves to array
      */
-    public function createCartCollection() {
+    public function createOrdersItemsCollection() {
 
         Model::loadCollection();
 
         if (!empty($this->rawData)) {
-
             foreach ($this->rawData as $value) {
                 $item = new Item;
-                $item->setCartId($value['cart_id']);
-                $item->setProductName($value['product_id']);
+                $item->setProductId($value['product_id']);
                 $item->setProductPrice($value['product_price']);
                 $item->setProductQuantity($value['product_quantity']);
-                $item->setProductId($value['product_id']);
 
                 if (isset($collection)) {
                     array_push($collection, $item);
@@ -49,10 +46,8 @@ class CartCollection extends Model {
                     $collection = array($item);
                 }
             }
-        } else {
-            return;
         }
-        return $this->cartCollection = $collection;
+        return $this->ordersItemsCollection = $collection;
     }
 
 }

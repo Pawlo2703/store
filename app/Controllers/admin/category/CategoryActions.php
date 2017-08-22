@@ -3,8 +3,7 @@
 namespace Shop\Controllers\admin\category;
 
 use Shop\Core\Controller;
-use Shop\Models\Products\ProductManagement;
-use Shop\Models\Category\CategoryManagement;
+use Shop\Models\Category\Category;
 
 /**
  * Class CategoryActions
@@ -15,9 +14,9 @@ class CategoryActions extends Controller {
      * Turn on/off single category
      */
     public function changeAvailability() {
-        $categoryManagement = new CategoryManagement;
-        $categoryManagement->setCategoryId($this->parseUrl($_GET['url'])[2]);
-        $categoryManagement->isAvailable();
+        $category = new Category;
+        $category->setCategoryId($this->parseUrl($_GET['url'])[2]);
+        $category->isAvailable();
         $this->redirect("category", "");
     }
 
@@ -36,10 +35,10 @@ class CategoryActions extends Controller {
     public function changeCategoryName() {
         $params = $this->getParameters();
 
-        $categoryManagement = new CategoryManagement;
-        $categoryManagement->setCategoryName($params['name']);
-        $categoryManagement->setCategoryId($this->session->get('category_id'));
-        $categoryManagement->changeCategoryName();
+        $category = new Category;
+        $category->setCategoryName($params['name']);
+        $category->setCategoryId($this->session->get('category_id'));
+        $category->changeCategoryName();
         $this->redirect("category", "");
     }
 

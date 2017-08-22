@@ -2,16 +2,18 @@
 
 namespace Shop\Controllers\product;
 
-use Shop\Models\Products\ProductManagement;
+use Shop\Models\Products\Product as ProductModel;
 use Shop\Core\Controller;
+use Shop\Models\Category\Category as CategoryModel;
+
 use Shop\Models\Category\{
-    CategoryCollection,
-    CategoryManagement
-};
+    CategoryCollection
+    };
+
 use \Shop\Models\Cart\{
     CartDetails,
-    Product,
-    CartManagement
+    Item,
+    Cart
 }
 ;
 
@@ -25,27 +27,26 @@ class ViewProduct extends Controller {
      */
     public function display() {
         $this->header();
-        $productManagement = new ProductManagement;
+        $product = new ProductModel;
         $categoryCollection = new CategoryCollection();
-        $categoryManagement = new CategoryManagement();
-
-
+        
+        $category = new CategoryModel();
+                
         $url = $this->parseUrl($_GET['url']);
         $this->session->set('product_id', $url[2]);
 
         $categoryId = $this->session->get('category_id');
-        $category = $categoryCollection->createCategoryCollection();
+        $categories = $categoryCollection->createCategoryCollection();
         $productList = $this->session->get('category_id');
 
         $navigation = "' http://" . ($_SERVER['HTTP_HOST']) . "/" . 'kategoria/' . $categoryId . "'";
-        $productManagement->loadProduct($url[2]);
-
-        $categoryManagement->findBy("id", $categoryId);
+        $product->loadProduct($url[2]);
+        $category->findBy("id", $categoryId);
         $data = [
-            'productManagement' => $productManagement,
-            'category' => $category,
+            'productManagement' => $product,
+            'category' => $categories,
             'navigation' => $navigation,
-            'categoryManagement' => $categoryManagement
+            'categoryManagement' => $category
         ];
 
         $this->view('home/product/product_view', $data);
@@ -55,41 +56,41 @@ class ViewProduct extends Controller {
      * 
      */
     public function addProductToCart() {
-        $productManagement = new ProductManagement;
-        $cart = new CartManagement;
-        $product = new Product;
+        $product = new ProductModel;
+        $cart = new Cart;
+        $item = new Item;
 
         $productId = $this->session->get('product_id');
 
         $params = $this->getParameters();
-        $productManagement->loadProduct($productId);
-        $productQuantityDB = $productManagement->getProductQuantity();
+        $product->loadProduct($productId);
+        $productQuantityDB = $product->getProductQuantity();
         $productQuantityParams = $params['amount'];
 
         if ($productQuantityParams > $productQuantityDB) {
             $productQuantityParams = $productQuantityDB;
         }
-        $product->setProductId($productManagement->getProductId());
-        $product->setProductPrice($productManagement->getProductPrice());
-        $product->setProductQuantity($productQuantityParams);
+        $item->setProductId($product->getProductId());
+        $item->setProductPrice($product->getProductPrice());
+        $item->setProductQuantity($productQuantityParams);
 
         if ($this->session->get('cart_id') !== NULL) {
             $cartId = $this->session->get('cart_id');
-            $product->setCartId($cartId);
+            $item->setCartId($cartId);
         }
 
-        $cart->createCart($product);
-        $cart->saveCartItem($product);
-        $cartId = $product->getCartId();
+        $cart->createCart($item);
+        $cart->saveCartItem($item);
+        $cartId = $item->getCartId();
         $this->session->set('cart_id', $cartId);
 
         if ($this->session->get('user_id') !== NULL) {
-            $product->setUserId($this->session->get('user_id'));
-            $cart->saveUserId($product);
+            $item->setUserId($this->session->get('user_id'));
+            $cart->saveUserId($item);
         }
 
-        $cart->calculateQuantity($product);
-        $cart->calculatePrice($product);
+        $cart->calculateQuantity($item);
+        $cart->calculatePrice($item);
 
         if ($this->session->get('product_id') !== NULL) {
             $this->session->pull('product_id');

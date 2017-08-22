@@ -10,9 +10,9 @@ use Shop\Models\Cart\{
 ;
 
 /**
- * Class CheckoutManagement
+ * Class Checkout
  */
-class CheckoutManagement extends Model {
+class Checkout extends Model {
 
     /**
      * @var orderQuantity
@@ -122,8 +122,8 @@ class CheckoutManagement extends Model {
     /**
      * Create row in table order
      */
-    public function orderCreate($product) {
-        $this->database->insertRow('orders', "(`cart_id`,`quantity`,`price`,`user_id`) VALUES(?,?,?,?)", [$product->getCartId(), $product->getTotalQuantity(), $product->getTotalPrice(), $product->getUserId()]);
+    public function orderCreate($item) {
+        $this->database->insertRow('orders', "(`cart_id`,`quantity`,`price`,`user_id`) VALUES(?,?,?,?)", [$item->getCartId(), $item->getTotalQuantity(), $item->getTotalPrice(), $item->getUserId()]);
     }
 
     /**
@@ -140,15 +140,15 @@ class CheckoutManagement extends Model {
     /**
      * Remove cart, unnecessery as we have order now
      */
-    public function removeCart($product) {
-        $this->database->deleteRow('cart', "WHERE cart_id = ?", [$product->getCartId()]);
+    public function removeCart($item) {
+        $this->database->deleteRow('cart', "WHERE cart_id = ?", [$item->getCartId()]);
     }
 
     /**
      * Load Order by cartId
      */
-    public function loadOrderByCartId($product) {
-        $result = $cartId = $this->database->getRow('*', 'orders', "WHERE cart_id = ?", [$product->getCartId()]);
+    public function loadOrderByCartId($item) {
+        $result = $cartId = $this->database->getRow('*', 'orders', "WHERE cart_id = ?", [$item->getCartId()]);
 
         if (!empty($result)) {
             $this->setOrderId($result['id']);

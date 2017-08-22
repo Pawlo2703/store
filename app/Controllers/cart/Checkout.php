@@ -5,10 +5,10 @@ namespace Shop\Controllers\cart;
 use Shop\Core\Controller;
 use Shop\Models\Cart\{
     CartCollection,
-    ItemRemoval,
-    Product,
-    CartManagement,
-    CheckoutManagement
+    ItemRemove,
+    Item,
+    Cart,
+    Checkout as CheckoutModel
 }
 ;
 
@@ -23,27 +23,27 @@ class Checkout extends Controller {
     public function cartUpdate() {
         $this->header();
         $params = $this->getParameters();
-        $checkoutManagement = new CheckoutManagement;
+        $checkout = new CheckoutModel;
         $cartCollection = new CartCollection;
-        $cartManagement = new CartManagement;
-        $itemRemoval = new ItemRemoval;
+        $cart = new Cart;
+        $itemRemove = new ItemRemove;
 
         $cartId = $this->session->get('cart_id');
 
         $cartCollection->filterBy('cart_id', $cartId);
-        $cart = $cartCollection->createCartCollection();
+        $cartCollection = $cartCollection->createCartCollection();
 
         for ($i = 0; $i < sizeof($params) - 1; $i++) {
-            $itemRemoval->calculatePrice($cart[$i]);
-            $itemRemoval->calculateQuantity($cart[$i]);
+            $itemRemove->calculatePrice($cartCollection[$i]);
+            $itemRemove->calculateQuantity($cartCollection[$i]);
 
-            $cart[$i]->setProductQuantity($params[$i]);
+            $cartCollection[$i]->setProductQuantity($params[$i]);
         }
-        $checkoutManagement->cartUpdate($cart);
+        $checkout->cartUpdate($cartCollection);
 
         for ($i = 0; $i < sizeof($params) - 1; $i++) {
-            $cartManagement->calculateQuantity($cart[$i]);
-            $cartManagement->calculatePrice($cart[$i]);
+            $cart->calculateQuantity($cartCollection[$i]);
+            $cart->calculatePrice($cartCollection[$i]);
         }
 
         $this->redirect("podsumowanie", "");
@@ -52,20 +52,20 @@ class Checkout extends Controller {
     public function display() {
         $this->header();
         $cartCollection = new CartCollection();
-        $cartManagement = new CartManagement();
-        $product = new Product;
+        $cart = new Cart();
+        $item = new Item;
 
         $cartId = $this->session->get('cart_id');
-        $product->setCartId($cartId);
+        $item->setCartId($cartId);
 
-        $cartManagement->loadcart($product);
+        $cart->loadcart($item);
 
         $cartCollection->filterBy('cart_id', $cartId);
         $cart = $cartCollection->createCartCollection();
 
         $data = [
             'cartCollection' => $cart,
-            'product' => $product
+            'product' => $item
         ];
         $this->view('home/cart/checkout', $data);
     }

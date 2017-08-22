@@ -2,14 +2,13 @@
 
 namespace Shop\Controllers\cart;
 
-use Shop\Models\Category\CategoryCollection;
 use Shop\Core\Controller;
 use Shop\Models\Cart\{
     UserAddress,
     CartCollection,
-    CheckoutManagement,
-    CartManagement,
-    Product
+    Checkout,
+    Cart,
+    Item
 };
 
 /**
@@ -33,28 +32,26 @@ class Payment extends Controller {
      */
     public function orderCreate() {
         $cartCollection = new CartCollection;
-        $cartManagement = new CartManagement;
-        $product = new Product;
-        $checkoutManagement = new CheckoutManagement;
+        $cart = new Cart;
+        $item = new Item;
+        $checkout = new Checkout;
         $address = new UserAddress;
-        $categoryCollection = new CategoryCollection;
-
+        
         $cartId = $this->session->get('cart_id');
-        $product->setCartId($cartId);
+        $item->setCartId($cartId);
 
         $cartCollection->filterBy('cart_id', $cartId);
         $cartCollectionz = $cartCollection->createCartCollection();
 
-        $cartManagement->loadcart($product);
+        $cart->loadcart($item);
 
-        $checkoutManagement->orderCreate($product);
-        $checkoutManagement->searchOrderId();
-        $checkoutManagement->orderItemsCreate($cartCollectionz);
-        $checkoutManagement->updateProductsQuantity($cartCollectionz);
-        $checkoutManagement->checkIfOutOfStock($cartCollectionz);
+        $checkout->orderCreate($item);
+        $checkout->searchOrderId();
+        $checkout->orderItemsCreate($cartCollectionz);
+        $checkout->updateProductsQuantity($cartCollectionz);
+        $checkout->checkIfOutOfStock($cartCollectionz);
 
-
-        $orderId = $this->session->set('order_id', $checkoutManagement->getOrderId());
+        $orderId = $this->session->set('order_id', $checkout->getOrderId());
         $orderId = $this->session->get('order_id');
         $this->redirect('adres_dostawy', '');
     }
@@ -64,20 +61,20 @@ class Payment extends Controller {
      */
     public function display() {
         $this->header();
-        $checkoutManagement = new CheckoutManagement;
-        $product = new Product;
+        $checkout = new Checkout;
+        $item = new Item;
 
         $cartId = $this->session->get('cart_id');
-        $product->setCartId($cartId);
+        $item->setCartId($cartId);
 
-        $checkoutManagement->loadOrderByCartId($product);
-        $orderId = $checkoutManagement->getOrderId();
+        $checkout->loadOrderByCartId($item);
+        $orderId = $checkout->getOrderId();
 
         if ($this->session->get('cart_id') !== NULL) {
             $this->session->pull('cart_id');
         }
         $data = [
-            'checkoutManagement' => $checkoutManagement
+            'checkoutManagement' => $checkout
         ];
         $this->view('home/cart/order_finished_view', $data);
     }
