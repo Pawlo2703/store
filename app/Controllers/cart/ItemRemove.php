@@ -4,9 +4,10 @@ namespace Shop\Controllers\cart;
 
 use Shop\Core\Controller;
 use Shop\Models\Cart\{
-    CartCollection,
     ItemRemove as ItemRemoveModel,
+    CartCollection,
     Item,
+    Calculations,
     Cart
 };
 
@@ -21,21 +22,29 @@ class ItemRemove extends Controller {
     public function remove() {
         $this->header();
         $url = $this->parseUrl($_GET['url']);
-        $productId = $url[2];
+        $position = $url[2];
         $cartId = $this->session->get('cart_id');
 
         $item = new Item;
         $cart = new Cart;
-        $itemRemove = new ItemRemoveModel();
+        $itemRemove = new ItemRemoveModel;
+        $calculations = new Calculations;
+        $cartCollection = new CartCollection;
 
-
-
+        $cartCollection->filterBy('cart_id', $cartId);
+        $cartCollection = $cartCollection->createCartCollection();
         $item->setCartId($cartId);
-        $item->setProductId($productId);
+        $cart->loadCart($item);
 
-        $itemRemove->calculatePrice($item);
-        $itemRemove->calculateQuantity($item);
-        $itemRemove->removeItem($item);
+        $cartCollection[$position]->setTotalQuantity($item->getTotalQuantity());
+        $cartCollection[$position]->setTotalPrice($item->getTotalPrice());
+     
+        $calculations->removeProductPrice($cartCollection[$position], $item);
+        $calculations->removeProductQuantity($cartCollection[$position], $item);
+        $cart->savePrice($item);
+        $cart->saveQuantity($item);
+        $itemRemove->removeItem($cartCollection[$position]);
+        
         $this->redirect("pokaz_koszyk", "");
     }
 

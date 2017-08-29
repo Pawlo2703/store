@@ -72,12 +72,16 @@ class Login extends Controller {
             setcookie('email', $bigKey, time() + 60 * 60 * 7);
         }
 
+
+        if (($this->session->get('cart_id')) !== NULL) {
+            $item = new Item;
+            $item->setUserId($this->session->get('user_id'));
+            $item->setCartId($this->session->get('cart_id'));
+            $cart->saveUserId($item);
+        }
+
         if (isset($url[2])) {
             if ($url[2] == "payment") {
-                $item = new Item;
-                $item->setUserId($this->session->get('user_id'));
-                $item->setCartId($this->session->get('cart_id'));
-                $cart->saveUserId($item);
                 $this->redirect('orderCreate', '');
             }
         }

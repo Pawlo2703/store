@@ -7,6 +7,7 @@ use Shop\Models\Cart\{
     CartCollection,
     ItemRemove,
     Item,
+    Calculations,
     Cart,
     Checkout as CheckoutModel
 }
@@ -16,36 +17,59 @@ use Shop\Models\Cart\{
  * Class Checkout
  */
 class Checkout extends Controller {
-    /*
+
+    /**
      * Display Checkout
      */
-
     public function cartUpdate() {
         $this->header();
         $params = $this->getParameters();
         $checkout = new CheckoutModel;
         $cartCollection = new CartCollection;
         $cart = new Cart;
+        $item = new Item;
+        $calculations = new Calculations;
         $itemRemove = new ItemRemove;
 
         $cartId = $this->session->get('cart_id');
+        $item->setCartId($cartId);
 
         $cartCollection->filterBy('cart_id', $cartId);
         $cartCollection = $cartCollection->createCartCollection();
 
-        for ($i = 0; $i < sizeof($params) - 1; $i++) {
-            $itemRemove->calculatePrice($cartCollection[$i]);
-            $itemRemove->calculateQuantity($cartCollection[$i]);
 
+        for ($i = 0; $i < sizeof($params) - 1; $i++) {
+            $cart->loadCart($item);
+
+            $cartCollection[$i]->setTotalPrice($item->getTotalPrice());
+            $calculations->removeProductPrice($cartCollection[$i], $item); //usunac price
+            $cartCollection[$i]->setTotalPrice($item->getTotalPrice());
+            $cart->savePrice($cartCollection[$i]);
+
+            $cartCollection[$i]->setTotalQuantity($item->getTotalQuantity());
+            $calculations->removeProductQuantity($cartCollection[$i], $item);
+            $cart->saveQuantity($item);
             $cartCollection[$i]->setProductQuantity($params[$i]);
         }
         $checkout->cartUpdate($cartCollection);
+//total price :11
 
         for ($i = 0; $i < sizeof($params) - 1; $i++) {
-            $cart->calculateQuantity($cartCollection[$i]);
-            $cart->calculatePrice($cartCollection[$i]);
-        }
+            $cart->loadCart($item);
+            $calculations->setNewQuantity($cartCollection[$i]->getProductQuantity());
+            $calculations->calculateQuantity($item);
 
+
+            //total price :-5  
+            $cartCollection[$i]->setTotalPrice($item->getTotalPrice());
+
+            $cartCollection[$i]->setProductQuantity($params[$i]);
+
+            $calculations->calculatePrice($cartCollection[$i]);
+            $cart->saveQuantity($item);
+            $cart->savePrice($cartCollection[$i]);
+            $cart->loadCart($item);
+        }
         $this->redirect("podsumowanie", "");
     }
 
@@ -54,11 +78,9 @@ class Checkout extends Controller {
         $cartCollection = new CartCollection();
         $cart = new Cart();
         $item = new Item;
-
         $cartId = $this->session->get('cart_id');
         $item->setCartId($cartId);
-
-        $cart->loadcart($item);
+        $cart->loadCart($item);
 
         $cartCollection->filterBy('cart_id', $cartId);
         $cart = $cartCollection->createCartCollection();

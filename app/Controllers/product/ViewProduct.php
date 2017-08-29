@@ -5,13 +5,12 @@ namespace Shop\Controllers\product;
 use Shop\Models\Products\Product as ProductModel;
 use Shop\Core\Controller;
 use Shop\Models\Category\Category as CategoryModel;
-
 use Shop\Models\Category\{
     CategoryCollection
-    };
-
+};
 use \Shop\Models\Cart\{
     CartDetails,
+    Calculations,
     Item,
     Cart
 }
@@ -29,9 +28,9 @@ class ViewProduct extends Controller {
         $this->header();
         $product = new ProductModel;
         $categoryCollection = new CategoryCollection();
-        
+
         $category = new CategoryModel();
-                
+
         $url = $this->parseUrl($_GET['url']);
         $this->session->set('product_id', $url[2]);
 
@@ -59,17 +58,19 @@ class ViewProduct extends Controller {
         $product = new ProductModel;
         $cart = new Cart;
         $item = new Item;
-
+        $calculations = new Calculations;
         $productId = $this->session->get('product_id');
 
         $params = $this->getParameters();
         $product->loadProduct($productId);
         $productQuantityDB = $product->getProductQuantity();
+      
         $productQuantityParams = $params['amount'];
 
         if ($productQuantityParams > $productQuantityDB) {
             $productQuantityParams = $productQuantityDB;
         }
+      
         $item->setProductId($product->getProductId());
         $item->setProductPrice($product->getProductPrice());
         $item->setProductQuantity($productQuantityParams);
@@ -80,6 +81,7 @@ class ViewProduct extends Controller {
         }
 
         $cart->createCart($item);
+
         $cart->saveCartItem($item);
         $cartId = $item->getCartId();
         $this->session->set('cart_id', $cartId);
@@ -89,8 +91,14 @@ class ViewProduct extends Controller {
             $cart->saveUserId($item);
         }
 
-        $cart->calculateQuantity($item);
-        $cart->calculatePrice($item);
+        $cart->loadCart($item);
+        $calculations->setNewQuantity($productQuantityParams);
+        $calculations->calculateQuantity($item);
+        $calculations->setNewPrice($item->getProductPrice());
+        $calculations->setNewQuantity($item->getProductQuantity());
+        $calculations->calculatePrice($item);
+        $cart->saveQuantity($item);
+        $cart->savePrice($item);
 
         if ($this->session->get('product_id') !== NULL) {
             $this->session->pull('product_id');

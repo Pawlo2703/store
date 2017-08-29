@@ -43,7 +43,7 @@ class Payment extends Controller {
         $cartCollection->filterBy('cart_id', $cartId);
         $cartCollectionz = $cartCollection->createCartCollection();
 
-        $cart->loadcart($item);
+        $cart->loadCart($item);
 
         $checkout->orderCreate($item);
         $checkout->searchOrderId();

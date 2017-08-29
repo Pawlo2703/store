@@ -28,27 +28,25 @@ class CartView extends Controller {
         $productCollection = new ProductCollection;
         $product = new Product;
         $item = new Item;
-
-
         $cartId = $this->session->get('cart_id');
         $item->setCartId($cartId);
 
+        $cartCollection->filterBy('cart_id', $cartId);
+        $cartCollection = $cartCollection->createCartCollection();
 
-        if ($cart->loadCartItem($item) === false) {
+        if ($cartCollection === NULL) {
             $this->view('home/cart/empty_cart');
             exit;
         }
 
         $productQuantity = $item->getProductQuantity();
         $productPrice = $item->getProductPrice();
-
         $item->setTotalQuantity($productQuantity);
         $item->setTotalPrice($productPrice);
 
-        $cartCollection->filterBy('cart_id', $cartId);
         $products = $productCollection->createProductCollection();
-        $cartCollection = $cartCollection->createCartCollection();
-        
+
+
         $data = [
             'product' => $products,
             'cart' => $cartCollection,

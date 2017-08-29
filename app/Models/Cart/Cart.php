@@ -29,10 +29,8 @@ class Cart extends Model {
      */
     public function saveCartItem($item) {
         if (!($item->getCartId() !== null)) {
-
             $cartId = $this->database->getRow('cart_id', 'cart', "ORDER BY cart_id DESC LIMIT 1");
             $item->setCartId($cartId['cart_id']);
-
             $this->database->insertRow('cart_item', "(`cart_id`,`product_id`,`product_quantity`,`product_price`) VALUES(?,?,?,?)", [$item->getCartId(), $item->getProductId(), $item->getProductQuantity(), $item->getProductPrice()]);
             return;
         }
@@ -46,45 +44,39 @@ class Cart extends Model {
         $this->database->insertRow('cart_item', "(`cart_id`,`product_id`,`product_quantity`,`product_price`) VALUES(?,?,?,?)", [$item->getCartId(), $item->getProductId(), $item->getProductQuantity(), $item->getProductPrice()]);
     }
 
-    /*
-     * Calculate products quantity
+    /**
+     * Save products quantity
      */
+    public function saveQuantity($item) {
+        $this->database->updateRow('cart', "quantity= '{$item->getTotalQuantity()}'"
+                . "WHERE cart_id = {$item->getCartId()}");
+    }
 
-    public function calculateQuantity($item) {
-        $cart = $this->database->getRow('quantity, price', 'cart', "WHERE cart_id = ? ", [$item->getCartId()]);
+    /**
+     * Save products price
+     */
+    public function savePrice($item) {
+        $this->database->updateRow('cart', "price= '{$item->getTotalPrice()}'"
+                . "WHERE cart_id = {$item->getCartId()}");
+    }
 
-        if (isset($cart)) {
-            $newQuantity = (int) ($cart['quantity']) + (int) ($item->getProductQuantity());
-            $this->database->updateRow('cart', "quantity= '$newQuantity'"
-                    . "WHERE cart_id = {$item->getCartId()}");
+    /**
+     * Load cart_item by cart ID
+     */
+    public function loadCartItem($cartCollection, $item) {
+        $cartItem = $this->database->getRow('*', 'cart_item', "WHERE cart_id = ? ", [$cartCollection->getCartId()]);
+
+        if (!empty($cartItem)) {
+            $item->setProductId($cartItem['product_id']);
+            $item->setProductPrice($cartItem['product_price']);
+            $item->setProductQuantity($cartItem['product_quantity']);
         }
     }
 
     /**
-     * Calculate products price
+     * Load cart by cart ID
      */
-    public function calculatePrice($item) {
-        $cart = $this->database->getRow('quantity, price', 'cart', "WHERE cart_id = ? ", [$item->getCartId()]);
-
-        if (isset($item)) {
-            $price = (int) ($cart['price']) + ((int) ($item->getProductPrice()) * (int) ($item->getProductQuantity()));
-            $this->database->updateRow('cart', "price = '$price' "
-                    . "WHERE cart_id = {$item->getCartId()}");
-        }
-    }
-
-    /**
-     * Moze zmienic nazwe
-     */
-    public function loadCartItem($item) {
-        $cartItem = $this->database->getRow('*', 'cart_item', "WHERE cart_id = ? ", [$item->getCartId()]);
-        return $cartItem;
-    }
-
-    /**
-     * Load costam dopisac
-     */
-    public function loadcart($item) {
+    public function loadCart($item) {
         $cart = $this->database->getRow('*', 'cart', "WHERE cart_id = ? ", [$item->getCartId()]);
 
         if (!empty($cart)) {
@@ -98,12 +90,8 @@ class Cart extends Model {
      * Saves/updates user id
      */
     public function saveUserId($item) {
-        $userId = $item->getUserId();
-        $cartId = $item->getCartId();
-        $this->database->updateRow('cart', "user_id = '$userId' "
-                . "WHERE cart_id = $cartId");
+        $this->database->updateRow('cart', "user_id = '{$item->getUserId()}' "
+                . "WHERE cart_id = {$item->getCartId()}");
     }
 
-    
-    
 }

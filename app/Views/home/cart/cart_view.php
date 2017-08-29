@@ -60,7 +60,7 @@
                         echo "zł";
                         echo "</td>";
                         echo "<td>";
-                        echo "<a href=' http://" . ($_SERVER['HTTP_HOST']) . "/" . 'usun_z_koszyka' . "/" . "{$product_id}" . "'>usuń</a>";
+                        echo "<a href=' http://" . ($_SERVER['HTTP_HOST']) . "/" . 'usun_z_koszyka' . "/" . "{$i}" . "'>usuń</a>";
                         echo "</td>";
                     }
                     echo "</td>";
