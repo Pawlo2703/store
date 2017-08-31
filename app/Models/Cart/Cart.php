@@ -18,30 +18,39 @@ class Cart extends Model {
      * Create row cart
      */
     public function createCart($item) {
+
         if ($item->getCartId() !== null) {
             return;
         }
-        $this->database->insertRow('cart', "(`user_id`,`quantity`,`price`) VALUES(?,?,?)", ["0", "0", "0"]);
+        $id = $this->database->insertRow('cart', "(`user_id`,`quantity`,`price`) VALUES(?,?,?)", ["0", "0", "0"]);
+        $item->setCartId($id);
     }
 
     /**
      * Create row cartItem, update if exists
      */
     public function saveCartItem($item) {
-        if (!($item->getCartId() !== null)) {
-            $cartId = $this->database->getRow('cart_id', 'cart', "ORDER BY cart_id DESC LIMIT 1");
-            $item->setCartId($cartId['cart_id']);
+        if (($item->getCartId() !== null)) {
             $this->database->insertRow('cart_item', "(`cart_id`,`product_id`,`product_quantity`,`product_price`) VALUES(?,?,?,?)", [$item->getCartId(), $item->getProductId(), $item->getProductQuantity(), $item->getProductPrice()]);
             return;
         }
+        return;
+    }
+
+    /**
+     * Check if specific item already exists in cart_item table
+     */
+    public function checkIfItemExistsInCart($item) {
         $result = $this->database->getRow('product_quantity', 'cart_item', "WHERE cart_id =? AND product_id = ?", [$item->getCartId(), $item->getProductId()]);
-        if (!empty($result)) {
-            $productAmount = $item->getProductQuantity() + $result['product_quantity'];
-            $this->database->updateRow('cart_item', "product_quantity= '$productAmount'"
-                    . "WHERE cart_id = {$item->getCartId()} AND product_id = {$item->getProductId()}");
-            return;
-        }
-        $this->database->insertRow('cart_item', "(`cart_id`,`product_id`,`product_quantity`,`product_price`) VALUES(?,?,?,?)", [$item->getCartId(), $item->getProductId(), $item->getProductQuantity(), $item->getProductPrice()]);
+        return $result;
+    }
+
+    /**
+     * Update product in cart_item
+     */
+    public function updateCartItem($item) {
+        $this->database->updateRow('cart_item', "product_quantity= '{$item->getProductQuantity()}'"
+                . "WHERE cart_id = {$item->getCartId()} AND product_id = {$item->getProductId()}");
     }
 
     /**

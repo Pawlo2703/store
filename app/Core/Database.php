@@ -135,7 +135,8 @@ class Database extends Controller {
         try {
             $stmt = $this->connection->prepare($query);
             $stmt->execute($params);
-            return TRUE;
+            $lastId = $this->connection->lastInsertId();
+            return $lastId;
         } catch (PDOException $e) {
             throw new Exception($e->getMessage());
         }

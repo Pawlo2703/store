@@ -19,6 +19,8 @@ class Login extends Controller {
      * Display login form
      */
     public function display() {
+
+
         $this->header();
         $url = $this->parseUrl($_GET['url']);
 

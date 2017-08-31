@@ -64,13 +64,13 @@ class ViewProduct extends Controller {
         $params = $this->getParameters();
         $product->loadProduct($productId);
         $productQuantityDB = $product->getProductQuantity();
-      
+
         $productQuantityParams = $params['amount'];
 
         if ($productQuantityParams > $productQuantityDB) {
             $productQuantityParams = $productQuantityDB;
         }
-      
+
         $item->setProductId($product->getProductId());
         $item->setProductPrice($product->getProductPrice());
         $item->setProductQuantity($productQuantityParams);
@@ -81,8 +81,13 @@ class ViewProduct extends Controller {
         }
 
         $cart->createCart($item);
-
         $cart->saveCartItem($item);
+        $result = $cart->checkIfItemExistsInCart($item);
+        if ($result !== null) {
+            $item->getProductQuantity($item->getProductQuantity() + $result['product_quantity']);
+            $cart->updateCartItem($item, $result);
+        }
+
         $cartId = $item->getCartId();
         $this->session->set('cart_id', $cartId);
 
