@@ -14,7 +14,7 @@ class Routing extends Controller {
         $action = array("home", "rejestracja", "submit", "login", "zalogowano", "logout", "dodaj_kat",
             "zatwierdz_kat", "category", "product", "dodaj_pro", "zatwierdz_pro", "usun_produkt", "usun_kategorie", "widok_produktu", "zmiana_produktu",
             "dostepnosc_produktu", "kategoria", "dostepnosc_kategorii", "zatwierdz_zmiane", "zmiana_nazwy_kategorii", "produkt", "koszyk", "pokaz_koszyk", "email_confirmation", "usun_z_koszyka",
-            "checkout", "podsumowanie", "loginCheck", "orderCreate", "dokonano_zakupu", "adres_dostawy", "SetAddress", "zamówienia_oplacone", "zamowienie" );
+            "checkout", "podsumowanie", "loginCheck", "orderCreate", "dokonano_zakupu", "adres_dostawy", "SetAddress", "zamowienia_oplacone", "zamowienie" );
 
         $controller = array("home/display", "register/display", "register/submit", "login/display",
             "login/submit", "logout/logout", "admin_category_category/displaycreatecategoryform", "admin_category_category/createCategory",
