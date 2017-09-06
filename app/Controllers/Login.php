@@ -28,7 +28,7 @@ class Login extends Controller {
             $loginParameter = ($url[2]);
             $data = $loginParameter;
         } else {
-            $data = '';
+            $data = 'blad';
         }
 
         $data = $this->view('home/login/login', $data);
