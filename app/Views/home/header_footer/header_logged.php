@@ -36,7 +36,7 @@
             </form>
             <ul class="nav navbar-nav navbar-right">
                 <li class="active"><a href="http://sup.dev/home">Strona główna <span class="sr-only">(current)</span></a></li>
-             
+             <li><a href="http://sup.dev/zamowienia_oplacone">Profil</a>
                 <li><a href="#">Kontakt</a></li>
                 <li><a href="http://sup.dev/logout">Wyloguj</a></li></li>
             </ul>
