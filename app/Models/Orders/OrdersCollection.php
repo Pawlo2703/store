@@ -38,6 +38,7 @@ class OrdersCollection extends Model {
             foreach ($this->rawData as $value) {
                 $orders = new Checkout;
                 $orders->setOrderId($value['id']);
+                $orders->setUserId($value['user_id']);
                 $orders->setOrderPrice($value['price']);
                 $orders->setOrderQuantity($value['quantity']);
                 $orders->setStatus($value['status']);

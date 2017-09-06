@@ -4,6 +4,7 @@ namespace Shop\Models\Orders;
 
 use Shop\Core\Model;
 use Shop\Models\Cart\Item;
+
 /**
  * Class CategoryCollection
  */
@@ -18,6 +19,14 @@ class OrdersItemsCollection extends Model {
      * @var $tableName
      */
     protected $tableName = "orders_items";
+
+    public function getTableName() {
+        return $this->tableName;
+    }
+
+    public function setTableName($tableName) {
+        $this->tableName = $tableName;
+    }
 
     /**
      * @return array
@@ -39,6 +48,11 @@ class OrdersItemsCollection extends Model {
                 $item->setProductId($value['product_id']);
                 $item->setProductPrice($value['product_price']);
                 $item->setProductQuantity($value['product_quantity']);
+
+                $this->filterBy('id', $value['product_id']);
+                $this->setTableName('products');
+                $itemName = $this->loadCollection();
+                $item->setProductNames($this->rawData[0]['name']);
 
                 if (isset($collection)) {
                     array_push($collection, $item);

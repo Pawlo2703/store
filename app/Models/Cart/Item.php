@@ -79,7 +79,11 @@ class Item extends Model {
         $productName = $this->database->getRow('name', 'products', "WHERE id = ?", [$id]);
         $this->productName = $productName['name'];
     }
-
+    
+    public function setProductNames($productName) {
+        $this->productName = $productName;
+    }
+    
     /**
      * 
      * @return string

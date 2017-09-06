@@ -72,6 +72,7 @@ class Model {
             $this->rawData = $this->database->getRows('*', "$this->tableName", "$this->filter");
             return;
         }
+
         $this->rawData = $this->database->getRows('*', "$this->tableName");
     }
 
