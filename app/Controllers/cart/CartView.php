@@ -34,7 +34,12 @@ class CartView extends Controller {
         $cartCollection->filterBy('cart_id', $cartId);
         $cartCollection = $cartCollection->createCartCollection();
 
-        if ($cartCollection === NULL) {
+        if (!(isset($cartId))) {
+            $this->view('home/cart/empty_cart');
+            exit;
+        }
+
+        if ($cartCollection->createCartCollection() === null) {
             $this->view('home/cart/empty_cart');
             exit;
         }
