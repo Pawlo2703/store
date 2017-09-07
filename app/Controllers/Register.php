@@ -37,18 +37,19 @@ class Register extends Controller {
         $user->setName($params['name']);
         $user->setSurname($params['surname']);
         $user->setEmail($params['email']);
+        $user->setPassword(password_hash($params['password'], PASSWORD_DEFAULT, ['cost' => 10]));
 
         if (isset($params['newsletter'])) {
             $user->setNewsletter($params['newsletter']);
         }
-        $user->setPassword(password_hash($params['password'], PASSWORD_DEFAULT, ['cost' => 10]));
-        if ($user->register() == !NULL) {
-            $this->view('home/register/created');
-            exit;
-        } else {
+
+        if ($user->findEmail() !== NULL) {
             $this->view('home/register/error/email_in_use');
-            exit;
+            return;
         }
+
+        $user->register();
+        $this->view('home/register/created');
     }
 
     /**
