@@ -162,17 +162,23 @@ class User extends Model {
     }
 
     /**
+     * Find user by email, check if exists
+     */
+    public function findEmail() {
+        $this->database->getRow('*', 'user', "WHERE email = ?", [$this->email]);
+    }
+
+    /**
      * User register function
-     * Checks if email is existing in DB
      */
     public function register() {
-        $email = $this->database->getRow('*', 'user', "WHERE email = ?", [$this->email]);
-        if ((!$email) && (isset($this->newsletter))) {
-            $result = $this->database->insertRow('user', "( `name`, `surname`, `email`, `password`, `newsletter`) VALUES(?,?,?,?,?)", [$this->name, $this->surname, $this->email, $this->password, $this->newsletter]);
-            return $result;
+        if (isset($this->newsletter)) {
+            $this->database->insertRow('user', "( `name`, `surname`, `email`, `password`, `newsletter`) VALUES(?,?,?,?,?)", [$this->name, $this->surname, $this->email, $this->password, $this->newsletter]);
+            return;
         }
-        $result = $this->database->insertRow('user', "( `name`, `surname`, `email`, `password`) VALUES(?,?,?,?)", [$this->name, $this->surname, $this->email, $this->password]);
-        return $result;
+
+        $this->database->insertRow('user', "( `name`, `surname`, `email`, `password`) VALUES(?,?,?,?)", [$this->name, $this->surname, $this->email, $this->password]);
+        return;
     }
 
     /**
