@@ -13,8 +13,8 @@ class PasswordChange extends Controller {
     /**
      * Maximum password length
      */
-    const PW_LENGTH = 20; 
-    
+    const PW_LENGTH = 20;
+
     /**
      * Display password change form
      */
