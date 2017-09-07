@@ -57,12 +57,11 @@ class Register extends Controller {
      * @param array $params
      */
     public function nameLength($params) {
-        if (strlen($params['name']) <= self::NAME_LENGTH && (strlen($params['surname'])) <= self::NAME_LENGTH) {
-            $this->passwordValidate($params);
-        } else {
+        if (!(strlen($params['name']) <= self::NAME_LENGTH && (strlen($params['surname'])) <= self::NAME_LENGTH)) {
             $this->view('home/register/error/name_length');
-            exit;
+            return;
         }
+        $this->passwordValidate($params);
     }
 
     /**
@@ -70,17 +69,15 @@ class Register extends Controller {
      * @param array $params
      */
     public function passwordValidate($params) {
-        if (strlen($params['password']) < 25 && strlen($params['password']) > 6) {
-            if ($params['password'] == $params['password_confirmation']) {
-                $this->emailValidate($params);
-            } else {
-                $this->view('home/register/error/password_confirmation');
-                exit;
-            }
-        } else {
+        if (!(strlen($params['password']) < 25 && strlen($params['password']) > 6)) {
             $this->view('home/register/error/password_lenght');
-            exit;
+            return;
         }
+        if (($params['password'] !== $params['password_confirmation'])) {
+            $this->view('home/register/error/password_confirmation');
+            return;
+        }
+        $this->emailValidate($params);
     }
 
     /**
@@ -88,11 +85,9 @@ class Register extends Controller {
      * @param array $params
      */
     public function emailValidate($params) {
-        if (filter_var($params['email'], FILTER_VALIDATE_EMAIL)) {
-            
-        } else {
+        if (!(filter_var($params['email'], FILTER_VALIDATE_EMAIL))) {
             $this->view('home/register/error/email_validate');
-            exit;
+            return;
         }
     }
 
