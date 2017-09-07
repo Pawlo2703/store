@@ -19,8 +19,6 @@ class Login extends Controller {
      * Display login form
      */
     public function display() {
-
-
         $this->header();
         $url = $this->parseUrl($_GET['url']);
 
@@ -38,19 +36,12 @@ class Login extends Controller {
      * Submit login form
      */
     public function submit() {
+        $this->header();
         $url = $this->parseUrl($_GET['url']);
         $params = $this->getParameters();
-        $cart = new Cart;
         $user = new User;
-        $rememberMe = new RememberMe;
-
 
         if (!($userId = $user->findByEmail($params['email']))) {
-            $this->view('home/login/error/email');
-            return;
-        }
-
-        if (!$userId) {
             $this->view('home/login/error/email');
             return;
         }
@@ -66,21 +57,8 @@ class Login extends Controller {
         $user->load($userId);
         $this->session->set('admin', $user->getAdmin());
         $this->session->set('user_id', $user->getId());
-
-        if (isset($params['remember'])) {
-            $bigKey = $rememberMe->generateRandomString();
-            $rememberMe->setBigKey($bigKey);
-            $admin = $user->getAdmin();
-            $rememberMe->addCookie($userId, $admin);
-            setcookie('email', $bigKey, time() + 60 * 60 * 7);
-        }
- 
-        if (($this->session->get('cart_id')) !== NULL) {
-            $item = new Item;
-            $item->setUserId($this->session->get('user_id'));
-            $item->setCartId($this->session->get('cart_id'));
-            $cart->saveUserId($item);
-        }
+        $this->setCookie($userId);
+        $this->updateUserId();
 
         if (isset($url[2])) {
             if ($url[2] == "payment") {
@@ -89,6 +67,35 @@ class Login extends Controller {
         }
 
         $this->redirect('home', '');
+    }
+
+    /**
+     * Create cookie
+     */
+    public function setCookie($userId) {
+        $user = new User;
+        $rememberMe = new RememberMe;
+
+        if (isset($params['remember'])) {
+            $bigKey = $rememberMe->generateRandomString();
+            $rememberMe->setBigKey($bigKey);
+            $rememberMe->addCookie($userId, $user->getAdmin());
+            setcookie('email', $bigKey, time() + 60 * 60 * 7);
+        }
+    }
+
+    /**
+     * Update user ID if cart was created while user wasn't logged in
+     */
+    public function updateUserId() {
+        $item = new Item;
+        $cart = new Cart;
+
+        if (($this->session->get('cart_id')) !== NULL) {
+            $item->setUserId($this->session->get('user_id'));
+            $item->setCartId($this->session->get('cart_id'));
+            $cart->saveUserId($item);
+        }
     }
 
 }
