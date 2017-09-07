@@ -45,25 +45,27 @@ class Login extends Controller {
         $rememberMe = new RememberMe;
 
 
-        if ($userId = $user->findByEmail($params['email'])) {
-            if (!$userId) {
-                $this->view('home/login/error/email');
-                return;
-            }
-            $databasePassword = $user->checkPassword($userId);
-            $formPassword = $params['password'];
-            if (password_verify($formPassword, $databasePassword)) {
-                $user->load($userId);
-                $this->session->set('admin', $user->getAdmin());
-                $this->session->set('user_id', $user->getId());
-            } else {
-                $this->view('home/login/error/password');
-                exit;
-            }
-        } else {
+        if (!($userId = $user->findByEmail($params['email']))) {
             $this->view('home/login/error/email');
-            exit;
+            return;
         }
+
+        if (!$userId) {
+            $this->view('home/login/error/email');
+            return;
+        }
+
+        $databasePassword = $user->checkPassword($userId);
+        $formPassword = $params['password'];
+
+        if (!(password_verify($formPassword, $databasePassword))) {
+            $this->view('home/login/error/password');
+            return;
+        }
+
+        $user->load($userId);
+        $this->session->set('admin', $user->getAdmin());
+        $this->session->set('user_id', $user->getId());
 
         if (isset($params['remember'])) {
             $bigKey = $rememberMe->generateRandomString();
@@ -72,8 +74,7 @@ class Login extends Controller {
             $rememberMe->addCookie($userId, $admin);
             setcookie('email', $bigKey, time() + 60 * 60 * 7);
         }
-
-
+ 
         if (($this->session->get('cart_id')) !== NULL) {
             $item = new Item;
             $item->setUserId($this->session->get('user_id'));
