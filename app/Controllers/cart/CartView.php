@@ -32,7 +32,7 @@ class CartView extends Controller {
         $item->setCartId($cartId);
 
         $cartCollection->filterBy('cart_id', $cartId);
-        $cartCollection = $cartCollection->createCartCollection();
+
 
         if (!(isset($cartId))) {
             $this->view('home/cart/empty_cart');
@@ -43,7 +43,7 @@ class CartView extends Controller {
             $this->view('home/cart/empty_cart');
             exit;
         }
-
+        $cartCollection = $cartCollection->createCartCollection();
         $productQuantity = $item->getProductQuantity();
         $productPrice = $item->getProductPrice();
         $item->setTotalQuantity($productQuantity);

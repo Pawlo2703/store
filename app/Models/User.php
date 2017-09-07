@@ -45,6 +45,25 @@ class User extends Model {
     private $admin;
 
     /**
+     * @var newPassword 
+     */
+    private $newPassword;
+
+    /**
+     * @return string
+     */
+    public function getNewPassword() {
+        return $this->newPassword;
+    }
+
+    /**
+     * @param string $newPassword
+     */
+    public function setNewPassword($newPassword) {
+        $this->newPassword = $newPassword;
+    }
+
+    /**
      * @return string
      */
     public function getAdmin() {
@@ -174,6 +193,14 @@ class User extends Model {
     public function checkPassword($id) {
         $result = $this->database->getRow('*', 'user', "WHERE id = ?", [$id]);
         return isset($result['password']) ? $result['password'] : 0;
+    }
+
+    /**
+     * Update user password
+     */
+    public function updatePassword() {
+        $this->database->updateRow('user', "password= '{$this->newPassword}'"
+                . "WHERE id = {$this->id}");
     }
 
     /**

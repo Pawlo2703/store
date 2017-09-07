@@ -38,7 +38,6 @@ class Login extends Controller {
      * Submit login form
      */
     public function submit() {
-        $this->header();
         $url = $this->parseUrl($_GET['url']);
         $params = $this->getParameters();
         $cart = new Cart;
