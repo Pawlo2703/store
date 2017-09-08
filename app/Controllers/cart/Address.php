@@ -30,7 +30,6 @@ class Address extends Controller {
         $checkout = new Checkout;
         $item = new Item;
         $params = $this->getParameters();
-
                
         $orderId = $this->session->get('order_id');
         $address->setOrderId($orderId);
@@ -40,9 +39,7 @@ class Address extends Controller {
         $address->setStreet($params['street']);
         $address->setHouseNumber($params['housenumber']);
         $address->setDoorsNumber($params['doorsnumber']);
-
-        $address->saveAddress(); //dorobic ta funkcje
-
+        $address->saveAddress(); 
         $cartId = $this->session->get('cart_id');
         $item->setCartId($cartId);
         $checkout->removeCart($item);

@@ -52,15 +52,12 @@ class Checkout extends Controller {
             $cartCollection[$i]->setProductQuantity($params[$i]);
         }
         $checkout->cartUpdate($cartCollection);
-//total price :11
 
         for ($i = 0; $i < sizeof($params) - 1; $i++) {
             $cart->loadCart($item);
             $calculations->setNewQuantity($cartCollection[$i]->getProductQuantity());
             $calculations->calculateQuantity($item);
 
-
-            //total price :-5  
             $cartCollection[$i]->setTotalPrice($item->getTotalPrice());
 
             $cartCollection[$i]->setProductQuantity($params[$i]);
@@ -73,6 +70,9 @@ class Checkout extends Controller {
         $this->redirect("podsumowanie", "");
     }
 
+    /**
+     * Display checkout window
+     */
     public function display() {
         $this->header();
         $cartCollection = new CartCollection();

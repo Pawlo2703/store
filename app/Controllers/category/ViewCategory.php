@@ -31,7 +31,6 @@ class ViewCategory extends Controller {
         $productCollection->filterBy('category_id', $url[2]);
         $product = $productCollection->createProductCollection();
 
-
         $data = [
             'category' => $category,
             'product' => $product

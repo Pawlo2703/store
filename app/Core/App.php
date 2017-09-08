@@ -40,9 +40,6 @@ class App extends Controller {
         $url = $this->parseUrl($_GET['url']);
         $nameClass = $this->parseNamespace($url);
         $size = sizeof($nameClass);
-
-
-
         if ($url != null) {
             $this->controller = ucfirst($nameClass[$size - 1]);
             for ($i = 0; $i <= ($size - 2); $i ++) {
