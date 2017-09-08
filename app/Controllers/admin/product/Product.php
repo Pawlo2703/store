@@ -63,7 +63,7 @@ class Product extends Controller {
 
         $product->init($params);
         $randomString = $rememberMe->generateRandomString();
-        
+
         if ($product->uploadImage($randomString) !== true) {
             $this->view('home/admin/category/error/image_too_big');
             return;
@@ -73,11 +73,12 @@ class Product extends Controller {
         $product->checkIfProductExists();
         $category->findBy('id', $categoryId);
         $category->setAmount($category->getAmount() + 1);
-        
+
         if ($product->checkIfProductExists() !== false) {
             $this->view('home/admin/category/error/product_exists');
             return;
         }
+        $product->updateCategoryAmount($category);
         $product->createProduct($category);
         $this->redirect("product", "$categoryId");
     }
@@ -86,10 +87,16 @@ class Product extends Controller {
      * Remove single product
      */
     public function remove() {
-        $product = new Product;
+        $product = new ProductModel;
+        $category = new Category;
         $product->setProductId($this->parseUrl($_GET['url'])[2]);
         $product->setCategoryId($this->session->get('category_id'));
-        $product->remove();
+        $categoryId = $this->session->get('category_id');
+        $category->findBy('id', $categoryId);
+        $category->setAmount($category->getAmount() - 1);
+
+        $product->removeProduct();
+        $product->updateCategoryAmount($category);
         $this->redirect("product", "$categoryId");
     }
 

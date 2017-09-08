@@ -4,7 +4,7 @@ namespace Shop\Controllers\admin\product;
 
 use Shop\Core\Controller;
 use Shop\Models\Category\Category;
-use Shop\Models\Products\Product;
+use Shop\Models\Products\Product as ProductModel;
 
 /**
  * ProductActions
@@ -17,7 +17,7 @@ class ProductActions extends Controller {
     public function updateProduct() {
         $this->checkIfAdmin();
 
-        $product = new Product;
+        $product = new ProductModel;
         $category = new Category;
         $params = $this->getParameters();
 
@@ -41,9 +41,16 @@ class ProductActions extends Controller {
      * Turn on/off single product
      */
     public function changeAvailability() {
-        $product = new Product;
+        $product = new ProductModel;
         $product->setProductId($this->parseUrl($_GET['url'])[2]);
-        $product->isAvailable();
+        $product->loadProduct($product->getProductId());
+        
+        if ($product->getIsAvailable() == "turned off"){
+            $product->turnOnProduct();
+        } else {
+            $product->turnOffProduct();
+        }
+        
         $categoryId = $this->session->get('category_id');
         $this->redirect("product", "$categoryId");
     }

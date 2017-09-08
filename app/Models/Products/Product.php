@@ -219,9 +219,16 @@ class Product extends Model {
      * Create new product
      * @return array
      */
-    public function createProduct($category) {
+    public function updateCategoryAmount($category) {
         $this->database->updateRow('category', "amount= '{$category->getAmount()}'"
                 . "WHERE id= {$this->categoryId}");
+    }
+
+    /**
+     * Create new product
+     * @return array
+     */
+    public function createProduct() {
         $result = $this->database->insertRow('products', "(`name`,`category_id`,`type`,`color`,`country`,`quantity`,`price`, `image`) VALUES(?,?,?,?,?,?,?,?)", [$this->productName, $this->categoryId, $this->productType, $this->productColor, $this->productCountry, $this->productQuantity, $this->productPrice, $this->productImage]);
     }
 
@@ -286,25 +293,24 @@ class Product extends Model {
     /**
      * Remove single product
      */
-    public function remove() {
+    public function removeProduct() {
         $this->database->deleteRow('products', "WHERE id = ?", [$this->productId]);
-        $result = $this->database->getRow('amount', 'category', "WHERE id = ?", [$this->categoryId]);
-        $amount = $result['amount'] - 1;
-        $this->database->updateRow('category', "amount= '$amount'"
-                . "WHERE id= {$this->categoryId}");
     }
 
     /**
-     * Set product turned off or turned on
+     * Set product turned on
      * @param string $id
      */
-    public function isAvailable() {
-        $result = $this->database->getRow('is_available', 'products', "WHERE id = ?", [$this->productId]);
-        if (($result['is_available']) == "turned off") {
-            $this->database->updateRow('products', "is_available= 'turned on'"
-                    . "WHERE id= {$this->productId}");
-            return;
-        }
+    public function turnOnProduct() {
+        $this->database->updateRow('products', "is_available= 'turned on'"
+                . "WHERE id= {$this->productId}");
+    }
+
+    /**
+     * Set product turned off
+     * @param string $id
+     */
+    public function turnOffProduct() {
         $this->database->updateRow('products', "is_available= 'turned off'"
                 . "WHERE id= {$this->productId}");
     }
