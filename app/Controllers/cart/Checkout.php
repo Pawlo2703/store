@@ -42,7 +42,7 @@ class Checkout extends Controller {
             $cart->loadCart($item);
 
             $cartCollection[$i]->setTotalPrice($item->getTotalPrice());
-            $calculations->removeProductPrice($cartCollection[$i], $item); //usunac price
+            $calculations->removeProductPrice($cartCollection[$i], $item);
             $cartCollection[$i]->setTotalPrice($item->getTotalPrice());
             $cart->savePrice($cartCollection[$i]);
 

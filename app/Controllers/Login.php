@@ -75,13 +75,23 @@ class Login extends Controller {
     public function setCookie($userId) {
         $user = new User;
         $rememberMe = new RememberMe;
-
-        if (isset($params['remember'])) {
-            $bigKey = $rememberMe->generateRandomString();
-            $rememberMe->setBigKey($bigKey);
-            $rememberMe->addCookie($userId, $user->getAdmin());
-            setcookie('email', $bigKey, time() + 60 * 60 * 7);
+        $params = $this->getParameters();
+        
+        $user->load($userId);
+        if (!isset($params['remember'])) {
+            return;
         }
+        $bigKey = $rememberMe->generateRandomString();
+        $rememberMe->setBigKey($bigKey);
+        $result = $rememberMe->checkCookie($userId);
+
+        if (!$result) {
+            $rememberMe->addCookie($userId, $user->getAdmin());
+        } else {
+            $rememberMe->updateCookie($userId, $user->getAdmin());
+        }
+
+        setcookie('email', $bigKey, time() + 60 * 60 * 7);
     }
 
     /**

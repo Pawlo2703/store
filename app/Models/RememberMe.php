@@ -93,27 +93,40 @@ class RememberMe extends Model {
     }
 
     /**
+     * Check if user has already saved cookie
+     */
+    public function checkCookie($id) {
+        $result = $this->database->getRow('*', 'remember', "WHERE id = ?", [$id]);
+        return $result;
+    }
+
+    /**
      * Create cookie
      * @param string $id
-     * @return array
      */
     public function addCookie($id, $admin) {
-        $result = $this->database->getRow('*', 'remember', "WHERE id = ?", [$id]);
-        if ((!$result) && (isset($this->bigKey))) {
+        if (isset($this->bigKey)) {
             $result = $this->database->insertRow('remember', "( `id`, `bigKey`, `admin`) VALUES(?,?,?)", [$id, $this->bigKey, $admin]);
-            return $result;
+            return;
         }
-        $bigKey = $this->bigKey;
-        $result = $this->database->updateRow('remember', "bigKey='$bigKey',"
+    }
+
+    /**
+     * Update cookie
+     * @param string $id
+     * @param string $admin
+     */
+    public function updateCookie($id, $admin) {
+        $result = $this->database->updateRow('remember', "bigKey='{$this->bigKey}',"
                 . "admin='$admin'"
                 . "WHERE id = $id");
-        return $result;
+        return;
     }
 
     /**
      * Search for cookie
      */
-    public function checkCookie() {
+    public function loadCookie() {
         $result = $this->database->getRow('id, admin', 'remember', "WHERE bigKey = ?", [$this->bigKey]);
         if (!empty($result)) {
             $this->id = $result['id'];
