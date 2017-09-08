@@ -219,17 +219,10 @@ class Product extends Model {
      * Create new product
      * @return array
      */
-    public function createProduct() {
-        $result = $this->database->getRow('*', 'products', "WHERE name = ?", [$this->productName]);
-        $result2 = $this->database->getRow('amount', 'category', "WHERE id = ?", [$this->categoryId]);
-        if ((!$result)) {
-            $id = $this->categoryId;
-            $amount = $result2['amount'] + 1;
-            $this->database->updateRow('category', "amount= '$amount'"
-                    . "WHERE id= $id");
-            $result = $this->database->insertRow('products', "(`name`,`category_id`,`type`,`color`,`country`,`quantity`,`price`, `image`) VALUES(?,?,?,?,?,?,?,?)", [$this->productName, $this->categoryId, $this->productType, $this->productColor, $this->productCountry, $this->productQuantity, $this->productPrice, $this->productImage]);
-            return $result;
-        }
+    public function createProduct($category) {
+        $this->database->updateRow('category', "amount= '{$category->getAmount()}'"
+                . "WHERE id= {$this->categoryId}");
+        $result = $this->database->insertRow('products', "(`name`,`category_id`,`type`,`color`,`country`,`quantity`,`price`, `image`) VALUES(?,?,?,?,?,?,?,?)", [$this->productName, $this->categoryId, $this->productType, $this->productColor, $this->productCountry, $this->productQuantity, $this->productPrice, $this->productImage]);
     }
 
     /**
@@ -237,7 +230,7 @@ class Product extends Model {
      * @param array $data
      */
     public function init($data) {
-        $this->setProductName($data['name']);
+        $this->setProductName($data['product']);
         $this->setProductType($data['type']);
         $this->setProductColor($data['color']);
         $this->setProductCountry($data['country']);
@@ -279,6 +272,15 @@ class Product extends Model {
             $this->isAvailable = $result['is_available'];
             $this->productImage = $result['image'];
         }
+    }
+
+    /**
+     * Check if product with given name already exists
+     * @return string
+     */
+    public function checkIfProductExists() {
+        $result = $this->database->getRow('*', 'products', "WHERE name = ?", [$this->productName]);
+        return $result;
     }
 
     /**

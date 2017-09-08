@@ -2,10 +2,11 @@
 
 namespace Shop\Controllers\admin\product;
 
+use Shop\Models\Category\Category;
 use Shop\Core\Controller;
 use Shop\Models\Products\{
     ProductCollection,
-    Product
+    Product as ProductModel
 };
 use Shop\Models\RememberMe;
 
@@ -56,31 +57,29 @@ class Product extends Controller {
         $params = $this->getParameters();
         $categoryId = $this->session->get('category_id');
 
-        $product = new Product;
+        $product = new ProductModel;
         $rememberMe = new RememberMe;
+        $category = new Category;
 
-        $product->setProductName($params['product']);
-        $product->setProductType($params['type']);
-        $product->setProductColor($params['color']);
-        $product->setProductCountry($params['country']);
-        $product->setProductQuantity($params['quantity']);
-        $product->setProductPrice($params['price']);
-
+        $product->init($params);
         $randomString = $rememberMe->generateRandomString();
-        if ($product->uploadImage($randomString) == true) {
-            $product->setCategoryId($categoryId);
-
-            if ($product->createProduct() !== NULL) {
-
-                $this->redirect("product", "$categoryId");
-                exit;
-            } else {
-                $this->view('home/admin/category/error/product_exists');
-                exit;
-            }
-        } else {
+        
+        if ($product->uploadImage($randomString) !== true) {
             $this->view('home/admin/category/error/image_too_big');
+            return;
         }
+
+        $product->setCategoryId($categoryId);
+        $product->checkIfProductExists();
+        $category->findBy('id', $categoryId);
+        $category->setAmount($category->getAmount() + 1);
+        
+        if ($product->checkIfProductExists() !== false) {
+            $this->view('home/admin/category/error/product_exists');
+            return;
+        }
+        $product->createProduct($category);
+        $this->redirect("product", "$categoryId");
     }
 
     /**
