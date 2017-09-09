@@ -18,7 +18,6 @@ class Cart extends Model {
      * Create row cart
      */
     public function createCart($item) {
-
         if ($item->getCartId() !== null) {
             return;
         }
@@ -32,9 +31,7 @@ class Cart extends Model {
     public function saveCartItem($item) {
         if (($item->getCartId() !== null)) {
             $this->database->insertRow('cart_item', "(`cart_id`,`product_id`,`product_quantity`,`product_price`) VALUES(?,?,?,?)", [$item->getCartId(), $item->getProductId(), $item->getProductQuantity(), $item->getProductPrice()]);
-            return;
         }
-        return;
     }
 
     /**
