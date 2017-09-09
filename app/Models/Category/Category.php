@@ -90,11 +90,7 @@ class Category extends Model {
      * @return array
      */
     public function createCategory() {
-        $result = $this->database->getRow('*', 'category', "WHERE name = ?", [$this->categoryName]);
-        if ((!$result)) {
-            $result = $this->database->insertRow('category', "(`name`) VALUES(?)", [$this->categoryName]);
-            return $result;
-        }
+        $result = $this->database->insertRow('category', "(`name`) VALUES(?)", [$this->categoryName]);
     }
 
     /**
@@ -117,23 +113,24 @@ class Category extends Model {
      * Remove single category
      * @param string $id
      */
-    public function remove() {
+    public function removeCategory() {
         $this->database->deleteRow('category', "WHERE id = ?", [$this->categoryId]);
     }
 
     /**
-     * Turn off or turn on category
-     * @param string $id
+     * Turn off category
      */
-    public function isAvailable() {
-        $result = $this->database->getRow('is_available', 'category', "WHERE id = ?", [$this->categoryId]);
-        if (($result['is_available']) == "turned off") {
-            $this->database->updateRow('category', "is_available= 'turned on'"
-                    . "WHERE id= {$this->categoryId}");
-        } else {
-            $this->database->updateRow('category', "is_available= 'turned off'"
-                    . "WHERE id= {$this->categoryId}");
-        }
+    public function turnOffCategory() {
+        $this->database->updateRow('category', "is_available= 'turned off'"
+                . "WHERE id= {$this->categoryId}");
+    }
+
+    /**
+     * Turn on category
+     */
+    public function turnOnCategory() {
+        $this->database->updateRow('category', "is_available= 'turned on'"
+                . "WHERE id= {$this->categoryId}");
     }
 
     /**

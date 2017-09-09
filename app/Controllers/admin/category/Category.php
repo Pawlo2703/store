@@ -32,7 +32,7 @@ class Category extends Controller {
     /**
      * Remove single category
      */
-    public function remove() {
+    public function removeCategory() {
         $this->checkIfAdmin();
         $category = new CategoryModel;
         $url = $this->parseUrl($_GET['url']);
@@ -57,13 +57,14 @@ class Category extends Controller {
         $params = $this->getParameters();
         $category = new CategoryModel;
         $category->setCategoryName($params['category']);
-        if ($category->createCategory() !== NULL) {
-            $this->redirect("category", "");
-            exit;
-        } else {
+
+        $category->findBy('name', $category->getCategoryName());
+
+        if ($category->getCategoryId !== NULL) {
             $this->view('home/admin/category/error/category_exists');
-            exit;
         }
+        $category->createCategory();
+        $this->redirect("category", "");
     }
 
 }

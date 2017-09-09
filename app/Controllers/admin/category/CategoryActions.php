@@ -16,7 +16,14 @@ class CategoryActions extends Controller {
     public function changeAvailability() {
         $category = new Category;
         $category->setCategoryId($this->parseUrl($_GET['url'])[2]);
-        $category->isAvailable();
+        $category->findBy('id', $category->getCategoryId());
+
+        if ($category->getIsAvailable() == 'turned off') {
+            $category->turnOnCategory();
+        } else {
+            $category->turnOffCategory();
+        }
+
         $this->redirect("category", "");
     }
 
