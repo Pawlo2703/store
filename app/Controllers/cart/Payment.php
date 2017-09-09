@@ -2,6 +2,7 @@
 
 namespace Shop\Controllers\cart;
 
+use Shop\Models\Category\Category;
 use Shop\Models\Products\Product as ProductModel;
 use Shop\Core\Controller;
 use Shop\Models\Cart\{
@@ -51,7 +52,7 @@ class Payment extends Controller {
         $checkout->setOrderId($orderId);
         $checkout->orderItemsCreate($cartCollectionz);
         $this->updateProductsQuantity($cartCollectionz);
-        $checkout->checkIfOutOfStock($cartCollectionz);
+        $this->checkIfOutOfStock($cartCollectionz);
 
         $orderId = $this->session->set('order_id', $checkout->getOrderId());
         $orderId = $this->session->get('order_id');
@@ -71,6 +72,30 @@ class Payment extends Controller {
             $calculations->setQuantity($product->getProductQuantity());
             $calculations->recalculateProductQuantity($cartCollection[$i]->getProductQuantity());
             $checkout->updateProductsQuantity($calculations->getNewQuantity(), $cartCollection[$i]->getProductId());
+        }
+    }
+
+    /**
+     * Check if after purchase product amount equals 0, turn off product if it does.
+     * Change category items amount aswell.
+     */
+    public function checkIfOutOfStock($cartCollection) {
+        $product = new ProductModel;
+        $category = new Category;
+        $calculations = new Calculations;
+        $checkout = new Checkout;
+
+        for ($i = 0; $i < sizeof($cartCollection); $i++) {
+            $product->loadProduct($cartCollection[$i]->getProductId());
+
+            if ((int)($product->getProductQuantity()) !== 0) {
+                return;
+            }
+
+            $product->turnOffProduct();
+            $category->findBy('id', $product->getCategoryId());
+            $calculations->calculateCategoryAmount($category);
+            $checkout->updateCategoryAmount($calculations, $product);
         }
     }
 

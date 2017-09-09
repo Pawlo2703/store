@@ -28,6 +28,25 @@ class Calculations {
     private $quantity;
 
     /**
+     * @var amount
+     */
+    private $amount;
+
+    /**
+     * @return int
+     */
+    public function getAmount() {
+        return $this->amount;
+    }
+
+    /**
+     * @param int $amount
+     */
+    public function setAmount($amount) {
+        $this->amount = $amount;
+    }
+
+    /**
      * @return int
      */
     public function getQuantity() {
@@ -121,6 +140,13 @@ class Calculations {
      */
     public function recalculateProductQuantity($quantityToSubstract) {
         $this->newQuantity = $this->quantity - $quantityToSubstract;
+    }
+
+    /**
+     * Recalculate category items amount after product is out of stock
+     */
+    public function calculateCategoryAmount($category) {
+        $this->amount = (int) ($category->getAmount()) - 1;
     }
 
 }

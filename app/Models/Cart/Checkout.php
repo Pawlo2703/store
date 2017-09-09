@@ -167,24 +167,11 @@ class Checkout extends Model {
     }
 
     /**
-     * Check if product is out of stock and turn it off if it is
+     * Update category amount
      */
-    public function checkIfOutOfStock($cartCollection) {
-        for ($i = 0; $i < sizeof($cartCollection); $i++) {
-            $result = $this->database->getRow('quantity', 'products', "WHERE id = ?", [$cartCollection[$i]->getProductId()]);
-            if ($result['quantity'] == 0) {
-                $this->database->updateRow('products', "is_available = 'turned off' "
-                        . "WHERE id = {$cartCollection[$i]->getProductId()}");
-
-                $result = $this->database->getRow('category_id', 'products', "WHERE id = ?", [$cartCollection[$i]->getProductId()]);
-                $result2 = $this->database->getRow('amount', 'category', "WHERE id = ?", [$result['category_id']]);
-
-                $newAmount = (int) ($result2['amount']) - 1;
-
-                $this->database->updateRow('category', "amount = {$newAmount} "
-                        . "WHERE id = {$result['category_id']}");
-            }
-        }
+    public function updateCategoryAmount($calculations, $product) {
+        $this->database->updateRow('category', "amount = {$calculations->getAmount()} "
+                . "WHERE id = {$product->getCategoryId()}");
     }
 
 }
