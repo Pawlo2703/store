@@ -40,7 +40,7 @@ class OrdersItemsCollection extends Model {
      */
     public function createOrdersItemsCollection() {
 
-        Model::loadCollection();
+        $this->loadCollection();
 
         if (!empty($this->rawData)) {
             foreach ($this->rawData as $value) {

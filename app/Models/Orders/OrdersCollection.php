@@ -32,7 +32,7 @@ class OrdersCollection extends Model {
      */
     public function createOrdersCollection() {
 
-        Model::loadCollection();
+        $this->loadCollection();
 
         if (!empty($this->rawData)) {
             foreach ($this->rawData as $value) {

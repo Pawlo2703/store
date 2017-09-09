@@ -32,7 +32,7 @@ class ProductCollection extends Model {
      */
     public function createProductCollection() {
        
-       Model::loadCollection();
+       $this->loadCollection();
 
         if (!empty($this->rawData)) {
             foreach ($this->rawData as $value) {

@@ -32,7 +32,7 @@ class CategoryCollection extends Model {
      */
     public function createCategoryCollection() {
 
-        Model::loadCollection();
+        $this->loadCollection();
 
         if (!empty($this->rawData)) {
             foreach ($this->rawData as $value) {

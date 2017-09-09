@@ -31,7 +31,7 @@ class CartCollection extends Model {
      */
     public function createCartCollection() {
 
-        Model::loadCollection();
+        $this->loadCollection();
 
         if (!empty($this->rawData)) {
 
