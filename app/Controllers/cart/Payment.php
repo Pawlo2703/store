@@ -2,8 +2,10 @@
 
 namespace Shop\Controllers\cart;
 
+use Shop\Models\Products\Product as ProductModel;
 use Shop\Core\Controller;
 use Shop\Models\Cart\{
+    Calculations,
     UserAddress,
     CartCollection,
     Checkout,
@@ -36,7 +38,7 @@ class Payment extends Controller {
         $item = new Item;
         $checkout = new Checkout;
         $address = new UserAddress;
-        
+
         $cartId = $this->session->get('cart_id');
         $item->setCartId($cartId);
 
@@ -45,15 +47,31 @@ class Payment extends Controller {
 
         $cart->loadCart($item);
 
-        $checkout->orderCreate($item);
-        $checkout->searchOrderId();
+        $orderId = $checkout->orderCreate($item);
+        $checkout->setOrderId($orderId);
         $checkout->orderItemsCreate($cartCollectionz);
-        $checkout->updateProductsQuantity($cartCollectionz);
+        $this->updateProductsQuantity($cartCollectionz);
         $checkout->checkIfOutOfStock($cartCollectionz);
 
         $orderId = $this->session->set('order_id', $checkout->getOrderId());
         $orderId = $this->session->get('order_id');
         $this->redirect('adres_dostawy', '');
+    }
+
+    /**
+     * Update products quantity
+     * @param object $cartCollection
+     */
+    public function updateProductsQuantity($cartCollection) {
+        $product = new ProductModel;
+        $calculations = new Calculations;
+        $checkout = new Checkout;
+        for ($i = 0; $i < sizeof($cartCollection); $i++) {
+            $product->loadProduct($cartCollection[$i]->getProductId());
+            $calculations->setQuantity($product->getProductQuantity());
+            $calculations->recalculateProductQuantity($cartCollection[$i]->getProductQuantity());
+            $checkout->updateProductsQuantity($calculations->getNewQuantity(), $cartCollection[$i]->getProductId());
+        }
     }
 
     /**

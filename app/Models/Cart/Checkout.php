@@ -123,18 +123,8 @@ class Checkout extends Model {
      * Create row in table order
      */
     public function orderCreate($item) {
-        $this->database->insertRow('orders', "(`cart_id`,`quantity`,`price`,`user_id`) VALUES(?,?,?,?)", [$item->getCartId(), $item->getTotalQuantity(), $item->getTotalPrice(), $item->getUserId()]);
-    }
-
-    /**
-     * Search for ID from most recent row
-     */
-    public function searchOrderId() {
-        $result = $this->database->getRow('id', 'orders', "ORDER BY cart_id DESC LIMIT 1");
-
-        if (!empty($result)) {
-            $this->setOrderId($result['id']);
-        }
+        $lastId = $this->database->insertRow('orders', "(`cart_id`,`quantity`,`price`,`user_id`) VALUES(?,?,?,?)", [$item->getCartId(), $item->getTotalQuantity(), $item->getTotalPrice(), $item->getUserId()]);
+        return $lastId;
     }
 
     /**
@@ -171,14 +161,9 @@ class Checkout extends Model {
     /**
      * Update product quantity after purchase
      */
-    public function updateProductsQuantity($cartCollection) {
-        for ($i = 0; $i < sizeof($cartCollection); $i++) {
-            $result = $this->database->getRow('quantity', 'products', "WHERE id = ?", [$cartCollection[$i]->getProductId()]);
-            $newQuantity = $result['quantity'] - $cartCollection[$i]->getProductQuantity();
-
-            $this->database->updateRow('products', "quantity = '{$newQuantity}' "
-                    . "WHERE id = {$cartCollection[$i]->getProductId()}");
-        }
+    public function updateProductsQuantity($newQuantity, $id) {
+        $this->database->updateRow('products', "quantity = '{$newQuantity}' "
+                . "WHERE id = {$id}");
     }
 
     /**

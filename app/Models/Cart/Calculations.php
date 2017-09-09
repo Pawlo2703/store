@@ -23,6 +23,26 @@ class Calculations {
     private $price;
 
     /**
+     * @var quantity
+     */
+    private $quantity;
+
+    /**
+     * @return int
+     */
+    public function getQuantity() {
+        return $this->quantity;
+    }
+
+    /**
+     * 
+     * @param string $quantity
+     */
+    public function setQuantity($quantity) {
+        $this->quantity = $quantity;
+    }
+
+    /**
      * @return string
      */
     public function getPrice() {
@@ -94,6 +114,13 @@ class Calculations {
     public function calculatePrice($item) {
         $newPrice = (int) ($item->getProductQuantity()) * (int) ($item->getProductPrice()) + (int) ($item->getTotalPrice());
         return $item->setTotalPrice($newPrice);
+    }
+
+    /**
+     * Recalculate product quantity after payment is done
+     */
+    public function recalculateProductQuantity($quantityToSubstract) {
+        $this->newQuantity = $this->quantity - $quantityToSubstract;
     }
 
 }
