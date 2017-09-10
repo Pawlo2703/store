@@ -5,7 +5,7 @@ namespace Shop\Controllers\cart;
 use Shop\Core\Controller;
 use Shop\Models\Cart\{
     Item,
-    Checkout,
+    Cart,
     UserAddress
 };
 
@@ -27,8 +27,8 @@ class Address extends Controller {
      */
     public function setAddress() {
         $address = new UserAddress;
-        $checkout = new Checkout;
         $item = new Item;
+        $cart = new Cart;
         $params = $this->getParameters();
                
         $orderId = $this->session->get('order_id');
@@ -42,7 +42,7 @@ class Address extends Controller {
         $address->saveAddress(); 
         $cartId = $this->session->get('cart_id');
         $item->setCartId($cartId);
-        $checkout->removeCart($item);
+        $cart->removeCart($item);
 
         $this->redirect('dokonano_zakupu', '');
     }

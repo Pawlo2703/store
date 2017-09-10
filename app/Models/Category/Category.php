@@ -142,4 +142,12 @@ class Category extends Model {
                 . "WHERE id= {$this->categoryId}");
     }
 
+    /**
+     * Update category amount
+     */
+    public function updateCategoryAmount($calculations, $product) {
+        $this->database->updateRow('category', "amount = {$calculations->getAmount()} "
+                . "WHERE id = {$product->getCategoryId()}");
+    }
+
 }

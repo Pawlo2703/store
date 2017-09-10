@@ -2,6 +2,7 @@
 
 namespace Shop\Controllers\cart;
 
+use Shop\Models\Order\Order;
 use Shop\Models\Category\Category;
 use Shop\Models\Products\Product as ProductModel;
 use Shop\Core\Controller;
@@ -9,10 +10,10 @@ use Shop\Models\Cart\{
     Calculations,
     UserAddress,
     CartCollection,
-    Checkout,
     Cart,
     Item
 };
+
 
 /**
  * Class Payment
@@ -37,8 +38,8 @@ class Payment extends Controller {
         $cartCollection = new CartCollection;
         $cart = new Cart;
         $item = new Item;
-        $checkout = new Checkout;
         $address = new UserAddress;
+        $order = new Order;
 
         $cartId = $this->session->get('cart_id');
         $item->setCartId($cartId);
@@ -48,13 +49,13 @@ class Payment extends Controller {
 
         $cart->loadCart($item);
 
-        $orderId = $checkout->orderCreate($item);
-        $checkout->setOrderId($orderId);
-        $checkout->orderItemsCreate($cartCollectionz);
+        $orderId = $order->orderCreate($item);
+        $order->setOrderId($orderId);
+        $order->orderItemsCreate($cartCollectionz);
         $this->updateProductsQuantity($cartCollectionz);
         $this->checkIfOutOfStock($cartCollectionz);
 
-        $orderId = $this->session->set('order_id', $checkout->getOrderId());
+        $orderId = $this->session->set('order_id', $order->getOrderId());
         $orderId = $this->session->get('order_id');
         $this->redirect('adres_dostawy', '');
     }
@@ -66,12 +67,11 @@ class Payment extends Controller {
     public function updateProductsQuantity($cartCollection) {
         $product = new ProductModel;
         $calculations = new Calculations;
-        $checkout = new Checkout;
         for ($i = 0; $i < sizeof($cartCollection); $i++) {
             $product->loadProduct($cartCollection[$i]->getProductId());
             $calculations->setQuantity($product->getProductQuantity());
             $calculations->recalculateProductQuantity($cartCollection[$i]->getProductQuantity());
-            $checkout->updateProductsQuantity($calculations->getNewQuantity(), $cartCollection[$i]->getProductId());
+            $product->updateProductsQuantity($calculations->getNewQuantity(), $cartCollection[$i]->getProductId());
         }
     }
 
@@ -83,7 +83,6 @@ class Payment extends Controller {
         $product = new ProductModel;
         $category = new Category;
         $calculations = new Calculations;
-        $checkout = new Checkout;
 
         for ($i = 0; $i < sizeof($cartCollection); $i++) {
             $product->loadProduct($cartCollection[$i]->getProductId());
@@ -95,7 +94,7 @@ class Payment extends Controller {
             $product->turnOffProduct();
             $category->findBy('id', $product->getCategoryId());
             $calculations->calculateCategoryAmount($category);
-            $checkout->updateCategoryAmount($calculations, $product);
+            $category->updateCategoryAmount($calculations, $product);
         }
     }
 
@@ -104,20 +103,20 @@ class Payment extends Controller {
      */
     public function display() {
         $this->header();
-        $checkout = new Checkout;
         $item = new Item;
+        $order = new Order;
 
         $cartId = $this->session->get('cart_id');
         $item->setCartId($cartId);
 
-        $checkout->loadOrderByCartId($item);
-        $orderId = $checkout->getOrderId();
+        $order->loadOrderByCartId($item);
+        $orderId = $order->getOrderId();
 
         if ($this->session->get('cart_id') !== NULL) {
             $this->session->pull('cart_id');
         }
         $data = [
-            'checkoutManagement' => $checkout
+            'checkoutManagement' => $order
         ];
         $this->view('home/cart/order_finished_view', $data);
     }

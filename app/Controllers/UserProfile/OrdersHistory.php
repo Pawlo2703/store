@@ -4,9 +4,9 @@ namespace Shop\Controllers\UserProfile;
 
 use Shop\Core\Controller;
 use Shop\Models\Products\ProductCollection;
-use Shop\Models\Orders\{
-    OrdersItemsCollection,
-    OrdersCollection
+use Shop\Models\Order\{
+    OrderItemsCollection,
+    orderCollection
 };
 
 /**
@@ -19,12 +19,12 @@ class OrdersHistory extends Controller {
 
     public function ordersView() {
         $this->header();
-        $ordersCollection = new OrdersCollection;
+        $orderCollection = new orderCollection;
 
         $userId = $this->session->get('user_id');
 
-        $ordersCollection->filterBy('user_id', $userId);
-        $orders = $ordersCollection->createOrdersCollection();
+        $orderCollection->filterBy('user_id', $userId);
+        $orders = $orderCollection->createorderCollection();
 
         $data = [
             'orders' => $orders
@@ -37,13 +37,13 @@ class OrdersHistory extends Controller {
         $productCollection = new ProductCollection;
         $productCollection = $productCollection->createProductCollection();
 
-        $ordersCollection = new OrdersCollection;
-        $ordersItemsCollection = new OrdersItemsCollection;
+        $orderCollection = new orderCollection;
+        $OrderItemsCollection = new OrderItemsCollection;
 
         $url = $this->parseUrl($_GET['url']);
 
-        $ordersItemsCollection->filterBy('order_id', $url[2]);
-        $ordersItems = $ordersItemsCollection->createOrdersItemsCollection();
+        $OrderItemsCollection->filterBy('order_id', $url[2]);
+        $ordersItems = $OrderItemsCollection->createOrderItemsCollection();
 
 
         $data = [

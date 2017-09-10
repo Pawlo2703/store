@@ -1,18 +1,13 @@
 <?php
 
-namespace Shop\Models\Cart;
+namespace Shop\Models\Order;
 
 use Shop\Core\Model;
-use Shop\Models\Cart\{
-    CartDetails,
-    ProductDetails
-}
-;
 
 /**
- * Class Checkout
+ * Class Order
  */
-class Checkout extends Model {
+class Order extends Model {
 
     /**
      * @var orderQuantity
@@ -109,29 +104,12 @@ class Checkout extends Model {
         $this->orderId = $orderId;
     }
 
-    /**
-     * Saves/updates user id
-     */
-    public function cartUpdate($cart) {
-        for ($i = 0; $i < sizeof($cart); $i++) {
-            $this->database->updateRow('cart_item', "product_quantity = '{$cart[$i]->getProductQuantity()}' "
-                    . "WHERE product_id = {$cart[$i]->getProductId()}");
-        }
-    }
-
-    /**
+    /** 
      * Create row in table order
      */
     public function orderCreate($item) {
         $lastId = $this->database->insertRow('orders', "(`cart_id`,`quantity`,`price`,`user_id`) VALUES(?,?,?,?)", [$item->getCartId(), $item->getTotalQuantity(), $item->getTotalPrice(), $item->getUserId()]);
         return $lastId;
-    }
-
-    /**
-     * Remove cart, unnecessery as we have order now
-     */
-    public function removeCart($item) {
-        $this->database->deleteRow('cart', "WHERE cart_id = ?", [$item->getCartId()]);
     }
 
     /**
@@ -156,22 +134,6 @@ class Checkout extends Model {
         for ($i = 0; $i < sizeof($cartCollectionz); $i++) {
             $this->database->insertRow('orders_items', "(`order_id`,`product_id`, `product_quantity`,`product_price`) VALUES(?,?,?,?)", [$this->orderId, $cartCollectionz[$i]->getProductId(), $cartCollectionz[$i]->getProductQuantity(), $cartCollectionz[$i]->getProductPrice()]);
         }
-    }
-
-    /**
-     * Update product quantity after purchase
-     */
-    public function updateProductsQuantity($newQuantity, $id) {
-        $this->database->updateRow('products', "quantity = '{$newQuantity}' "
-                . "WHERE id = {$id}");
-    }
-
-    /**
-     * Update category amount
-     */
-    public function updateCategoryAmount($calculations, $product) {
-        $this->database->updateRow('category', "amount = {$calculations->getAmount()} "
-                . "WHERE id = {$product->getCategoryId()}");
     }
 
 }

@@ -8,8 +8,7 @@ use Shop\Models\Cart\{
     ItemRemove,
     Item,
     Calculations,
-    Cart,
-    Checkout as CheckoutModel
+    Cart
 }
 ;
 
@@ -24,8 +23,7 @@ class Checkout extends Controller {
     public function cartUpdate() {
         $this->header();
         $params = $this->getParameters();
-        $checkout = new CheckoutModel;
-        $cartCollection = new CartCollection;
+                $cartCollection = new CartCollection;
         $cart = new Cart;
         $item = new Item;
         $calculations = new Calculations;
@@ -51,7 +49,7 @@ class Checkout extends Controller {
             $cart->saveQuantity($item);
             $cartCollection[$i]->setProductQuantity($params[$i]);
         }
-        $checkout->cartUpdate($cartCollection);
+        $cart->cartUpdate($cartCollection);
 
         for ($i = 0; $i < sizeof($params) - 1; $i++) {
             $cart->loadCart($item);
@@ -78,6 +76,7 @@ class Checkout extends Controller {
         $cartCollection = new CartCollection();
         $cart = new Cart();
         $item = new Item;
+        
         $cartId = $this->session->get('cart_id');
         $item->setCartId($cartId);
         $cart->loadCart($item);

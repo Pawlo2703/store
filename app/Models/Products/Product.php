@@ -339,4 +339,12 @@ class Product extends Model {
         return true;
     }
 
+    /**
+     * Update product quantity after purchase
+     */
+    public function updateProductsQuantity($newQuantity, $id) {
+        $this->database->updateRow('products', "quantity = '{$newQuantity}' "
+                . "WHERE id = {$id}");
+    }
+
 }

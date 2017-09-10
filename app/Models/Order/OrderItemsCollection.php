@@ -1,6 +1,6 @@
 <?php
 
-namespace Shop\Models\Orders;
+namespace Shop\Models\Order;
 
 use Shop\Core\Model;
 use Shop\Models\Cart\Item;
@@ -8,12 +8,12 @@ use Shop\Models\Cart\Item;
 /**
  * Class CategoryCollection
  */
-class OrdersItemsCollection extends Model {
+class OrderItemsCollection extends Model {
 
     /**
      * @var categoryCollection
      */
-    private $ordersItemsCollection;
+    private $OrderItemsCollection;
 
     /**
      * @var $tableName
@@ -31,14 +31,14 @@ class OrdersItemsCollection extends Model {
     /**
      * @return array
      */
-    public function getOrdersItemsCollection() {
-        return $this->ordersItemsCollection;
+    public function getOrderItemsCollection() {
+        return $this->OrderItemsCollection;
     }
 
     /**
      * Creates objects collection and saves to array
      */
-    public function createOrdersItemsCollection() {
+    public function createOrderItemsCollection() {
 
         $this->loadCollection();
 
@@ -61,7 +61,7 @@ class OrdersItemsCollection extends Model {
                 }
             }
         }
-        return $this->ordersItemsCollection = $collection;
+        return $this->OrderItemsCollection = $collection;
     }
 
 }
