@@ -23,7 +23,7 @@ class Checkout extends Controller {
     public function cartUpdate() {
         $this->header();
         $params = $this->getParameters();
-                $cartCollection = new CartCollection;
+        $cartCollection = new CartCollection;
         $cart = new Cart;
         $item = new Item;
         $calculations = new Calculations;
@@ -76,7 +76,7 @@ class Checkout extends Controller {
         $cartCollection = new CartCollection();
         $cart = new Cart();
         $item = new Item;
-        
+
         $cartId = $this->session->get('cart_id');
         $item->setCartId($cartId);
         $cart->loadCart($item);

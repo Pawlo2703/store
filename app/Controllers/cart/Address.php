@@ -30,21 +30,16 @@ class Address extends Controller {
         $item = new Item;
         $cart = new Cart;
         $params = $this->getParameters();
-               
-        $orderId = $this->session->get('order_id');
-        $address->setOrderId($orderId);
+
         $address->setName($params['name']);
         $address->setSurname($params['surname']);
         $address->setZipcode($params['zipcode']);
         $address->setStreet($params['street']);
         $address->setHouseNumber($params['housenumber']);
         $address->setDoorsNumber($params['doorsnumber']);
-        $address->saveAddress(); 
-        $cartId = $this->session->get('cart_id');
-        $item->setCartId($cartId);
-        $cart->removeCart($item);
-
-        $this->redirect('dokonano_zakupu', '');
+        $address->saveAddress();
+        
+        $this->redirect('orderCreate', '');
     }
 
 }

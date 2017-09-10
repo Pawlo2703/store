@@ -62,7 +62,7 @@ class Login extends Controller {
 
         if (isset($url[2])) {
             if ($url[2] == "payment") {
-                $this->redirect('orderCreate', '');
+                $this->redirect('adres_dostawy', '');
             }
         }
 

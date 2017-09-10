@@ -146,7 +146,7 @@ class UserAddress extends Model {
      * Save user address
      */
     public function saveAddress() {
-        $result = $this->database->insertRow('orders_address', "(`order_id`,`name`,`surname`, `zipcode`, `street`, `house number`, `doors number`) VALUES(?,?,?,?,?,?,?)", [$this->orderId, $this->name, $this->surname, $this->zipcode, $this->street, $this->houseNumber, $this->doorsNumber]);
+        $result = $this->database->insertRow('orders_address', "(`order_id`,`name`,`surname`, `zipcode`, `street`, `house number`, `doors number`) VALUES(?,?,?,?,?,?,?)", ['0', $this->name, $this->surname, $this->zipcode, $this->street, $this->houseNumber, $this->doorsNumber]);
     }
 
 }

@@ -14,7 +14,6 @@ use Shop\Models\Cart\{
     Item
 };
 
-
 /**
  * Class Payment
  */
@@ -25,7 +24,7 @@ class Payment extends Controller {
      */
     public function loginCheck() {
         if ($this->session->get('user_id') !== NULL) {
-            $this->redirect("orderCreate", "");
+            $this->redirect("adres_dostawy", "");
         }
 
         $this->redirect('login', 'payment');
@@ -55,9 +54,11 @@ class Payment extends Controller {
         $this->updateProductsQuantity($cartCollectionz);
         $this->checkIfOutOfStock($cartCollectionz);
 
-        $orderId = $this->session->set('order_id', $order->getOrderId());
-        $orderId = $this->session->get('order_id');
-        $this->redirect('adres_dostawy', '');
+        $cartId = $this->session->get('cart_id');
+        $item->setCartId($cartId);
+        $cart->removeCart($item);
+
+        $this->redirect('dokonano_zakupu', '');
     }
 
     /**
@@ -87,7 +88,7 @@ class Payment extends Controller {
         for ($i = 0; $i < sizeof($cartCollection); $i++) {
             $product->loadProduct($cartCollection[$i]->getProductId());
 
-            if ((int)($product->getProductQuantity()) !== 0) {
+            if ((int) ($product->getProductQuantity()) !== 0) {
                 return;
             }
 
@@ -115,6 +116,10 @@ class Payment extends Controller {
         if ($this->session->get('cart_id') !== NULL) {
             $this->session->pull('cart_id');
         }
+        if ($this->session->get('order_id') !== NULL) {
+            $this->session->pull('order_id');
+        }
+
         $data = [
             'checkoutManagement' => $order
         ];
