@@ -52,6 +52,7 @@ class Payment extends Controller {
         $order->setOrderId($orderId);
         $order->orderItemsCreate($cartCollectionz);
         $this->updateProductsQuantity($cartCollectionz);
+        $this->updateSalesCounter($cartCollectionz);
         $this->checkIfOutOfStock($cartCollectionz);
 
         $cartId = $this->session->get('cart_id');
@@ -73,6 +74,18 @@ class Payment extends Controller {
             $calculations->setQuantity($product->getProductQuantity());
             $calculations->recalculateProductQuantity($cartCollection[$i]->getProductQuantity());
             $product->updateProductsQuantity($calculations->getNewQuantity(), $cartCollection[$i]->getProductId());
+        }
+    }
+
+    /**
+     * Update products sales counter
+     * @param object $cartCollection
+     */
+    public function updateSalesCounter($cartCollection) {
+        $product = new ProductModel;
+        for ($i = 0; $i < sizeof($cartCollection); $i++) {
+            $product->loadProduct($cartCollection[$i]->getProductId());
+            $product->updateSalesCounter();
         }
     }
 

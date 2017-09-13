@@ -57,7 +57,6 @@ class Checkout extends Controller {
             $calculations->calculateQuantity($item);
 
             $cartCollection[$i]->setTotalPrice($item->getTotalPrice());
-
             $cartCollection[$i]->setProductQuantity($params[$i]);
 
             $calculations->calculatePrice($cartCollection[$i]);

@@ -47,6 +47,7 @@ class ProductCollection extends Model {
                 $product->setCategoryId($value['category_id']);
                 $product->setProductImage($value['image']);
                 $product->setIsAvailable($value['is_available']);
+                $product->setSalesCounter($value['sales_counter']);
 
                 if (isset($collection)) {
                     array_push($collection, $product);

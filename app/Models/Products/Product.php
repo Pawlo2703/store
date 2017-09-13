@@ -60,6 +60,25 @@ class Product extends Model {
     private $isAvailable;
 
     /**
+     * @var salesCounter
+     */
+    private $salesCounter;
+
+    /**
+     * @return string
+     */
+    public function getSalesCounter() {
+        return $this->salesCounter;
+    }
+
+    /**
+     * @param string $salesCounter
+     */
+    public function setSalesCounter($salesCounter) {
+        $this->salesCounter = $salesCounter;
+    }
+
+    /**
      * @return string
      */
     public function getIsAvailable() {
@@ -278,6 +297,7 @@ class Product extends Model {
             $this->productPrice = $result['price'];
             $this->isAvailable = $result['is_available'];
             $this->productImage = $result['image'];
+            $this->salesCounter = $result['sales_counter'];
         }
     }
 
@@ -345,6 +365,14 @@ class Product extends Model {
     public function updateProductsQuantity($newQuantity, $id) {
         $this->database->updateRow('products', "quantity = '{$newQuantity}' "
                 . "WHERE id = {$id}");
+    }
+
+    /**
+     * Update product sales counter
+     */
+    public function updateSalesCounter() {
+        $this->database->updateRow('products', "sales_counter = '{$this->salesCounter} '+ 1 "
+                . "WHERE id = {$this->productId}");
     }
 
 }
