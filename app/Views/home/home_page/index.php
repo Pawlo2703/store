@@ -60,60 +60,24 @@
                 </ul>
             </div>
             <div class="col-md-8">
-                <div class="col-md-4">
-                    <img src="https://upload.wikimedia.org/wikipedia/commons/d/dd/Jab%C5%82ko_-_owoc.JPG" class="sc-item-img img-responsive" />
-                    <div class="text-center"><a href="#">APL</a>
-                        <p class="text-center">$ 290.00</p>
-                    </div>
-                </div>
-                <div class="col-md-4">
-                    <img src="https://upload.wikimedia.org/wikipedia/commons/d/dd/Jab%C5%82ko_-_owoc.JPG" class="sc-item-img img-responsive" />
-                    <div class="text-center"><a href="#">APL</a>
-                        <p class="text-center">$ 290.00</p>
-                    </div>
-                </div>
-                <div class="col-md-4">
-                    <img src="https://upload.wikimedia.org/wikipedia/commons/d/dd/Jab%C5%82ko_-_owoc.JPG" class="sc-item-img img-responsive" />
-                    <div class="text-center"><a href="#">APL</a>
-                        <p class="text-center">$ 290.00</p>
-                    </div>
-                </div>
-                <div class="col-md-4">
-                    <img src="https://upload.wikimedia.org/wikipedia/commons/d/dd/Jab%C5%82ko_-_owoc.JPG" class="sc-item-img img-responsive" />
-                    <div class="text-center"><a href="#">APL</a>
-                        <p class="text-center">$ 290.00</p>
-                    </div>
-                </div>
-                <div class="col-md-4">
-                    <img src="https://upload.wikimedia.org/wikipedia/commons/d/dd/Jab%C5%82ko_-_owoc.JPG" class="sc-item-img img-responsive" />
-                    <div class="text-center"><a href="#">APL</a>
-                        <p class="text-center">$ 290.00</p>
-                    </div>
-                </div>
-                <div class="col-md-4">
-                    <img src="https://upload.wikimedia.org/wikipedia/commons/d/dd/Jab%C5%82ko_-_owoc.JPG" class="sc-item-img img-responsive" />
-                    <div class="text-center"><a href="#">APL</a>
-                        <p class="text-center">$ 290.00</p>
-                    </div>
-                </div>
-                <div class="col-md-4">
-                    <img src="https://upload.wikimedia.org/wikipedia/commons/d/dd/Jab%C5%82ko_-_owoc.JPG" class="sc-item-img img-responsive" />
-                    <div class="text-center"><a href="#">APL</a>
-                        <p class="text-center">$ 290.00</p>
-                    </div>
-                </div>
-                <div class="col-md-4">
-                    <img src="https://upload.wikimedia.org/wikipedia/commons/d/dd/Jab%C5%82ko_-_owoc.JPG" class="sc-item-img img-responsive" />
-                    <div class="text-center"><a href="#">APL</a>
-                        <p class="text-center">$ 290.00</p>
-                    </div>
-                </div>
-                <div class="col-md-4">
-                    <img src="https://upload.wikimedia.org/wikipedia/commons/d/dd/Jab%C5%82ko_-_owoc.JPG" class="sc-item-img img-responsive" />
-                    <div class="text-center"><a href="#">APL</a>
-                        <p class="text-center">$ 290.00</p>
-                    </div>
-                </div>
+                <?php
+                $size = sizeof($data['productCollection']);
+                if (sizeof($data['productCollection']) > 30) {
+                    $size = 30;
+                }
+                for ($i = 0; $i < $size; $i++) {
+                    if ($data['productCollection'][$i]->getIsAvailable() === 'turned on') {
+                        echo "<div class='col-md-4'>";
+                        echo "<img src='https://sup.dev/Shop/public/images/{$data['productCollection'][$i]->getProductImage()}' class='sc-item-img img-responsive' />";
+                        echo "<div class='text-center'><a href='http://" . ($_SERVER['HTTP_HOST']) . "/" . 'produkt' . "/{$data['productCollection'][$i]->getProductid()}'>"
+                        . "{$data['productCollection'][$i]->getProductName()}</a>";
+                        echo "<p class='text-center'>{$data['productCollection'][$i]->getProductPrice()} zł</p>";
+                        echo "</div>";
+                        echo "</div>";
+                    }
+                }
+                ?>
+
             </div>
 
 

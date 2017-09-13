@@ -22,6 +22,8 @@ class Model {
      */
     private $filter = "";
 
+    private $orderBy = "";
+    
     /**
      * 
      * @return string
@@ -67,9 +69,22 @@ class Model {
         $this->filter = "WHERE $condition = $values";
     }
 
+    /**
+     * 
+     * @param type $condition
+     * @param type $values
+     */
+    public function orderBy($expression, $desc) {
+        $this->orderBy = "ORDER BY $expression $desc";
+    }
+
     public function loadCollection() {
         if ($this->filter) {
             $this->rawData = $this->database->getRows('*', "$this->tableName", "$this->filter");
+            return;
+        }
+        if ($this->orderBy) {
+            $this->rawData = $this->database->getRows('*', "$this->tableName", "$this->orderBy");
             return;
         }
 
