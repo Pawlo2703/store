@@ -42,7 +42,7 @@ class OrdersHistory extends Controller {
 
         $url = $this->parseUrl($_GET['url']);
 
-        $OrderItemsCollection->filterBy('order_id', $url[2]);
+        $orderItemsCollection->filterBy('order_id', $url[2]);
         $ordersItems = $OrderItemsCollection->createOrderItemsCollection();
 
 
